@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using Models.DTO;
 using DbModels;
 using DbContext;
+using Seido.Utilities.SeedGenerator;
 
 namespace DbRepos;
 
@@ -39,18 +40,9 @@ public class AdminDbRepos
         //First of all make sure the database is cleared from all seeded data
         await RemoveSeedAsync(true);
 
-        for (int i = 0; i < nrOfItems; i++)
-        {
-                    //Here a seeder is created
-                var mg = new MusicGroupDbM();
-                mg.Name = $"Martins house band: {i}";
-                mg.EstablshedYear = 2025;
-                mg.Genre = Models.MusicGenre.Blues;
-                mg.Id = Guid.NewGuid();
-
-                _dbContext.MusicGroups.Add(mg);
-
-        }
+        var rnd = new csSeedGenerator();
+        var at = rnd.ItemsToList<AttractionDbM>(nrOfItems);
+        _dbContext.Attractions.AddRange(at);
     
         await _dbContext.SaveChangesAsync();
 

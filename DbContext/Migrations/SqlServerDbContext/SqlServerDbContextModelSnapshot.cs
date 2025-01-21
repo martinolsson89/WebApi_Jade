@@ -22,6 +22,23 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DbModels.AttractionDbM", b =>
+                {
+                    b.Property<Guid>("AttractionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("Seeded")
+                        .HasColumnType("bit");
+
+                    b.HasKey("AttractionId");
+
+                    b.ToTable("Attractions", "supusr");
+                });
+
             modelBuilder.Entity("DbModels.MusicGroupDbM", b =>
                 {
                     b.Property<Guid>("Id")
@@ -45,8 +62,8 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>
                 {
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<int>("NrGroups")
+                        .HasColumnType("int");
 
                     b.ToTable((string)null);
 
