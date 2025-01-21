@@ -1,4 +1,4 @@
-USE zooefc;
+USE jadedb;
 GO
 
 --01-create-schema.sql

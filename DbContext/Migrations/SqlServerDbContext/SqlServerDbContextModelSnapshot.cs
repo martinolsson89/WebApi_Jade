@@ -62,7 +62,7 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>
                 {
-                    b.Property<int>("NrGroups")
+                    b.Property<int>("NrAttractions")
                         .HasColumnType("int");
 
                     b.ToTable((string)null);

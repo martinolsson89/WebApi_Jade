@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250121135347_miInitial")]
+    [Migration("20250121154051_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -65,7 +65,7 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>
                 {
-                    b.Property<int>("NrGroups")
+                    b.Property<int>("NrAttractions")
                         .HasColumnType("int");
 
                     b.ToTable((string)null);
