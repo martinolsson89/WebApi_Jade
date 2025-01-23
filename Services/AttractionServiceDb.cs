@@ -16,7 +16,9 @@ public class AttractionServiceDb : IAttractionService
         _logger = logger;
     }
 
-    public Task<List<IAttraction>> ReadAsync() => _attractionDbRepos.ReadAsync();
-    public Task<IAttraction> ReadItemAsync(Guid id) => _attractionDbRepos.ReadItemAsync(id);
+    public Task<ResponseItemDto<IAttraction>> ReadAttractionAsync(Guid id, bool flat) => _attractionDbRepos.ReadItemAsync(id, flat);
+    
 
+    public Task<ResponsePageDto<IAttraction>> ReadAttractionsAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize) => _attractionDbRepos.ReadItemsAsync(seeded, flat, filter, pageNumber, pageSize);
+    
 }
