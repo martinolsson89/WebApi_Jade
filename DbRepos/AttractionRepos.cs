@@ -7,6 +7,7 @@ using Models.DTO;
 using Models;
 using DbModels;
 using DbContext;
+using Microsoft.Identity.Client;
 
 namespace DbRepos;
 
@@ -70,8 +71,76 @@ public class AttractionDbRepos
 
         };
 
+        
+
         // var at = await _dbContext.Attractions.ToListAsync<IAttraction>();
         // return at;
     } 
+
+    public async Task<ResponseItemDto<IAttraction>> DeleteItemAsync(Guid id)
+    {
+        var query = _dbContext.Attractions
+        .Where(a => a.AttractionId == id);
+        var item = await query.FirstOrDefaultAsync();
+
+        if(item == null) throw new ArgumentException($"Item: {id} is not existing");
+
+        await _dbContext.SaveChangesAsync();
+
+        return new ResponseItemDto<IAttraction> 
+        {
+            DbConnectionKeyUsed = _dbContext.dbConnection,
+            Item = item
+        };
+    }
+
+    public async Task<ResponseItemDto<IAttraction>> DeleteAttraction(Guid id)
+    {
+        var query = _dbContext.Attractions.Where(a => a.AttractionId == id);
+        var item = await query.FirstOrDefaultAsync<AttractionDbM>();
+
+        if(item == null) throw new ArgumentException($"No object linked to id: {id}");
+
+        _dbContext.Remove(item);
+
+        await _dbContext.SaveChangesAsync();
+
+        return new ResponseItemDto<IAttraction>()
+        {
+            DbConnectionKeyUsed = _dbContext.dbConnection,
+            Item = item
+        };
+    }
+
+    public async Task<ResponseItemDto<IAttraction>> CreateItemAsync(AttractionCuDto itemDto)
+    {
+        if (itemDto.ZooId != null) 
+          throw new ArgumentException($"{nameof(itemDto.ZooId)} must be null when creating a new object");
+
+          var item = new AttractionDbM(itemDto);
+
+          _dbContext.Add(item);
+
+          await _dbContext.SaveChangesAsync();
+
+          return await ReadItemAsync(item.AttractionId, true);
+    }
+
+    public async Task<ResponseItemDto<IAttraction>> UpdateItemAsync(AttractionCuDto itemDto)
+    {
+        var query = _dbContext.Attractions.Where(a => a.AttractionId != itemDto.ZooId);
+
+        var item = await query.FirstOrDefaultAsync<AttractionDbM>();
+
+        if (item == null) throw new ArgumentException($"Item {itemDto.ZooId} is not existing");
+
+        item.UpdateFromDTO(itemDto);
+
+        _dbContext.Update(item);
+
+        await _dbContext.SaveChangesAsync();
+
+        return await ReadItemAsync(item.AttractionId, true);
+    }
      
 }

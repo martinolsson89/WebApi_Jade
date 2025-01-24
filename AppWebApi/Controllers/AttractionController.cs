@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using Models.DTO;
 using Services;
 using Models;
+using System.Drawing;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -73,6 +74,78 @@ namespace AppWebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPost()]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAttraction>))]
+        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        public async Task<IActionResult> PostItem([FromBody] AttractionCuDto itemPost)
+        {
+            try
+            {
+                _logger.LogInformation($"{nameof(ReadItem)}: {nameof(itemPost)}: {itemPost}");
+                var item = await _attractionService.PostAttractionAsync(itemPost);
+                //if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist"); Borde funka kolla igen sen
+                return Ok(item);
+
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{nameof(PostItem)}: {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut()]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAttraction>))]
+        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        public async Task<IActionResult> UpdateItem([FromBody] AttractionCuDto itemPost)
+         {
+            try
+            {
+                _logger.LogInformation($"{nameof(UpdateItem)}: {nameof(itemPost)}: {itemPost}");
+                var item = await _attractionService.UpdateAttractionAsync(itemPost);
+                if (item?.Item == null) throw new ArgumentException ($"Item with id {item.Item.AttractionId} does not exist"); 
+                return Ok(item);
+
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{nameof(UpdateItem)}: {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpDelete()]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAttraction>))]
+        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        public async Task<IActionResult> DeleteItem(string id)
+        {
+            try
+            {
+                var idArg = Guid.Parse(id);
+
+                var itemDelete = await _attractionService.ReadAttractionAsync(idArg, false);
+                if (itemDelete?.Item == null) throw new ArgumentException ($"Item with id {itemDelete.Item.AttractionId} does not exist"); 
+                
+                var item = await _attractionService.DeleteAttractionAsync(idArg);
+                
+                return Ok(item);
+
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{nameof(DeleteItem)}: {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
+
+
     }
 }
 
