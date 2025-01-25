@@ -42,6 +42,11 @@ public class AdminDbRepos
 
         var rnd = new csSeedGenerator();
         var at = rnd.ItemsToList<AttractionDbM>(nrOfItems);
+
+        foreach (var item in at){
+            item.CategoryDbM = new CategoryDbM(rnd);
+        }
+
         _dbContext.Attractions.AddRange(at);
     
         await _dbContext.SaveChangesAsync();

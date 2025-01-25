@@ -14,6 +14,12 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
     [Key]
     public override Guid AttractionId { get; set; }
 
+    [NotMapped] // Not mapped betyder strunta i relationen
+    public override ICategory Category { get => CategoryDbM; set => throw new NotImplementedException(); }
+
+    [JsonIgnore]
+    [Required]
+    public CategoryDbM CategoryDbM { get; set; }
     public AttractionDbM(AttractionCuDto org)
     {
         AttractionId = new Guid();
