@@ -1,0 +1,6 @@
+      <PropertyGroup>
+      <UserSecretPath>C:/Users/marti/AppData/Roaming/Microsoft/UserSecrets</UserSecretPath>
+      <AzureScriptDirectory>C:/Users/marti/Development/Projects/Team_Jade/azuregitbash</AzureScriptDirectory>
+      <AzureProjectSettings>C:/Users/marti/Development/Projects/Team_Jade/azuregitbash/az-projects/newton-jade</AzureProjectSettings>
+    </PropertyGroup>
+  

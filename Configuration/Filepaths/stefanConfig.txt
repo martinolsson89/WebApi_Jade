@@ -1,0 +1,5 @@
+<PropertyGroup>
+    <UserSecretPath>/Volumes/HomeX/stefankureljusic/.microsoft/usersecrets</UserSecretPath>
+    <AzureScriptDirectory>/Volumes/HomeX/stefankureljusic/Desktop/CloudSec/azuregitbash</AzureScriptDirectory>
+    <AzureProjectSettings>/Volumes/HomeX/stefankureljusic/Desktop/CloudSec/azuregitbash/az-projects/newton-jade</AzureProjectSettings>
+  </PropertyGroup>

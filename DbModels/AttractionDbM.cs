@@ -14,10 +14,26 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
     [Key]
     public override Guid AttractionId { get; set; }
 
+    public AttractionDbM(AttractionCuDto org)
+    {
+        AttractionId = new Guid();
+        UpdateFromDTO(org);
+    }
+
+    public AttractionDbM(){ }
+    
+
     public AttractionDbM Seed(csSeedGenerator rnd)
     {
         this.AttractionId = Guid.NewGuid();
         this.Description = rnd.LatinSentence;
+
+        return this;
+    }
+
+    public AttractionDbM UpdateFromDTO(AttractionCuDto org)
+    {
+        Description = org.Description;
 
         return this;
     }
