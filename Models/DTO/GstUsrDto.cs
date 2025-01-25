@@ -5,7 +5,7 @@ namespace Models.DTO;
 
 public class GstUsrInfoDbDto
 {
-    public int NrGroups {get;  set;}
+    public int NrAttractions {get;  set;}
 } 
 
 

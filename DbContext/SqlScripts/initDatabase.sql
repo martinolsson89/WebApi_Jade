@@ -1,4 +1,4 @@
-USE zooefc;
+USE jadedb;
 GO
 
 --01-create-schema.sql
@@ -13,7 +13,7 @@ GO
 --02-create-gstusr-view.sql
 --create a view that gives overview of the database content
 CREATE OR ALTER VIEW gstusr.vwInfoDb AS
-    SELECT COUNT(*) as NrGroups FROM supusr.MusicGroups
+    SELECT COUNT(*) as NrAttractions FROM supusr.Attractions
 GO
 
 
@@ -26,7 +26,7 @@ CREATE OR ALTER PROC supusr.spDeleteAll
     SET NOCOUNT ON;
 
     -- will delete here
-    DELETE FROM supusr.MusicGroups;
+    DELETE FROM supusr.Attractions;
 
     -- return new data status
     SELECT * FROM gstusr.vwInfoDb;

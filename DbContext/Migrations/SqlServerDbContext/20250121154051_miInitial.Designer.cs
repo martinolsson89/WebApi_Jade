@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250114084740_miInitial")]
+    [Migration("20250121154051_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -24,6 +24,23 @@ namespace DbContext.Migrations.SqlServerDbContext
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("DbModels.AttractionDbM", b =>
+                {
+                    b.Property<Guid>("AttractionId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("Seeded")
+                        .HasColumnType("bit");
+
+                    b.HasKey("AttractionId");
+
+                    b.ToTable("Attractions", "supusr");
+                });
 
             modelBuilder.Entity("DbModels.MusicGroupDbM", b =>
                 {
@@ -48,8 +65,8 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>
                 {
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<int>("NrAttractions")
+                        .HasColumnType("int");
 
                     b.ToTable((string)null);
 
