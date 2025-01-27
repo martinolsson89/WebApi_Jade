@@ -21,11 +21,22 @@ public class CategoryDbM : Category, ISeed<CategoryDbM>
     [JsonIgnore]
     public List<AttractionDbM> AttractionsDbM { get; set; }
 
+    
+    
+
     public CategoryDbM() {}
 
     public CategoryDbM(csSeedGenerator seed)
     {
         Seed(seed);
+    }
+
+    public CategoryDbM(CategoryCuDto org)
+    {
+        CategoryId = Guid.NewGuid();
+        UpdateFromDTO(org);
+
+        
     }
     
     public virtual string Catkind
@@ -40,6 +51,13 @@ public class CategoryDbM : Category, ISeed<CategoryDbM>
     public override CategoryDbM Seed(csSeedGenerator seedGenerator)
     {
         base.Seed(seedGenerator);
+
+        return this;
+    }
+
+    public CategoryDbM UpdateFromDTO(CategoryCuDto org)
+    {
+        Name = org.Name;
 
         return this;
     }
