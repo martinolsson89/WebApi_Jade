@@ -27,6 +27,9 @@ public class AttractionDbRepos
         IQueryable<AttractionDbM> query = _dbContext.Attractions.AsNoTracking()
             .Where(i => i.AttractionId == id);
 
+            if (!flat){
+                query = query.Include(a => a.CategoryDbM);   
+            }
             var resp =  await query.FirstOrDefaultAsync<IAttraction>();
             return new ResponseItemDto<IAttraction>()
             {
@@ -44,10 +47,16 @@ public class AttractionDbRepos
 
         IQueryable<AttractionDbM> query = _dbContext.Attractions.AsNoTracking();
 
+         if (!flat){
+             query = query.Include(a => a.CategoryDbM);   
+            }
+
         return new ResponsePageDto<IAttraction>
         {
             DbConnectionKeyUsed = _dbContext.dbConnection,
             DbItemsCount = await query
+
+            
 
              .Where(i => (i.Seeded == seeded) && 
                     i.Description.ToLower().Contains(filter)).CountAsync(),

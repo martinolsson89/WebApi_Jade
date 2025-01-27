@@ -85,7 +85,7 @@ namespace AppWebApi.Controllers
             {
                 _logger.LogInformation($"{nameof(ReadItem)}: {nameof(itemPost)}: {itemPost}");
                 var item = await _attractionService.PostAttractionAsync(itemPost);
-                //if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist"); Borde funka kolla igen sen
+                if (item?.Item.AttractionId == null) throw new ArgumentException ($"Item with id {item?.Item.AttractionId} does not exist"); 
                 return Ok(item);
 
 

@@ -21,6 +21,8 @@ public class CategoryDbM : Category, ISeed<CategoryDbM>
     [JsonIgnore]
     public List<AttractionDbM> AttractionsDbM { get; set; }
 
+    public CategoryDbM() {}
+
     public CategoryDbM(csSeedGenerator seed)
     {
         Seed(seed);

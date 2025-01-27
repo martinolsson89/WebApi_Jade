@@ -15,6 +15,7 @@ public class Category : ICategory, ISeed<Category>
     {
         CategoryId = Guid.NewGuid();
         Name = seedGenerator.FromEnum<CategoryNames>();
+        Seeded = true;
 
         return this;
     }

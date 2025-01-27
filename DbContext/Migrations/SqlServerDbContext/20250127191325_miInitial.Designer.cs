@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250124183505_miInitial")]
+    [Migration("20250127191325_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -31,6 +31,9 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CategoryDbMCategoryId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(200)");
 
@@ -39,7 +42,29 @@ namespace DbContext.Migrations.SqlServerDbContext
 
                     b.HasKey("AttractionId");
 
+                    b.HasIndex("CategoryDbMCategoryId");
+
                     b.ToTable("Attractions", "supusr");
+                });
+
+            modelBuilder.Entity("DbModels.CategoryDbM", b =>
+                {
+                    b.Property<Guid>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Catkind")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("Name")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Seeded")
+                        .HasColumnType("bit");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories", "supusr");
                 });
 
             modelBuilder.Entity("DbModels.MusicGroupDbM", b =>
@@ -71,6 +96,22 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.ToTable((string)null);
 
                     b.ToView("vwInfoDb", "gstusr");
+                });
+
+            modelBuilder.Entity("DbModels.AttractionDbM", b =>
+                {
+                    b.HasOne("DbModels.CategoryDbM", "CategoryDbM")
+                        .WithMany("AttractionsDbM")
+                        .HasForeignKey("CategoryDbMCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CategoryDbM");
+                });
+
+            modelBuilder.Entity("DbModels.CategoryDbM", b =>
+                {
+                    b.Navigation("AttractionsDbM");
                 });
 #pragma warning restore 612, 618
         }
