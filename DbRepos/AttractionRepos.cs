@@ -114,8 +114,8 @@ public class AttractionDbRepos
 
     public async Task<ResponseItemDto<IAttraction>> CreateItemAsync(AttractionCuDto itemDto)
     {
-        if (itemDto.ZooId != null) 
-          throw new ArgumentException($"{nameof(itemDto.ZooId)} must be null when creating a new object");
+        if (itemDto.AttractionId != null) 
+          throw new ArgumentException($"{nameof(itemDto.AttractionId)} must be null when creating a new object");
 
           var item = new AttractionDbM(itemDto);
 
@@ -128,11 +128,11 @@ public class AttractionDbRepos
 
     public async Task<ResponseItemDto<IAttraction>> UpdateItemAsync(AttractionCuDto itemDto)
     {
-        var query = _dbContext.Attractions.Where(a => a.AttractionId != itemDto.ZooId);
+        var query = _dbContext.Attractions.Where(a => a.AttractionId != itemDto.AttractionId);
 
         var item = await query.FirstOrDefaultAsync<AttractionDbM>();
 
-        if (item == null) throw new ArgumentException($"Item {itemDto.ZooId} is not existing");
+        if (item == null) throw new ArgumentException($"Item {itemDto.AttractionId} is not existing");
 
         item.UpdateFromDTO(itemDto);
 
