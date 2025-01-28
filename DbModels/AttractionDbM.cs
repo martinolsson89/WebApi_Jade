@@ -40,7 +40,7 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
     public AttractionDbM UpdateFromDTO(AttractionCuDto org)
     {
         Description = org.Description;
-
+        
         return this;
     }
 }

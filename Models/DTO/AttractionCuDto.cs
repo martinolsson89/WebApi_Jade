@@ -2,6 +2,7 @@
 using System.Diagnostics.Metrics;
 using System.Reflection.Emit;
 using System.Xml.Linq;
+using Microsoft.Extensions.Azure;
 
 namespace Models.DTO;
 
@@ -16,10 +17,14 @@ public class AttractionCuDto
 
     public string Description { get; set; }
 
+    public Guid CategoryId { get; set; }
+
     public AttractionCuDto() { }
     public AttractionCuDto(IAttraction org)
     {
         ZooId = org.AttractionId;
         Description = org.Description;
+
+        CategoryId = org.Category.CategoryId;
     }
 }

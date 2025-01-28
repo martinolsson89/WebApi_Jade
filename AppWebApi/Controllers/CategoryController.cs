@@ -74,18 +74,18 @@ namespace AppWebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        /*
+        
         [HttpPost()]
-        [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAttraction>))]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<ICategory>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
-        public async Task<IActionResult> PostItem([FromBody] AttractionCuDto itemPost)
+        public async Task<IActionResult> PostItem([FromBody] CategoryCuDto itemPost)
         {
             try
             {
                 _logger.LogInformation($"{nameof(ReadItem)}: {nameof(itemPost)}: {itemPost}");
-                var item = await _attractionService.PostAttractionAsync(itemPost);
-                if (item?.Item.AttractionId == null) throw new ArgumentException ($"Item with id {item?.Item.AttractionId} does not exist"); 
+                var item = await _categoryService.PostCategoryAsync(itemPost);
+                if (item?.Item.CategoryId == null) throw new ArgumentException ($"Item with id {item?.Item.CategoryId} does not exist"); 
                 return Ok(item);
 
 
@@ -98,16 +98,16 @@ namespace AppWebApi.Controllers
         }
 
         [HttpPut()]
-        [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAttraction>))]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<ICategory>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
-        public async Task<IActionResult> UpdateItem([FromBody] AttractionCuDto itemPost)
+        public async Task<IActionResult> UpdateItem([FromBody] CategoryCuDto itemPost)
          {
             try
             {
                 _logger.LogInformation($"{nameof(UpdateItem)}: {nameof(itemPost)}: {itemPost}");
-                var item = await _attractionService.UpdateAttractionAsync(itemPost);
-                if (item?.Item == null) throw new ArgumentException ($"Item with id {item.Item.AttractionId} does not exist"); 
+                var item = await _categoryService.UpdateCategoryAsync(itemPost);
+                if (item?.Item == null) throw new ArgumentException ($"Item with id {item.Item.CategoryId} does not exist"); 
                 return Ok(item);
 
 
@@ -120,7 +120,7 @@ namespace AppWebApi.Controllers
         }
 
         [HttpDelete()]
-        [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAttraction>))]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<ICategory>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
         public async Task<IActionResult> DeleteItem(string id)
@@ -129,10 +129,10 @@ namespace AppWebApi.Controllers
             {
                 var idArg = Guid.Parse(id);
 
-                var itemDelete = await _attractionService.ReadAttractionAsync(idArg, false);
-                if (itemDelete?.Item == null) throw new ArgumentException ($"Item with id {itemDelete.Item.AttractionId} does not exist"); 
+                var itemDelete = await _categoryService.ReadCategoryAsync(idArg, false);
+                if (itemDelete?.Item == null) throw new ArgumentException ($"Item with id {itemDelete.Item.CategoryId} does not exist"); 
                 
-                var item = await _attractionService.DeleteAttractionAsync(idArg);
+                var item = await _categoryService.DeleteCategoryAsync(idArg);
                 
                 return Ok(item);
 
@@ -145,6 +145,6 @@ namespace AppWebApi.Controllers
             }
         }
 
-        */
+        
     }
 }

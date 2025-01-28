@@ -128,6 +128,8 @@ public class CategoryDbRepos
 
           var item = new CategoryDbM(itemDto);
 
+          await navProp_itemDto_to_ItemDbM(itemDto,item);
+
           _dbContext.Add(item);
 
           await _dbContext.SaveChangesAsync();
@@ -145,11 +147,36 @@ public class CategoryDbRepos
 
         item.UpdateFromDTO(itemDto);
 
+        // updatera navigation properties här
+        await navProp_itemDto_to_ItemDbM(itemDto,item);
+
+
         _dbContext.Update(item);
 
         await _dbContext.SaveChangesAsync();
 
         return await ReadItemAsync(item.CategoryId, true);
+    }
+
+
+    private async Task navProp_itemDto_to_ItemDbM(CategoryCuDto itemDtoSrc, CategoryDbM itemDst)
+    {
+        List<AttractionDbM> Attractions = null; // Tom lista med Attractiondmb
+        foreach(var id in itemDtoSrc.AttractionsId) // För varje id i dton vi skickar in loopa
+        {
+
+            if(itemDtoSrc.AttractionsId != null) // om dessa inte är null
+            {
+                var p = await _dbContext.Attractions.FirstOrDefaultAsync(i => i.AttractionId == id); // Hämta matchande id för det nuvarande loopade
+                if (p == null)
+                throw new ArgumentException($"Item id {id} is not existing");
+
+                Attractions.Add(p); // lÄGG TILL DEN I LISTAN
+            }
+
+            itemDst.AttractionsDbM = Attractions; // Stoppa in allt i dbm modellen, så man för över från dto till dbm i helhet.
+
+        }
     }
      
 }

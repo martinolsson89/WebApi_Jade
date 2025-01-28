@@ -21,9 +21,9 @@ public class CategoryServiceDb : ICategoryService
 
     public Task<ResponsePageDto<ICategory>> ReadCategoriesAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize) => _categoryDbRepos.ReadItemsAsync(seeded, flat, filter, pageNumber, pageSize);
 
-    //public Task<ResponseItemDto<ICategory>> DeleteAttractionAsync(Guid id) => _categoryDbRepos.DeleteAttraction(id);
+    public Task<ResponseItemDto<ICategory>> DeleteCategoryAsync(Guid id) => _categoryDbRepos.DeleteItemAsync(id);
 
-    //public Task<ResponseItemDto<ICategory>> PostAttractionAsync(AttractionCuDto item) => _categoryDbRepos.CreateItemAsync(item);
+    public Task<ResponseItemDto<ICategory>> PostCategoryAsync(CategoryCuDto item) => _categoryDbRepos.CreateItemAsync(item);
 
-    //public Task<ResponseItemDto<ICategory>> UpdateAttractionAsync(AttractionCuDto item) => _categoryDbRepos.UpdateItemAsync(item);
+    public Task<ResponseItemDto<ICategory>> UpdateCategoryAsync(CategoryCuDto item) => _categoryDbRepos.UpdateItemAsync(item);
     }
