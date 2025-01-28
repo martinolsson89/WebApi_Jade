@@ -90,6 +90,9 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Property<int>("NrAttractions")
                         .HasColumnType("int");
 
+                    b.Property<int>("NrCategories")
+                        .HasColumnType("int");
+
                     b.ToTable((string)null);
 
                     b.ToView("vwInfoDb", "gstusr");
