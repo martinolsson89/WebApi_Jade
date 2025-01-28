@@ -3,6 +3,10 @@
 ##
 ## Get latest from `dotnet new gitignore`
 
+#Project member specific
+#git rm --cached C:\Users\marti\Development\Projects\Team_Jade\WebApi_Jade\Configuration\Configuration.csproj
+Configuration.csproj
+
 # dotenv files
 .env
 

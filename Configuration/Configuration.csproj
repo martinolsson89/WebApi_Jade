@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <UserSecretPath>/Volumes/HomeX/stefankureljusic/.microsoft/usersecrets</UserSecretPath>
-    <AzureScriptDirectory>/Volumes/HomeX/stefankureljusic/Desktop/CloudSec/azuregitbash</AzureScriptDirectory>
-    <AzureProjectSettings>/Volumes/HomeX/stefankureljusic/Desktop/CloudSec/azuregitbash/az-projects/newton-jade</AzureProjectSettings>
+    <UserSecretPath>C:/Users/marti/AppData/Roaming/Microsoft/UserSecrets</UserSecretPath>
+    <AzureScriptDirectory>C:/Users/marti/Development/Projects/Team_Jade/azuregitbash</AzureScriptDirectory>
+    <AzureProjectSettings>C:/Users/marti/Development/Projects/Team_Jade/azuregitbash/az-projects/newton-jade</AzureProjectSettings>
   </PropertyGroup>
 
  

@@ -13,7 +13,7 @@ GO
 --02-create-gstusr-view.sql
 --create a view that gives overview of the database content
 CREATE OR ALTER VIEW gstusr.vwInfoDb AS
-    SELECT 'Guest user database overview' as Title
+    SELECT COUNT(*) as NrAttractions FROM supusr.Attractions
 GO
 
 
@@ -26,6 +26,7 @@ CREATE OR ALTER PROC supusr.spDeleteAll
     SET NOCOUNT ON;
 
     -- will delete here
+    DELETE FROM supusr.Attractions;
 
     -- return new data status
     SELECT * FROM gstusr.vwInfoDb;
@@ -55,24 +56,24 @@ GO
 
 --05-create-roles-credentials.sql
 --create roles
-CREATE ROLE zoosefcGstUsr;
-CREATE ROLE zoosefcUsr;
-CREATE ROLE zoosefcSupUsr;
+CREATE ROLE jadedbGstUsr;
+CREATE ROLE jadedbUsr;
+CREATE ROLE jadedbSupUsr;
 
 --assign securables creadentials to the roles
-GRANT SELECT, EXECUTE ON SCHEMA::gstusr to zoosefcGstUsr;
-GRANT SELECT ON SCHEMA::supusr to zoosefcUsr;
-GRANT SELECT, UPDATE, INSERT, DELETE, EXECUTE ON SCHEMA::supusr to zoosefcSupUsr;
+GRANT SELECT, EXECUTE ON SCHEMA::gstusr to jadedbGstUsr;
+GRANT SELECT ON SCHEMA::supusr to jadedbUsr;
+GRANT SELECT, UPDATE, INSERT, DELETE, EXECUTE ON SCHEMA::supusr to jadedbSupUsr;
 
 --finally, add the users to the roles
-ALTER ROLE zoosefcGstUsr ADD MEMBER gstusrUser;
+ALTER ROLE jadedbGstUsr ADD MEMBER gstusrUser;
 
-ALTER ROLE zoosefcGstUsr ADD MEMBER usrUser;
-ALTER ROLE zoosefcUsr ADD MEMBER usrUser;
+ALTER ROLE jadedbGstUsr ADD MEMBER usrUser;
+ALTER ROLE jadedbUsr ADD MEMBER usrUser;
 
-ALTER ROLE zoosefcGstUsr ADD MEMBER supusrUser;
-ALTER ROLE zoosefcUsr ADD MEMBER supusrUser;
-ALTER ROLE zoosefcSupUsr ADD MEMBER supusrUser;
+ALTER ROLE jadedbGstUsr ADD MEMBER supusrUser;
+ALTER ROLE jadedbUsr ADD MEMBER supusrUser;
+ALTER ROLE jadedbSupUsr ADD MEMBER supusrUser;
 GO
 
 
