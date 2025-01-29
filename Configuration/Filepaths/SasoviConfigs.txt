@@ -1,0 +1,5 @@
+<PropertyGroup>
+    <UserSecretPath>C:\Users\sasan\AppData\Roaming\Microsoft\UserSecrets/</UserSecretPath>
+    <AzureScriptDirectory>C:\Users\sasan\source\cloudsec\docker\azuregitbash</AzureScriptDirectory>
+    <AzureProjectSettings>C:\Users\sasan\source\cloudsec\docker\azuregitbash\az-projects\newton-jade</AzureProjectSettings>
+  </PropertyGroup> 
