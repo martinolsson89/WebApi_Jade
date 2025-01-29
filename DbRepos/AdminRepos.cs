@@ -42,6 +42,11 @@ public class AdminDbRepos
 
         var rnd = new csSeedGenerator();
         var at = rnd.ItemsToList<AttractionDbM>(nrOfItems);
+
+        foreach (var item in at){
+            item.CategoryDbM = new CategoryDbM(rnd);
+        }
+
         _dbContext.Attractions.AddRange(at);
     
         await _dbContext.SaveChangesAsync();
@@ -64,7 +69,7 @@ public class AdminDbRepos
 
             //there is no FromSqlRawAsync to I make one here
             var _query = await Task.Run(() =>
-                _dbContext.InfoDbView.FromSqlRaw($"EXEC @retval = supusr.spDeleteAll @seeded",
+                _dbContext.InfoDbView.FromSqlRaw($"EXEC @retval = supusr.spDeleteAllAttractions @seeded",
                     parameters.ToArray()).AsEnumerable());
 
             //Execute the query and get the sp result set.

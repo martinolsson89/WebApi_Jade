@@ -411,7 +411,7 @@ FodyWeavers.xsd
 ##
 ## Visual studio for Mac
 ##
-
+Configuration.csproj
 
 # globs
 Makefile.in

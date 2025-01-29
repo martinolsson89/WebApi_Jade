@@ -27,6 +27,9 @@ public class AttractionDbRepos
         IQueryable<AttractionDbM> query = _dbContext.Attractions.AsNoTracking()
             .Where(i => i.AttractionId == id);
 
+            if (!flat){
+                query = query.Include(a => a.CategoryDbM);   
+            }
             var resp =  await query.FirstOrDefaultAsync<IAttraction>();
             return new ResponseItemDto<IAttraction>()
             {
@@ -44,10 +47,16 @@ public class AttractionDbRepos
 
         IQueryable<AttractionDbM> query = _dbContext.Attractions.AsNoTracking();
 
+         if (!flat){
+             query = query.Include(a => a.CategoryDbM);   
+            }
+
         return new ResponsePageDto<IAttraction>
         {
             DbConnectionKeyUsed = _dbContext.dbConnection,
             DbItemsCount = await query
+
+            
 
              .Where(i => (i.Seeded == seeded) && 
                     i.Description.ToLower().Contains(filter)).CountAsync(),
@@ -119,6 +128,8 @@ public class AttractionDbRepos
 
           var item = new AttractionDbM(itemDto);
 
+          await UpdateNavigationProp(itemDto, item);
+
           _dbContext.Add(item);
 
           await _dbContext.SaveChangesAsync();
@@ -136,11 +147,22 @@ public class AttractionDbRepos
 
         item.UpdateFromDTO(itemDto);
 
+        await UpdateNavigationProp(itemDto, item);
+
         _dbContext.Update(item);
 
         await _dbContext.SaveChangesAsync();
 
         return await ReadItemAsync(item.AttractionId, true);
+    }
+
+    public async Task UpdateNavigationProp(AttractionCuDto itemDto, AttractionDbM item)
+    {
+        var updatedCat = await _dbContext.Catgeories.Where(a => a.CategoryId == itemDto.CategoryId).FirstOrDefaultAsync();
+
+        if(updatedCat == null) throw new ArgumentException($"This id: {itemDto.CategoryId} does not exist");
+
+        item.CategoryDbM = updatedCat;
     }
      
 }

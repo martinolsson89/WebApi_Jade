@@ -57,6 +57,7 @@ rm -rf $PublishDirectory
 cd $ApplicationDirectory
 dotnet publish --configuration Release --output ./publish
 
+#exit
 
 #Step3: Run the application from the folder containing the release files.
 printf "\n\nRun the webapi from the published directory...\n"
