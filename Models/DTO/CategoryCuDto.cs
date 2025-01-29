@@ -9,7 +9,7 @@ namespace Models.DTO;
 public class CategoryCuDto
 {
 
-     public virtual Guid CategoryId { get; set; }
+     public virtual Guid? CategoryId { get; set; }
     public CategoryNames Name { get; set; } // Gör detta till en enum sen?
 
     public List<Guid> AttractionsId { get; set; } = null;

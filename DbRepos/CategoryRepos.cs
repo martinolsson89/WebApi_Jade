@@ -161,7 +161,7 @@ public class CategoryDbRepos
 
     private async Task navProp_itemDto_to_ItemDbM(CategoryCuDto itemDtoSrc, CategoryDbM itemDst)
     {
-        List<AttractionDbM> Attractions = null; // Tom lista med Attractiondmb
+        List<AttractionDbM> Attractions = new(); // Tom lista med Attractiondmb
         foreach(var id in itemDtoSrc.AttractionsId) // För varje id i dton vi skickar in loopa
         {
 
