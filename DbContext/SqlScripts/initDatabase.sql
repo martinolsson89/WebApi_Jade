@@ -10,24 +10,26 @@ GO
 CREATE SCHEMA usr;
 GO
 
---02-create-gstusr-view.sql
---create a view that gives overview of the database content
+-- Create or alter view that gives an overview of the database content
 CREATE OR ALTER VIEW gstusr.vwInfoDb AS
-    SELECT COUNT(*) as NrAttractions FROM supusr.Attractions
+SELECT 
+    (SELECT COUNT(*) FROM supusr.Attractions) AS NrAttractions,
+    (SELECT COUNT(*) FROM supusr.Categories) AS NrCategories;
+
 GO
 
 
 --03-create-supusr-sp.sql
-CREATE OR ALTER PROC supusr.spDeleteAll
-    @Seeded BIT = 1
+CREATE or ALTER PROC supusr.spDeleteAllAttractions
+
+  @Seeded BIT = 1
 
     AS
 
     SET NOCOUNT ON;
 
     -- will delete here
-    DELETE FROM supusr.Attractions;
-
+    DELETE FROM supusr.Attractions
     -- return new data status
     SELECT * FROM gstusr.vwInfoDb;
 
@@ -52,15 +54,15 @@ IF SUSER_ID (N'supusr') IS NOT NULL
 DROP LOGIN supusr;
 
 CREATE LOGIN gstusr WITH PASSWORD=N'pa$$Word1', 
-    DEFAULT_DATABASE=zooefc, DEFAULT_LANGUAGE=us_english, 
+    DEFAULT_DATABASE=jadedb, DEFAULT_LANGUAGE=us_english, 
     CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF;
 
 CREATE LOGIN usr WITH PASSWORD=N'pa$$Word1', 
-DEFAULT_DATABASE=zooefc, DEFAULT_LANGUAGE=us_english, 
+DEFAULT_DATABASE=jadedb, DEFAULT_LANGUAGE=us_english, 
 CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF;
 
 CREATE LOGIN supusr WITH PASSWORD=N'pa$$Word1', 
-DEFAULT_DATABASE=zooefc, DEFAULT_LANGUAGE=us_english, 
+DEFAULT_DATABASE=jadedb, DEFAULT_LANGUAGE=us_english, 
 CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF;
 
 
@@ -75,24 +77,24 @@ CREATE USER supusrUser FROM LOGIN supusr;
 
 --05-create-roles-credentials.sql
 --create roles
-CREATE ROLE zooefcGstUsr;
-CREATE ROLE zooefcUsr;
-CREATE ROLE zooefcSupUsr;
+CREATE ROLE jadedbGstUsr;
+CREATE ROLE jadedbUsr;
+CREATE ROLE jadedbSupUsr;
 
 --assign securables creadentials to the roles
-GRANT SELECT, EXECUTE ON SCHEMA::gstusr to zooefcGstUsr;
-GRANT SELECT ON SCHEMA::supusr to zooefcUsr;
-GRANT SELECT, UPDATE, INSERT, DELETE, EXECUTE ON SCHEMA::supusr to zooefcSupUsr;
+GRANT SELECT, EXECUTE ON SCHEMA::gstusr to jadedbGstUsr;
+GRANT SELECT ON SCHEMA::supusr to jadedbUsr;
+GRANT SELECT, UPDATE, INSERT, DELETE, EXECUTE ON SCHEMA::supusr to jadedbSupUsr;
 
 --finally, add the users to the roles
-ALTER ROLE zooefcGstUsr ADD MEMBER gstusrUser;
+ALTER ROLE jadedbGstUsr ADD MEMBER gstusrUser;
 
-ALTER ROLE zooefcGstUsr ADD MEMBER usrUser;
-ALTER ROLE zooefcUsr ADD MEMBER usrUser;
+ALTER ROLE jadedbGstUsr ADD MEMBER usrUser;
+ALTER ROLE jadedbUsr ADD MEMBER usrUser;
 
-ALTER ROLE zooefcGstUsr ADD MEMBER supusrUser;
-ALTER ROLE zooefcUsr ADD MEMBER supusrUser;
-ALTER ROLE zooefcSupUsr ADD MEMBER supusrUser;
+ALTER ROLE jadedbGstUsr ADD MEMBER supusrUser;
+ALTER ROLE jadedbUsr ADD MEMBER supusrUser;
+ALTER ROLE jadedbSupUsr ADD MEMBER supusrUser;
 GO
 
 
