@@ -7,6 +7,7 @@ using Models.DTO;
 using DbModels;
 using DbContext;
 using Seido.Utilities.SeedGenerator;
+using Microsoft.Identity.Client;
 
 namespace DbRepos;
 
@@ -42,12 +43,14 @@ public class AdminDbRepos
 
         var rnd = new csSeedGenerator();
         var at = rnd.ItemsToList<AttractionDbM>(nrOfItems);
+        var ad = rnd.ItemsToList<AddressDbM>(nrOfItems);
 
         foreach (var item in at){
             item.CategoryDbM = new CategoryDbM(rnd);
         }
 
         _dbContext.Attractions.AddRange(at);
+        _dbContext.Addresses.AddRange(ad);
     
         await _dbContext.SaveChangesAsync();
 

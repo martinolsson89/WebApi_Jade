@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250129144201_miInitial")]
+    [Migration("20250130095917_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -24,6 +24,26 @@ namespace DbContext.Migrations.SqlServerDbContext
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("DbModels.AddressDbM", b =>
+                {
+                    b.Property<Guid>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("Seeded")
+                        .HasColumnType("bit");
+
+                    b.HasKey("AddressId");
+
+                    b.ToTable("Addresses", "supusr");
+                });
 
             modelBuilder.Entity("DbModels.AttractionDbM", b =>
                 {
@@ -90,6 +110,9 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>
                 {
+                    b.Property<int>("NrAddresses")
+                        .HasColumnType("int");
+
                     b.Property<int>("NrAttractions")
                         .HasColumnType("int");
 

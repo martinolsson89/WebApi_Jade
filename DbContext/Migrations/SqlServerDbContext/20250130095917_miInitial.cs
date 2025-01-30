@@ -15,6 +15,21 @@ namespace DbContext.Migrations.SqlServerDbContext
                 name: "supusr");
 
             migrationBuilder.CreateTable(
+                name: "Addresses",
+                schema: "supusr",
+                columns: table => new
+                {
+                    AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    Seeded = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Categories",
                 schema: "supusr",
                 columns: table => new
@@ -76,6 +91,10 @@ namespace DbContext.Migrations.SqlServerDbContext
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Addresses",
+                schema: "supusr");
+
             migrationBuilder.DropTable(
                 name: "Attractions",
                 schema: "supusr");
