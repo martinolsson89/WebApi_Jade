@@ -11,7 +11,6 @@ namespace DbRepos;
 
 public class AdminDbRepos
 {
-    private const string _seedSource = "./app-seeds.json";
     private readonly ILogger<AdminDbRepos> _logger;
     private readonly MainDbContext _dbContext;
 
@@ -38,29 +37,50 @@ public class AdminDbRepos
 
     public async Task<ResponseItemDto<GstUsrInfoAllDto>> SeedAsync(int nrOfItems)
     {
-        await RemoveSeedAsync(true);
+        try 
+        {
+            await RemoveSeedAsync(true);
 
-        var fn = Path.GetFullPath(_seedSource);
-        var rnd = new csSeedGenerator(fn);
+            var rnd = new csSeedGenerator();
 
-        var at = rnd.ItemsToList<AttractionDbM>(nrOfItems);
-        var com = rnd.ItemsToList<CommentDbM>(nrOfItems);
+            // Create categories first
+            var categories = rnd.ItemsToList<CategoryDbM>(Math.Max(3, nrOfItems / 10));
+            _dbContext.Catgeories.AddRange(categories);
+            await _dbContext.SaveChangesAsync();
 
-        foreach (var item in at){
-            item.CategoryDbM = new CategoryDbM(rnd);
+            // Create attractions with references to categories
+            var attractions = rnd.ItemsToList<AttractionDbM>(nrOfItems);
+            foreach (var attraction in attractions)
+            {
+                attraction.Seeded = true;
+                attraction.CategoryDbM = categories[rnd.Next(0, categories.Count)];
+            }
+            _dbContext.Attractions.AddRange(attractions);
+            await _dbContext.SaveChangesAsync();
+
+            // Create comments with references to attractions
+            var comments = new List<CommentDbM>();
+            foreach (var attraction in attractions)
+            {
+                var attractionComments = rnd.ItemsToList<CommentDbM>(rnd.Next(0, 21));
+                foreach (var comment in attractionComments)
+                {
+                    comment.Seeded = true;
+                    comment.AttractionDbM = attraction;
+                    comments.Add(comment);
+                }
+            }
+            _dbContext.Comments.AddRange(comments);
+            await _dbContext.SaveChangesAsync();
+
+            return await InfoAsync();
         }
-
-        foreach (var item in at){
-            item.CommentsDbM = rnd.ItemsToList<CommentDbM>(rnd.Next(0, 21));
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error in SeedAsync: {ex.Message}");
+            _logger.LogError($"Stack trace: {ex.StackTrace}");
+            throw;
         }
-
-        _dbContext.Attractions.AddRange(at);
-        _dbContext.Comments.AddRange(com);
-
-    
-        await _dbContext.SaveChangesAsync();
-
-        return await InfoAsync();
     }
     
     public async Task<ResponseItemDto<GstUsrInfoAllDto>> RemoveSeedAsync(bool seeded)
