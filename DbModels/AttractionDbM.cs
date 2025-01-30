@@ -20,6 +20,10 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
     [Required]
     public CategoryDbM CategoryDbM { get; set; }
 
+    [NotMapped]
+    public override List<IComment> Comments { get => CommentsDbM?.ToList<IComment>(); set => throw new NotImplementedException(); }
+
+    [JsonIgnore]
     public List<CommentDbM> CommentsDbM { get; set; }
 
     public override AttractionDbM Seed(csSeedGenerator rnd)

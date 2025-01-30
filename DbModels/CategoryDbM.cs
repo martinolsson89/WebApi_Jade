@@ -51,7 +51,6 @@ public class CategoryDbM : Category, ISeed<CategoryDbM>
     public override CategoryDbM Seed(csSeedGenerator seedGenerator)
     {
         base.Seed(seedGenerator);
-
         return this;
     }
 

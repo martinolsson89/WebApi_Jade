@@ -14,10 +14,16 @@ GO
 CREATE OR ALTER VIEW gstusr.vwInfoDb AS
 SELECT 
     (SELECT COUNT(*) FROM supusr.Attractions) AS NrAttractions,
-    (SELECT COUNT(*) FROM supusr.Categories) AS NrCategories;
-
+    (SELECT COUNT(*) FROM supusr.Categories) AS NrCategories,
+    (SELECT COUNT(*) FROM supusr.Comments WHERE Seeded = 1) as nrSeededComments, 
+    (SELECT COUNT(*) FROM supusr.Comments WHERE Seeded = 0) as nrUnseededComments
 GO
 
+CREATE OR ALTER VIEW gstusr.vwInfoComments AS
+    SELECT c.Content, COUNT(c.CommentId) as NrComments 
+    FROM supusr.Comments c
+    GROUP BY c.Content WITH ROLLUP;
+GO
 
 --03-create-supusr-sp.sql
 CREATE or ALTER PROC supusr.spDeleteAllAttractions
@@ -29,7 +35,8 @@ CREATE or ALTER PROC supusr.spDeleteAllAttractions
     SET NOCOUNT ON;
 
     -- will delete here
-    DELETE FROM supusr.Attractions
+    DELETE FROM supusr.Comments WHERE Seeded = @Seeded
+    DELETE FROM supusr.Attractions WHERE Seeded = @Seeded
     -- return new data status
     SELECT * FROM gstusr.vwInfoDb;
 

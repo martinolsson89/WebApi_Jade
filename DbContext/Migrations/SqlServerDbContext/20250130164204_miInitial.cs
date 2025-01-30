@@ -66,22 +66,56 @@ namespace DbContext.Migrations.SqlServerDbContext
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                schema: "supusr",
+                columns: table => new
+                {
+                    CommentId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    strSentiment = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    AttractionDbMAttractionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Sentiment = table.Column<int>(type: "int", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    Seeded = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.CommentId);
+                    table.ForeignKey(
+                        name: "FK_Comments_Attractions_AttractionDbMAttractionId",
+                        column: x => x.AttractionDbMAttractionId,
+                        principalSchema: "supusr",
+                        principalTable: "Attractions",
+                        principalColumn: "AttractionId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Attractions_CategoryDbMCategoryId",
                 schema: "supusr",
                 table: "Attractions",
                 column: "CategoryDbMCategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Comments_AttractionDbMAttractionId",
+                schema: "supusr",
+                table: "Comments",
+                column: "AttractionDbMAttractionId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Attractions",
+                name: "Comments",
                 schema: "supusr");
 
             migrationBuilder.DropTable(
                 name: "MusicGroups",
+                schema: "supusr");
+
+            migrationBuilder.DropTable(
+                name: "Attractions",
                 schema: "supusr");
 
             migrationBuilder.DropTable(

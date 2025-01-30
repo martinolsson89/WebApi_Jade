@@ -16,6 +16,7 @@ public class Attraction : IAttraction, ISeed<Attraction>
     {
         AttractionId = Guid.NewGuid();
         Description = seeder.LatinSentence;
+        Seeded = true;
 
         return this;
     }
