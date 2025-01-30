@@ -26,13 +26,15 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     #region C# model of database tables
     public DbSet<MusicGroupDbM> MusicGroups { get; set; }
     public DbSet<AttractionDbM> Attractions  { get; set; }
-
+    public DbSet<CommentDbM> Comments  { get; set; }
     public DbSet<CategoryDbM> Catgeories { get; set; }
 
     #endregion
 
     #region model the Views
     public DbSet<GstUsrInfoDbDto> InfoDbView { get; set; }
+    public DbSet<GstUsrInfoCommentsDto> InfoCommentsView { get; set; }
+
     #endregion
 
     #region constructors

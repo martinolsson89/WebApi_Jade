@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using Microsoft.Data.SqlClient;
-
 using Models.DTO;
 using DbModels;
 using DbContext;
@@ -12,6 +11,7 @@ namespace DbRepos;
 
 public class AdminDbRepos
 {
+    private const string _seedSource = "./app-seeds.json";
     private readonly ILogger<AdminDbRepos> _logger;
     private readonly MainDbContext _dbContext;
 
@@ -27,6 +27,7 @@ public class AdminDbRepos
     {
         var info = new GstUsrInfoAllDto();
         info.Db = await _dbContext.InfoDbView.FirstAsync();
+        info.Comments = await _dbContext.InfoCommentsView.ToListAsync();
 
         return new ResponseItemDto<GstUsrInfoAllDto>()
         {
@@ -40,14 +41,23 @@ public class AdminDbRepos
         //First of all make sure the database is cleared from all seeded data
         await RemoveSeedAsync(true);
 
-        var rnd = new csSeedGenerator();
+        var fn = Path.GetFullPath(_seedSource);
+        var rnd = new csSeedGenerator(fn);
+
         var at = rnd.ItemsToList<AttractionDbM>(nrOfItems);
+        var com = rnd.ItemsToList<CommentDbM>(nrOfItems);
 
         foreach (var item in at){
             item.CategoryDbM = new CategoryDbM(rnd);
         }
 
+        foreach (var item in at){
+            item.CommentsDbM = rnd.ItemsToList<CommentDbM>(rnd.Next(0, 21));
+        }
+
         _dbContext.Attractions.AddRange(at);
+        _dbContext.Comments.AddRange(com);
+
     
         await _dbContext.SaveChangesAsync();
 

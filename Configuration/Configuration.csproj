@@ -7,20 +7,19 @@
     <UserSecretsId>126a42a7-3b4f-429f-997d-1849782efbb0</UserSecretsId>
   </PropertyGroup>
 
-  <PropertyGroup>
+  <!-- Martin -->
+  <!-- <PropertyGroup>
     <UserSecretPath>C:/Users/marti/AppData/Roaming/Microsoft/UserSecrets</UserSecretPath>
     <AzureScriptDirectory>C:/Users/marti/Development/Projects/Team_Jade/azuregitbash</AzureScriptDirectory>
     <AzureProjectSettings>C:/Users/marti/Development/Projects/Team_Jade/azuregitbash/az-projects/newton-jade</AzureProjectSettings>
-  </PropertyGroup>
+  </PropertyGroup> -->
 
-  <!-- Manu
+  <!-- Manu -->
   <PropertyGroup>
     <UserSecretPath>C:\Users\Manu\AppData\Roaming\Microsoft\UserSecrets</UserSecretPath>
     <AzureScriptDirectory>D:\Newton\Development\Projects\MOL\clodsec\azuregitbash</AzureScriptDirectory>
     <AzureProjectSettings>D:\Newton\Development\Projects\MOL\clodsec\azuregitbash\az-projects\newton-jade</AzureProjectSettings>
-  </PropertyGroup> -->
-
-
+  </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />

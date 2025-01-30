@@ -6,4 +6,5 @@ public interface IAttraction
     public string Description { get; set; }
 
     public ICategory Category { get; set; }
+    public List<IComment> Comments { get; set;}
 }
