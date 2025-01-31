@@ -28,7 +28,8 @@ public class AttractionDbRepos
             .Where(i => i.AttractionId == id);
 
             if (!flat){
-                query = query.Include(a => a.CategoryDbM);   
+                query = query.Include(a => a.CategoryDbM)
+                .Include(x => x.CommentsDbM);   
             }
             var resp =  await query.FirstOrDefaultAsync<IAttraction>();
             return new ResponseItemDto<IAttraction>()
@@ -48,7 +49,10 @@ public class AttractionDbRepos
         IQueryable<AttractionDbM> query = _dbContext.Attractions.AsNoTracking();
 
          if (!flat){
-             query = query.Include(a => a.CategoryDbM);   
+             query = query
+             .Include(a => a.CategoryDbM)
+             .Include(x => x.CommentsDbM);
+              
             }
 
         return new ResponsePageDto<IAttraction>
