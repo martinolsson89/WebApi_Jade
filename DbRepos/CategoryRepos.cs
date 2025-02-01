@@ -138,45 +138,62 @@ public class CategoryDbRepos
     }
 
     public async Task<ResponseItemDto<ICategory>> UpdateItemAsync(CategoryCuDto itemDto)
+{
+    var item = await _dbContext.Catgeories
+        .Include(c => c.AttractionsDbM)  
+        .FirstOrDefaultAsync(a => a.CategoryId == itemDto.CategoryId);
+
+    if (item == null) 
+        throw new ArgumentException($"Category {itemDto.CategoryId} does not exist in the database.");
+
+    item.UpdateFromDTO(itemDto);
+
+  
+    await navProp_itemDto_to_ItemDbM(itemDto, item);
+
+    
+    await _dbContext.SaveChangesAsync();
+
+    return await ReadItemAsync(item.CategoryId, true);
+}
+
+
+
+
+   
+
+private async Task navProp_itemDto_to_ItemDbM(CategoryCuDto itemDtoSrc, CategoryDbM itemDst)
+{
+    if (itemDtoSrc.AttractionsId == null) return;
+
+    
+    var attractions = await _dbContext.Attractions
+        .Where(a => itemDtoSrc.AttractionsId.Contains(a.AttractionId))
+        .ToListAsync();
+
+  
+    foreach (var attraction in attractions)
     {
-        var query = _dbContext.Catgeories.Where(a => a.CategoryId != itemDto.CategoryId);
-
-        var item = await query.FirstOrDefaultAsync<CategoryDbM>();
-
-        if (item == null) throw new ArgumentException($"Item {itemDto.CategoryId} is not existing");
-
-        item.UpdateFromDTO(itemDto);
-
-        // updatera navigation properties här
-        await navProp_itemDto_to_ItemDbM(itemDto,item);
-
-
-        _dbContext.Update(item);
-
-        await _dbContext.SaveChangesAsync();
-
-        return await ReadItemAsync(item.CategoryId, true);
-    }
-
-
-    private async Task navProp_itemDto_to_ItemDbM(CategoryCuDto itemDtoSrc, CategoryDbM itemDst)
-    {
-        List<AttractionDbM> Attractions = new(); // Tom lista med Attractiondmb
-        foreach(var id in itemDtoSrc.AttractionsId) // För varje id i dton vi skickar in loopa
+        if (attraction.CategoryDbM != null)
         {
-
-            if(itemDtoSrc.AttractionsId != null) // om dessa inte är null
-            {
-                var p = await _dbContext.Attractions.FirstOrDefaultAsync(i => i.AttractionId == id); // Hämta matchande id för det nuvarande loopade
-                if (p == null)
-                throw new ArgumentException($"Item id {id} is not existing");
-
-                Attractions.Add(p); // lÄGG TILL DEN I LISTAN
-            }
-
-            itemDst.AttractionsDbM = Attractions; // Stoppa in allt i dbm modellen, så man för över från dto till dbm i helhet.
-
+            attraction.CategoryDbM.AttractionsDbM.Remove(attraction);  
         }
+
+        attraction.CategoryDbM = itemDst;  
     }
+
+    
+    itemDst.AttractionsDbM = attractions;
+
+    
+    _dbContext.Entry(itemDst).State = EntityState.Modified;
+}
+
+
+
+
+
+
+
      
 }
