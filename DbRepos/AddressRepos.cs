@@ -27,9 +27,13 @@ public class AddressDbRepos
         IQueryable<AddressDbM> query = _dbContext.Addresses.AsNoTracking()
             .Where(i => i.AddressId == id);
 
-            // if (!flat){
-            //     query = query.Include(a => a.CategoryDbM);   
-            // }
+            if (!flat)
+            {
+                query = _dbContext.Addresses.AsNoTracking()
+                    .Include(a => a.AttractionDbM)
+                    .Where(a => a.AddressId == id);  
+            }
+
             var resp =  await query.FirstOrDefaultAsync<IAddress>();
             return new ResponseItemDto<IAddress>()
             {
@@ -44,9 +48,11 @@ public class AddressDbRepos
 
         IQueryable<AddressDbM> query = _dbContext.Addresses.AsNoTracking();
 
-        //  if (!flat){
-        //      query = query.Include(a => a.CategoryDbM);   
-        //     }
+         if (!flat)
+         {
+            query = _dbContext.Addresses.AsNoTracking()
+                .Include(a => a.AttractionDbM);   
+        }
 
         return new ResponsePageDto<IAddress>
         {

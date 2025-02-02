@@ -45,12 +45,15 @@ public class AdminDbRepos
         var at = rnd.ItemsToList<AttractionDbM>(nrOfItems);
         var ad = rnd.ItemsToList<AddressDbM>(nrOfItems);
 
+        var i = 0;
+        
         foreach (var item in at){
             item.CategoryDbM = new CategoryDbM(rnd);
+            item.AddressDbM = ad[i];
+            i++;
         }
 
         _dbContext.Attractions.AddRange(at);
-        _dbContext.Addresses.AddRange(ad);
     
         await _dbContext.SaveChangesAsync();
 

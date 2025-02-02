@@ -8,6 +8,7 @@ using Models;
 using DbModels;
 using DbContext;
 using Microsoft.Identity.Client;
+using System.IO.Compression;
 
 namespace DbRepos;
 
@@ -27,9 +28,14 @@ public class AttractionDbRepos
         IQueryable<AttractionDbM> query = _dbContext.Attractions.AsNoTracking()
             .Where(i => i.AttractionId == id);
 
-            if (!flat){
-                query = query.Include(a => a.CategoryDbM);   
+            if (!flat)
+            {
+                query = _dbContext.Attractions.AsNoTracking()
+                    .Include(a => a.AddressDbM)
+                    .Include(a => a.CategoryDbM)
+                    .Where(a => a.AttractionId == id); 
             }
+
             var resp =  await query.FirstOrDefaultAsync<IAttraction>();
             return new ResponseItemDto<IAttraction>()
             {
@@ -47,9 +53,12 @@ public class AttractionDbRepos
 
         IQueryable<AttractionDbM> query = _dbContext.Attractions.AsNoTracking();
 
-         if (!flat){
-             query = query.Include(a => a.CategoryDbM);   
-            }
+         if (!flat)
+         {
+            query = _dbContext.Attractions.AsNoTracking()
+            .Include(a => a.AddressDbM)
+            .Include(a => a.CategoryDbM); 
+         }
 
         return new ResponsePageDto<IAttraction>
         {

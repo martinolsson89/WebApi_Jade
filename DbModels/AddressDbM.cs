@@ -14,17 +14,16 @@ public class AddressDbM : Address, ISeed<AddressDbM>
     [Key]
     public override Guid AddressId { get; set; }
 
-    public AddressDbM(){ }
-    
-
-    public AddressDbM Seed(csSeedGenerator rnd)
+    public override AddressDbM Seed (csSeedGenerator rnd)
     {
-        this.AddressId = Guid.NewGuid();
-        this.Country = rnd.Country;
-        this.City = rnd.City(Country);
-
-
+        base.Seed (rnd);
         return this;
     }
+
+    [NotMapped]
+    public override List<IAttraction> Attractions{ get => AttractionDbM?.ToList<IAttraction>(); set => throw new NotImplementedException(); }
+
+    [JsonIgnore]
+    public List<AttractionDbM> AttractionDbM { get; set; }
     
 }

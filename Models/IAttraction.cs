@@ -6,4 +6,7 @@ public interface IAttraction
     public string Description { get; set; }
 
     public ICategory Category { get; set; }
+
+    //Navigation properties
+    public IAddress Address{ get; set; }
 }

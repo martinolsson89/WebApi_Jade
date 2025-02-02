@@ -9,4 +9,6 @@ public class Attraction : IAttraction
     public bool Seeded { get; set; }
 
     public virtual ICategory Category { get; set; }
+
+    public virtual IAddress Address{ get; set; }
 }

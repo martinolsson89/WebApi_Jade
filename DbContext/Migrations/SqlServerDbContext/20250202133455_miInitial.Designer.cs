@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250131130935_miInitial")]
+    [Migration("20250202133455_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -51,6 +51,9 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("AddressDbMAddressId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid>("CategoryDbMCategoryId")
                         .HasColumnType("uniqueidentifier");
 
@@ -61,6 +64,8 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .HasColumnType("bit");
 
                     b.HasKey("AttractionId");
+
+                    b.HasIndex("AddressDbMAddressId");
 
                     b.HasIndex("CategoryDbMCategoryId");
 
@@ -126,13 +131,26 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             modelBuilder.Entity("DbModels.AttractionDbM", b =>
                 {
+                    b.HasOne("DbModels.AddressDbM", "AddressDbM")
+                        .WithMany("AttractionDbM")
+                        .HasForeignKey("AddressDbMAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DbModels.CategoryDbM", "CategoryDbM")
                         .WithMany("AttractionsDbM")
                         .HasForeignKey("CategoryDbMCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("AddressDbM");
+
                     b.Navigation("CategoryDbM");
+                });
+
+            modelBuilder.Entity("DbModels.AddressDbM", b =>
+                {
+                    b.Navigation("AttractionDbM");
                 });
 
             modelBuilder.Entity("DbModels.CategoryDbM", b =>
