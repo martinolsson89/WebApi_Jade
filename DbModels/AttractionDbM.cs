@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
-
 using Models;
 using Models.DTO;
 using Seido.Utilities.SeedGenerator;
@@ -20,24 +19,16 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
     [JsonIgnore]
     [Required]
     public CategoryDbM CategoryDbM { get; set; }
-    public AttractionDbM(AttractionCuDto org)
-    {
-        AttractionId = new Guid();
-        UpdateFromDTO(org);
-    }
 
     [NotMapped]
-    public override IAddress Address { get => AddressDbM; set => throw new NotImplementedException(); }
+    public override List<IComment> Comments { get => CommentsDbM?.ToList<IComment>(); set => throw new NotImplementedException(); }
 
     [JsonIgnore]
-    [Required]
-    public AddressDbM AddressDbM { get; set;}
+    public List<CommentDbM> CommentsDbM { get; set; }
 
-    public AttractionDbM Seed(csSeedGenerator rnd)
+    public override AttractionDbM Seed(csSeedGenerator rnd)
     {
-        this.AttractionId = Guid.NewGuid();
-        this.Description = rnd.LatinSentence;
-
+        base.Seed (rnd);
         return this;
     }
 
@@ -45,8 +36,17 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
 
     public AttractionDbM UpdateFromDTO(AttractionCuDto org)
     {
+        if (org == null) return null;
+
         Description = org.Description;
         
         return this;
+    }
+
+    public AttractionDbM(){ }
+    public AttractionDbM(AttractionCuDto org)
+    {
+        AttractionId = new Guid();
+        UpdateFromDTO(org);
     }
 }

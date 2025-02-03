@@ -89,6 +89,34 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.ToTable("Categories", "supusr");
                 });
 
+            modelBuilder.Entity("DbModels.CommentDbM", b =>
+                {
+                    b.Property<Guid>("CommentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AttractionDbMAttractionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("Seeded")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Sentiment")
+                        .HasColumnType("int");
+
+                    b.Property<string>("strSentiment")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("CommentId");
+
+                    b.HasIndex("AttractionDbMAttractionId");
+
+                    b.ToTable("Comments", "supusr");
+                });
+
             modelBuilder.Entity("DbModels.MusicGroupDbM", b =>
                 {
                     b.Property<Guid>("Id")
@@ -110,6 +138,19 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.ToTable("MusicGroups", "supusr");
                 });
 
+            modelBuilder.Entity("Models.DTO.GstUsrInfoCommentsDto", b =>
+                {
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("NrComments")
+                        .HasColumnType("int");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("vwInfoComments", "gstusr");
+                });
+
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>
                 {
                     b.Property<int>("NrAddresses")
@@ -119,6 +160,12 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .HasColumnType("int");
 
                     b.Property<int>("NrCategories")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NrSeededComments")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NrUnseededComments")
                         .HasColumnType("int");
 
                     b.ToTable((string)null);

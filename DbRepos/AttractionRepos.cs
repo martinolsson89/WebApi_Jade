@@ -33,6 +33,7 @@ public class AttractionDbRepos
                 query = _dbContext.Attractions.AsNoTracking()
                     .Include(a => a.AddressDbM)
                     .Include(a => a.CategoryDbM)
+                .Include(x => x.CommentsDbM)
                     .Where(a => a.AttractionId == id); 
             }
 

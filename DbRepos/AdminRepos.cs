@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using Microsoft.Data.SqlClient;
-
 using Models.DTO;
 using DbModels;
 using DbContext;
@@ -28,6 +27,7 @@ public class AdminDbRepos
     {
         var info = new GstUsrInfoAllDto();
         info.Db = await _dbContext.InfoDbView.FirstAsync();
+        info.Comments = await _dbContext.InfoCommentsView.ToListAsync();
 
         return new ResponseItemDto<GstUsrInfoAllDto>()
         {
@@ -38,8 +38,9 @@ public class AdminDbRepos
 
     public async Task<ResponseItemDto<GstUsrInfoAllDto>> SeedAsync(int nrOfItems)
     {
-        //First of all make sure the database is cleared from all seeded data
-        await RemoveSeedAsync(true);
+        try 
+        {
+            await RemoveSeedAsync(true);
 
         var rnd = new csSeedGenerator();
         var at = rnd.ItemsToList<AttractionDbM>(nrOfItems);
@@ -57,10 +58,14 @@ public class AdminDbRepos
     
         await _dbContext.SaveChangesAsync();
 
-        //Here the database models will be seeded using the seeder
-
-        //Overview of the database
-        return await InfoAsync();
+            return await InfoAsync();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error in SeedAsync: {ex.Message}");
+            _logger.LogError($"Stack trace: {ex.StackTrace}");
+            throw;
+        }
     }
     
     public async Task<ResponseItemDto<GstUsrInfoAllDto>> RemoveSeedAsync(bool seeded)

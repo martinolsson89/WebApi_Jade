@@ -26,6 +26,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     #region C# model of database tables
     public DbSet<MusicGroupDbM> MusicGroups { get; set; }
     public DbSet<AttractionDbM> Attractions  { get; set; }
+    public DbSet<CommentDbM> Comments  { get; set; }
     public DbSet<CategoryDbM> Catgeories { get; set; }
     public DbSet<AddressDbM> Addresses { get; set; }
 
@@ -33,6 +34,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     #region model the Views
     public DbSet<GstUsrInfoDbDto> InfoDbView { get; set; }
+    public DbSet<GstUsrInfoCommentsDto> InfoCommentsView { get; set; }
+
     #endregion
 
     #region constructors
@@ -50,6 +53,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
         #region model the Views
         modelBuilder.Entity<GstUsrInfoDbDto>().ToView("vwInfoDb", "gstusr").HasNoKey();
+        modelBuilder.Entity<GstUsrInfoCommentsDto>().ToView("vwInfoComments", "gstusr").HasNoKey();        
         #endregion
 
         #region override modelbuilder

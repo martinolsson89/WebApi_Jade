@@ -19,6 +19,9 @@ public class AttractionCuDto
 
     public Guid CategoryId { get; set; }
 
+    public virtual List<Guid> CommentsId { get; set; } = null;
+
+
     public AttractionCuDto() { }
     public AttractionCuDto(IAttraction org)
     {
@@ -26,5 +29,6 @@ public class AttractionCuDto
         Description = org.Description;
 
         CategoryId = org.Category.CategoryId;
+        CommentsId = org.Comments?.Select(i => i.CommentId).ToList();
     }
 }

@@ -37,8 +37,7 @@ builder.Services.AddScoped<IMusicGroupService, MusicGroupServiceDb>();
 builder.Services.AddScoped<IAttractionService, AttractionServiceDb>();
 builder.Services.AddScoped<ICategoryService, CategoryServiceDb>();
 builder.Services.AddScoped<IAddressService, AddressServiceDb>();
-
-
+builder.Services.AddScoped<CommentDbRepos>();
 
 var app = builder.Build();
 
