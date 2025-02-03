@@ -29,6 +29,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public DbSet<CommentDbM> Comments  { get; set; }
     public DbSet<CategoryDbM> Catgeories { get; set; }
     public DbSet<AddressDbM> Addresses { get; set; }
+    public DbSet<UserDbM> Users { get; set; }    
+
 
     #endregion
 

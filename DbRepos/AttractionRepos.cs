@@ -58,7 +58,8 @@ public class AttractionDbRepos
          {
             query = _dbContext.Attractions.AsNoTracking()
             .Include(a => a.AddressDbM)
-            .Include(a => a.CategoryDbM); 
+            .Include(a => a.CategoryDbM)
+            .Include(a => a.CommentsDbM); 
          }
 
         return new ResponsePageDto<IAttraction>
@@ -149,9 +150,13 @@ public class AttractionDbRepos
 
     public async Task<ResponseItemDto<IAttraction>> UpdateItemAsync(AttractionCuDto itemDto)
     {
-        var query = _dbContext.Attractions.Where(a => a.AttractionId != itemDto.AttractionId);
-
-        var item = await query.FirstOrDefaultAsync<AttractionDbM>();
+        var query1 = _dbContext.Attractions
+            .Where(i => i.AttractionId == itemDto.AttractionId);
+        var item = await query1
+            .Include(i => i.CommentsDbM)
+            .Include(i => i.AddressDbM)
+            .Include(i => i.CategoryDbM)
+            .FirstOrDefaultAsync<AttractionDbM>();
 
         if (item == null) throw new ArgumentException($"Item {itemDto.AttractionId} is not existing");
 
@@ -174,5 +179,5 @@ public class AttractionDbRepos
 
         item.CategoryDbM = updatedCat;
     }
-     
+
 }
