@@ -138,6 +138,32 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.ToTable("MusicGroups", "supusr");
                 });
 
+            modelBuilder.Entity("DbModels.UserDbM", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Users", "dbo");
+                });
+
             modelBuilder.Entity("Models.DTO.GstUsrInfoCommentsDto", b =>
                 {
                     b.Property<string>("Content")
