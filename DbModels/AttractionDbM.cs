@@ -16,23 +16,30 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
     [NotMapped] // Not mapped betyder strunta i relationen
     public override ICategory Category { get => CategoryDbM; set => throw new NotImplementedException(); }
 
+    [NotMapped]
+    public override List<IComment> Comments { get => CommentsDbM?.ToList<IComment>(); set => throw new NotImplementedException(); }
+
+    [NotMapped]
+    public override IAddress Address { get => AddressDbM; set => throw new NotImplementedException(); }
+
     [JsonIgnore]
     [Required]
     public CategoryDbM CategoryDbM { get; set; }
 
-    [NotMapped]
-    public override List<IComment> Comments { get => CommentsDbM?.ToList<IComment>(); set => throw new NotImplementedException(); }
+    [JsonIgnore]
+    [Required]
+    public AddressDbM AddressDbM { get; set;}
 
     [JsonIgnore]
     public List<CommentDbM> CommentsDbM { get; set; }
+
+    public AttractionDbM(){ }
 
     public override AttractionDbM Seed(csSeedGenerator rnd)
     {
         base.Seed (rnd);
         return this;
     }
-
-    public AttractionDbM(){ }
 
     public AttractionDbM UpdateFromDTO(AttractionCuDto org)
     {
@@ -43,7 +50,6 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
         return this;
     }
 
-    public AttractionDbM(){ }
     public AttractionDbM(AttractionCuDto org)
     {
         AttractionId = new Guid();

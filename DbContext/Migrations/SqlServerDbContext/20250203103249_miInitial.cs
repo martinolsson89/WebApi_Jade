@@ -144,11 +144,11 @@ namespace DbContext.Migrations.SqlServerDbContext
                 schema: "supusr");
 
             migrationBuilder.DropTable(
-<<<<<<<< HEAD:DbContext/Migrations/SqlServerDbContext/20250202133455_miInitial.cs
-                name: "Addresses",
-========
                 name: "Attractions",
->>>>>>>> Manu-Comments:DbContext/Migrations/SqlServerDbContext/20250131131953_miInitial.cs
+                schema: "supusr");
+
+            migrationBuilder.DropTable(
+                name: "Addresses",
                 schema: "supusr");
 
             migrationBuilder.DropTable(

@@ -192,9 +192,25 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Navigation("CategoryDbM");
                 });
 
+            modelBuilder.Entity("DbModels.CommentDbM", b =>
+                {
+                    b.HasOne("DbModels.AttractionDbM", "AttractionDbM")
+                        .WithMany("CommentsDbM")
+                        .HasForeignKey("AttractionDbMAttractionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AttractionDbM");
+                });
+
             modelBuilder.Entity("DbModels.AddressDbM", b =>
                 {
                     b.Navigation("AttractionDbM");
+                });
+
+            modelBuilder.Entity("DbModels.AttractionDbM", b =>
+                {
+                    b.Navigation("CommentsDbM");
                 });
 
             modelBuilder.Entity("DbModels.CategoryDbM", b =>

@@ -12,11 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-<<<<<<<< HEAD:DbContext/Migrations/SqlServerDbContext/20250202133455_miInitial.Designer.cs
-    [Migration("20250202133455_miInitial")]
-========
-    [Migration("20250131131953_miInitial")]
->>>>>>>> Manu-Comments:DbContext/Migrations/SqlServerDbContext/20250131131953_miInitial.Designer.cs
+    [Migration("20250203103249_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -199,13 +195,6 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Navigation("CategoryDbM");
                 });
 
-<<<<<<<< HEAD:DbContext/Migrations/SqlServerDbContext/20250202133455_miInitial.Designer.cs
-            modelBuilder.Entity("DbModels.AddressDbM", b =>
-                {
-                    b.Navigation("AttractionDbM");
-                });
-
-========
             modelBuilder.Entity("DbModels.CommentDbM", b =>
                 {
                     b.HasOne("DbModels.AttractionDbM", "AttractionDbM")
@@ -217,12 +206,16 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Navigation("AttractionDbM");
                 });
 
+            modelBuilder.Entity("DbModels.AddressDbM", b =>
+                {
+                    b.Navigation("AttractionDbM");
+                });
+
             modelBuilder.Entity("DbModels.AttractionDbM", b =>
                 {
                     b.Navigation("CommentsDbM");
                 });
 
->>>>>>>> Manu-Comments:DbContext/Migrations/SqlServerDbContext/20250131131953_miInitial.Designer.cs
             modelBuilder.Entity("DbModels.CategoryDbM", b =>
                 {
                     b.Navigation("AttractionsDbM");
