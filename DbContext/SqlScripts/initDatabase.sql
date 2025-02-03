@@ -14,7 +14,8 @@ GO
 CREATE OR ALTER VIEW gstusr.vwInfoDb AS
 SELECT 
     (SELECT COUNT(*) FROM supusr.Attractions) AS NrAttractions,
-    (SELECT COUNT(*) FROM supusr.Categories) AS NrCategories;
+    (SELECT COUNT(*) FROM supusr.Categories) AS NrCategories,
+    (SELECT COUNT(*) FROM supusr.Addresses) AS NrAddresses;
 
 GO
 
@@ -30,6 +31,7 @@ CREATE or ALTER PROC supusr.spDeleteAllAttractions
 
     -- will delete here
     DELETE FROM supusr.Attractions
+    DELETE FROM supusr.Addresses
     -- return new data status
     SELECT * FROM gstusr.vwInfoDb;
 

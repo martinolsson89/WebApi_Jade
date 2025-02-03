@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250129144201_miInitial")]
+    [Migration("20250202133455_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -25,10 +25,33 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("DbModels.AddressDbM", b =>
+                {
+                    b.Property<Guid>("AddressId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("Seeded")
+                        .HasColumnType("bit");
+
+                    b.HasKey("AddressId");
+
+                    b.ToTable("Addresses", "supusr");
+                });
+
             modelBuilder.Entity("DbModels.AttractionDbM", b =>
                 {
                     b.Property<Guid>("AttractionId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AddressDbMAddressId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CategoryDbMCategoryId")
@@ -41,6 +64,8 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .HasColumnType("bit");
 
                     b.HasKey("AttractionId");
+
+                    b.HasIndex("AddressDbMAddressId");
 
                     b.HasIndex("CategoryDbMCategoryId");
 
@@ -90,6 +115,9 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>
                 {
+                    b.Property<int>("NrAddresses")
+                        .HasColumnType("int");
+
                     b.Property<int>("NrAttractions")
                         .HasColumnType("int");
 
@@ -103,13 +131,26 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             modelBuilder.Entity("DbModels.AttractionDbM", b =>
                 {
+                    b.HasOne("DbModels.AddressDbM", "AddressDbM")
+                        .WithMany("AttractionDbM")
+                        .HasForeignKey("AddressDbMAddressId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("DbModels.CategoryDbM", "CategoryDbM")
                         .WithMany("AttractionsDbM")
                         .HasForeignKey("CategoryDbMCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("AddressDbM");
+
                     b.Navigation("CategoryDbM");
+                });
+
+            modelBuilder.Entity("DbModels.AddressDbM", b =>
+                {
+                    b.Navigation("AttractionDbM");
                 });
 
             modelBuilder.Entity("DbModels.CategoryDbM", b =>

@@ -15,6 +15,21 @@ namespace DbContext.Migrations.SqlServerDbContext
                 name: "supusr");
 
             migrationBuilder.CreateTable(
+                name: "Addresses",
+                schema: "supusr",
+                columns: table => new
+                {
+                    AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    City = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    Country = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    Seeded = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.AddressId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Categories",
                 schema: "supusr",
                 columns: table => new
@@ -51,12 +66,20 @@ namespace DbContext.Migrations.SqlServerDbContext
                 {
                     AttractionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CategoryDbMCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AddressDbMAddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     Seeded = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Attractions", x => x.AttractionId);
+                    table.ForeignKey(
+                        name: "FK_Attractions_Addresses_AddressDbMAddressId",
+                        column: x => x.AddressDbMAddressId,
+                        principalSchema: "supusr",
+                        principalTable: "Addresses",
+                        principalColumn: "AddressId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Attractions_Categories_CategoryDbMCategoryId",
                         column: x => x.CategoryDbMCategoryId,
@@ -65,6 +88,12 @@ namespace DbContext.Migrations.SqlServerDbContext
                         principalColumn: "CategoryId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Attractions_AddressDbMAddressId",
+                schema: "supusr",
+                table: "Attractions",
+                column: "AddressDbMAddressId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Attractions_CategoryDbMCategoryId",
@@ -82,6 +111,10 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             migrationBuilder.DropTable(
                 name: "MusicGroups",
+                schema: "supusr");
+
+            migrationBuilder.DropTable(
+                name: "Addresses",
                 schema: "supusr");
 
             migrationBuilder.DropTable(

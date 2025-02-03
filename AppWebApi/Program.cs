@@ -31,10 +31,12 @@ builder.Services.AddScoped<AdminDbRepos>();
 builder.Services.AddScoped<MusicGroupDbRepos>();
 builder.Services.AddScoped<AttractionDbRepos>();
 builder.Services.AddScoped<CategoryDbRepos>();
+builder.Services.AddScoped<AddressDbRepos>();
 builder.Services.AddScoped<IAdminService, AdminServiceDb>();
 builder.Services.AddScoped<IMusicGroupService, MusicGroupServiceDb>();
 builder.Services.AddScoped<IAttractionService, AttractionServiceDb>();
 builder.Services.AddScoped<ICategoryService, CategoryServiceDb>();
+builder.Services.AddScoped<IAddressService, AddressServiceDb>();
 
 
 

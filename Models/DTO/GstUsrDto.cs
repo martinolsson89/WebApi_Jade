@@ -7,6 +7,7 @@ public class GstUsrInfoDbDto
 {
     public int NrAttractions {get;  set;}
     public int NrCategories {get; set;}
+    public int NrAddresses {get; set;}
 } 
 
 

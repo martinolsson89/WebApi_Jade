@@ -26,8 +26,12 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
         UpdateFromDTO(org);
     }
 
-    public AttractionDbM(){ }
-    
+    [NotMapped]
+    public override IAddress Address { get => AddressDbM; set => throw new NotImplementedException(); }
+
+    [JsonIgnore]
+    [Required]
+    public AddressDbM AddressDbM { get; set;}
 
     public AttractionDbM Seed(csSeedGenerator rnd)
     {
@@ -36,6 +40,8 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
 
         return this;
     }
+
+    public AttractionDbM(){ }
 
     public AttractionDbM UpdateFromDTO(AttractionCuDto org)
     {
