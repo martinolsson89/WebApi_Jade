@@ -138,17 +138,21 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.ToTable("MusicGroups", "supusr");
                 });
 
-            modelBuilder.Entity("Models.DTO.GstUsrInfoCommentsDto", b =>
+            modelBuilder.Entity("DbModels.RoleDbM", b =>
                 {
-                    b.Property<string>("Content")
+                    b.Property<Guid>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Rolekind")
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int>("NrComments")
+                    b.Property<int>("Roles")
                         .HasColumnType("int");
 
-                    b.ToTable((string)null);
+                    b.HasKey("RoleId");
 
-                    b.ToView("vwInfoComments", "gstusr");
+                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>

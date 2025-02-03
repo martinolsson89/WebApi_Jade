@@ -19,7 +19,7 @@ public static class DbContextExtensions
             var configuration = serviceProvider.GetRequiredService<IConfiguration>(); 
             var databaseConnections = serviceProvider.GetRequiredService<DatabaseConnections>(); 
             
-            var userRole = configuration["DatabaseConnections:DefaultDataUser"];
+            var userRole = configuration["DatabaseConnections:DefaultDataUser"]; // sysadmin!!!
             var conn = databaseConnections.GetDataConnectionDetails(userRole);
             if (databaseConnections.SetupInfo.DataConnectionServer == DatabaseServer.SQLServer)
             {
@@ -46,4 +46,6 @@ public static class DbContextExtensions
         
         return serviceCollection;
     }
+
+    
 }

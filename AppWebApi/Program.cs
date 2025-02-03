@@ -31,15 +31,24 @@ builder.Services.AddScoped<AdminDbRepos>();
 builder.Services.AddScoped<MusicGroupDbRepos>();
 builder.Services.AddScoped<AttractionDbRepos>();
 builder.Services.AddScoped<CategoryDbRepos>();
-builder.Services.AddScoped<AddressDbRepos>();
+builder.Services.AddScoped<RoleDbRepos>();
 builder.Services.AddScoped<IAdminService, AdminServiceDb>();
 builder.Services.AddScoped<IMusicGroupService, MusicGroupServiceDb>();
 builder.Services.AddScoped<IAttractionService, AttractionServiceDb>();
 builder.Services.AddScoped<ICategoryService, CategoryServiceDb>();
-builder.Services.AddScoped<IAddressService, AddressServiceDb>();
-builder.Services.AddScoped<CommentDbRepos>();
+builder.Services.AddScoped<IRoleService, RoleServiceDb>();
+
+
+
 
 var app = builder.Build();
+
+// Seeda rollerna
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<MainDbContext>(); // hämta skapade servicen!!
+    await dbContext.SeedRolesAsync();
+}
 
 //Configure the HTTP request pipeline
 app.UseSwagger();
@@ -58,3 +67,6 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+

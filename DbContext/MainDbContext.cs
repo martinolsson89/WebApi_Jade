@@ -21,6 +21,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     IConfiguration _configuration;
     DatabaseConnections _databaseConnections;
 
+   
+
     public string dbConnection  => _databaseConnections.GetDbConnection(this.Database.GetConnectionString());
 
     #region C# model of database tables
@@ -29,6 +31,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public DbSet<CommentDbM> Comments  { get; set; }
     public DbSet<CategoryDbM> Catgeories { get; set; }
     public DbSet<AddressDbM> Addresses { get; set; }
+
+    public DbSet<RoleDbM> Roles { get; set; }
 
     #endregion
 
@@ -44,6 +48,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     { 
         _databaseConnections = databaseConnections;
         _configuration = configuration;
+        
     }
     #endregion
 
@@ -54,6 +59,12 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
         #region model the Views
         modelBuilder.Entity<GstUsrInfoDbDto>().ToView("vwInfoDb", "gstusr").HasNoKey();
         modelBuilder.Entity<GstUsrInfoCommentsDto>().ToView("vwInfoComments", "gstusr").HasNoKey();        
+        #endregion
+
+        #region Seed the Roles
+
+        
+
         #endregion
 
         #region override modelbuilder
@@ -226,6 +237,43 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
         return optionsBuilder;
     }
     #endregion
+
+   public async Task SeedRolesAsync()
+    {
+        if (!Roles.Any())
+        {
+            Roles.AddRange(new List<RoleDbM>
+            {
+                new RoleDbM { RoleId = Guid.NewGuid(), Roles = enumRoles.gstusr},
+                new RoleDbM { RoleId = Guid.NewGuid(), Roles = enumRoles.usr},
+                new RoleDbM { RoleId = Guid.NewGuid(), Roles = enumRoles.supusr},
+                new RoleDbM { RoleId = Guid.NewGuid(), Roles = enumRoles.sysadmin}
+            });
+
+            await SaveChangesAsync();
+        }
+    }
+
+    public string GetDbStringsForRole(enumRoles userRole, string db = "jadedb.docker")
+    {
+    
+    var connectionKey = $"SQLServer-{db.Replace(".", "-")}-{userRole.ToString().ToLower()}";
+
+    
+    var connectionString = _configuration.GetConnectionString(connectionKey);
+
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        throw new KeyNotFoundException($"Connection string for key '{connectionKey}' was not found in appsettings.json.");
+    }
+
+    Console.WriteLine($"Fetched Role String: {connectionString}");
+
+    return connectionString;
+    }
+
 }
+
+ 
 
 
