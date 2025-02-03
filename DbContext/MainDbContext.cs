@@ -27,6 +27,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public DbSet<MusicGroupDbM> MusicGroups { get; set; }
     public DbSet<AttractionDbM> Attractions  { get; set; }
 
+    public DbSet<Role> Roles { get; set; }
+
     public DbSet<CategoryDbM> Catgeories { get; set; }
 
     #endregion
