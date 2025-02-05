@@ -17,9 +17,9 @@ namespace AppWebApi.Controllers
         readonly IAdminService _adminService;
         readonly ILogger<GuestController> _logger;
 
-        readonly LoginServiceDb _loginService;
+        readonly ILoginService _loginService;
 
-        public GuestController(IAdminService adminService, ILogger<GuestController> logger, LoginServiceDb loginService)
+        public GuestController(IAdminService adminService, ILogger<GuestController> logger, ILoginService loginService)
         {
             _adminService = adminService;
             _logger = logger;
