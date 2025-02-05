@@ -17,11 +17,15 @@ public class AddressCuDto
     public string City { get; set;}
     public string Country { get; set; }
 
+    public virtual List<Guid> AttractionsId{ get; set; } = null;
+
     public AddressCuDto() { }
     public AddressCuDto(IAddress org)
     {
         AddressId = org.AddressId;
         City = org.City;
         Country = org.Country;
+
+        AttractionsId = org.Attractions?.Select(x => x.AttractionId).ToList();
     }
 }

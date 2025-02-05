@@ -99,6 +99,7 @@ namespace DbContext.Migrations.SqlServerDbContext
                     AttractionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CategoryDbMCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AddressDbMAddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AttractionTitle = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     Seeded = table.Column<bool>(type: "bit", nullable: false)
                 },

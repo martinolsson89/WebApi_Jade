@@ -29,6 +29,11 @@ namespace SeedGenerator
         public string Quote { get; init; }
         public string Author { get; init; }
     }
+    public class csSeedAttraction
+{
+    // The title of the attraction.
+    public string Title { get; init; }
+    }
     #endregion
 
     public class csSeedGenerator : Random
@@ -149,6 +154,10 @@ namespace SeedGenerator
             + " " + _seeds._music.AlbumNames[this.Next(0, _seeds._music.AlbumNames.Count)]
             + " " + _seeds._music.AlbumNames[this.Next(0, _seeds._music.AlbumNames.Count)]
             + " " + _seeds._music.AlbumSuffix[this.Next(0, _seeds._music.AlbumSuffix.Count)];
+        #endregion
+
+        #region Get a Random Attraction
+        public string AttractionTitle => _seeds._attractions[this.Next(0, _seeds._attractions.Count)].Title;
         #endregion
 
         #region get simple seeds for DateTime, bool and decimal numbers
@@ -594,6 +603,20 @@ namespace SeedGenerator
                         "Satisfaction, California, Stairway, Purple, Senor",
                     jsonAlbumPrefix = "A, The, One, The great, A wonderful, Let's rock with, Relaxing, Chill with, Dance with",
                     jsonAlbumSuffix = "with friends, with love, with fire, and walking, being happy",
+                },
+                 _attractions = new List<csSeedAttraction>
+                {
+                    new csSeedAttraction { Title = "Yellowstone National Park" },
+                    new csSeedAttraction { Title = "Eiffel Tower" },
+                    new csSeedAttraction { Title = "The Louvre Museum" },
+                    new csSeedAttraction { Title = "Central Park Cafe" },
+                    new csSeedAttraction { Title = "Taj Mahal" },
+                    new csSeedAttraction { Title = "British Museum" },
+                    new csSeedAttraction { Title = "Sydney Opera House" },
+                    new csSeedAttraction { Title = "Statue of Liberty" },
+                    new csSeedAttraction { Title = "Grand Canyon" },
+                    new csSeedAttraction { Title = "Colosseum" },
+                    // ... add as many as you like
                 }
             };
         }
@@ -862,6 +885,9 @@ namespace SeedGenerator
             public csSeedNames _names { get; set; } = new csSeedNames();
             public csSeedDomains _domains { get; set; } = new csSeedDomains();
             public csSeedMusic _music { get; set; } = new csSeedMusic();
+
+            // New: List of attractions
+            public List<csSeedAttraction> _attractions { get; set; } = new List<csSeedAttraction>();
 
 
             public string WriteFile(string FileName) => WriteFile(this, FileName);

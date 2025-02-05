@@ -2,6 +2,7 @@ using Configuration;
 using DbContext;
 using DbModels;
 using DbRepos;
+using Models;
 using Seido.Utilities.SeedGenerator;
 using Services;
 
@@ -32,11 +33,13 @@ builder.Services.AddScoped<AttractionDbRepos>();
 builder.Services.AddScoped<CategoryDbRepos>();
 builder.Services.AddScoped<LoginDbRepos>();
 builder.Services.AddScoped<RoleDbRepos>();
-builder.Services.AddScoped<CommentDbRepos>(); 
+builder.Services.AddScoped<CommentDbRepos>();
+builder.Services.AddScoped<AddressDbRepos>(); 
 
 builder.Services.AddScoped<IAdminService, AdminServiceDb>();
 builder.Services.AddScoped<IMusicGroupService, MusicGroupServiceDb>();
 builder.Services.AddScoped<IAttractionService, AttractionServiceDb>();
+builder.Services.AddScoped<IAddressService, AddressServiceDb>();
 builder.Services.AddScoped<ICategoryService, CategoryServiceDb>();
 builder.Services.AddScoped<IRoleService, RoleServiceDb>();
 builder.Services.AddScoped<ILoginService, LoginServiceDb>();

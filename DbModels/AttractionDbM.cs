@@ -45,6 +45,7 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
     {
         if (org == null) return null;
 
+        AttractionTitle = org.AttractionTitle;
         Description = org.Description;
         
         return this;
@@ -52,7 +53,7 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
 
     public AttractionDbM(AttractionCuDto org)
     {
-        AttractionId = new Guid();
+        AttractionId = Guid.NewGuid();
         UpdateFromDTO(org);
     }
 }

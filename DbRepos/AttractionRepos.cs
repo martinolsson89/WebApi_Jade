@@ -68,13 +68,15 @@ public class AttractionDbRepos
 
             
 
-             .Where(i => (i.Seeded == seeded) && 
+             .Where(i => (i.Seeded == seeded) &&
+                    i.AttractionTitle.ToLower().Contains(filter) || 
                     i.Description.ToLower().Contains(filter)).CountAsync(),
 
              PageItems = await query
 
             //Adding filter functionality
             .Where(i => (i.Seeded == seeded) && 
+                    i.AttractionTitle.ToLower().Contains(filter) || 
                     i.Description.ToLower().Contains(filter))
                         
 
@@ -104,27 +106,11 @@ public class AttractionDbRepos
 
         if(item == null) throw new ArgumentException($"Item: {id} is not existing");
 
+        _dbContext.Attractions.Remove(item);
+
         await _dbContext.SaveChangesAsync();
 
         return new ResponseItemDto<IAttraction> 
-        {
-            DbConnectionKeyUsed = _dbContext.dbConnection,
-            Item = item
-        };
-    }
-
-    public async Task<ResponseItemDto<IAttraction>> DeleteAttraction(Guid id)
-    {
-        var query = _dbContext.Attractions.Where(a => a.AttractionId == id);
-        var item = await query.FirstOrDefaultAsync<AttractionDbM>();
-
-        if(item == null) throw new ArgumentException($"No object linked to id: {id}");
-
-        _dbContext.Remove(item);
-
-        await _dbContext.SaveChangesAsync();
-
-        return new ResponseItemDto<IAttraction>()
         {
             DbConnectionKeyUsed = _dbContext.dbConnection,
             Item = item
@@ -172,11 +158,19 @@ public class AttractionDbRepos
 
     public async Task UpdateNavigationProp(AttractionCuDto itemDto, AttractionDbM item)
     {
-        var updatedCat = await _dbContext.Catgeories.Where(a => a.CategoryId == itemDto.CategoryId).FirstOrDefaultAsync();
-
-        if(updatedCat == null) throw new ArgumentException($"This id: {itemDto.CategoryId} does not exist");
-
+       // Update Category
+        var updatedCat = await _dbContext.Catgeories
+            .FirstOrDefaultAsync(c => c.CategoryId == itemDto.CategoryId);
+        if (updatedCat == null)
+            throw new ArgumentException($"Category with id {itemDto.CategoryId} does not exist");
         item.CategoryDbM = updatedCat;
+
+        // Update Address
+        var updatedAddress = await _dbContext.Addresses
+            .FirstOrDefaultAsync(a => a.AddressId == itemDto.AddressId);
+        if (updatedAddress == null)
+            throw new ArgumentException($"Address with id {itemDto.AddressId} does not exist");
+        item.AddressDbM = updatedAddress;
     }
 
 }

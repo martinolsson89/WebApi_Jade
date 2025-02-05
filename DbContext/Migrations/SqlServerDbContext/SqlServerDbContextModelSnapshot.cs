@@ -51,6 +51,9 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Property<Guid>("AddressDbMAddressId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("AttractionTitle")
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<Guid>("CategoryDbMCategoryId")
                         .HasColumnType("uniqueidentifier");
 
