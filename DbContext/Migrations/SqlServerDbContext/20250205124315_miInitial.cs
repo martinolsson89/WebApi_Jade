@@ -14,6 +14,9 @@ namespace DbContext.Migrations.SqlServerDbContext
             migrationBuilder.EnsureSchema(
                 name: "supusr");
 
+            migrationBuilder.EnsureSchema(
+                name: "dbo");
+
             migrationBuilder.CreateTable(
                 name: "Addresses",
                 schema: "supusr",
@@ -157,7 +160,14 @@ namespace DbContext.Migrations.SqlServerDbContext
                 schema: "supusr");
 
             migrationBuilder.DropTable(
+<<<<<<< HEAD:DbContext/Migrations/SqlServerDbContext/20250203103249_miInitial.cs
 <<<<<<<< HEAD:DbContext/Migrations/SqlServerDbContext/20250203103249_miInitial.cs
+=======
+                name: "Users",
+                schema: "dbo");
+
+            migrationBuilder.DropTable(
+>>>>>>> User-login-test-SR:DbContext/Migrations/SqlServerDbContext/20250205124315_miInitial.cs
                 name: "Attractions",
                 schema: "supusr");
 

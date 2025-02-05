@@ -1,4 +1,4 @@
-﻿using Configuration;
+using Configuration;
 using DbContext;
 using DbModels;
 using DbRepos;
@@ -31,12 +31,14 @@ builder.Services.AddScoped<AdminDbRepos>();
 builder.Services.AddScoped<MusicGroupDbRepos>();
 builder.Services.AddScoped<AttractionDbRepos>();
 builder.Services.AddScoped<CategoryDbRepos>();
+builder.Services.AddScoped<LoginDbRepos>();
 builder.Services.AddScoped<RoleDbRepos>();
 builder.Services.AddScoped<IAdminService, AdminServiceDb>();
 builder.Services.AddScoped<IMusicGroupService, MusicGroupServiceDb>();
 builder.Services.AddScoped<IAttractionService, AttractionServiceDb>();
 builder.Services.AddScoped<ICategoryService, CategoryServiceDb>();
 builder.Services.AddScoped<IRoleService, RoleServiceDb>();
+builder.Services.AddScoped<ILoginService, LoginServiceDb>();
 
 
 

@@ -7,6 +7,7 @@ using DbModels;
 using DbContext;
 using Seido.Utilities.SeedGenerator;
 using Microsoft.Identity.Client;
+using Configuration;
 
 namespace DbRepos;
 
@@ -14,12 +15,14 @@ public class AdminDbRepos
 {
     private readonly ILogger<AdminDbRepos> _logger;
     private readonly MainDbContext _dbContext;
+    private Encryptions _encryptions;
 
     #region contructors
-    public AdminDbRepos(ILogger<AdminDbRepos> logger, MainDbContext context)
+    public AdminDbRepos(ILogger<AdminDbRepos> logger, MainDbContext context, Encryptions encryptions)
     {
         _logger = logger;
         _dbContext = context;
+        _encryptions = encryptions;
     }
     #endregion
 
@@ -94,5 +97,63 @@ public class AdminDbRepos
             if (retCode != 0) throw new Exception("supusr.spDeleteAll return code error");
 
             return await InfoAsync();
+    }
+
+    public async Task<UsrInfoDto> SeedUsersAsync(int nrOfUsers, int nrOfSuperUsers, int nrOfSysAdmin)
+    {
+            _logger.LogInformation($"Seeding {nrOfUsers} users and {nrOfSuperUsers} superusers");
+            
+            //First delete all existing users
+            foreach (var u in _dbContext.Users)
+                _dbContext.Users.Remove(u);
+
+            //add users
+            for (int i = 1; i <= nrOfUsers; i++)
+            {
+                _dbContext.Users.Add(new UserDbM
+                {
+                    UserId = Guid.NewGuid(),
+                    UserName = $"user{i}",
+                    Email = $"user{i}@gmail.com",
+                    Password = _encryptions.EncryptPasswordToBase64($"user{i}"),
+                    Role = "usr"
+                });
+            }
+
+            //add super user
+            for (int i = 1; i <= nrOfSuperUsers; i++)
+            {
+                _dbContext.Users.Add(new UserDbM
+                {
+                    UserId = Guid.NewGuid(),
+                    UserName = $"superuser{i}",
+                    Email = $"superuser{i}@gmail.com",
+                    Password = _encryptions.EncryptPasswordToBase64($"superuser{i}"),
+                    Role = "supusr"
+                });
+            }
+
+            //add system adminitrators
+            for (int i = 1; i <= nrOfSysAdmin; i++)
+            {
+                _dbContext.Users.Add(new UserDbM
+                {
+                    UserId = Guid.NewGuid(),
+                    UserName = $"sysadmin{i}",
+                    Email = $"sysadmin{i}@gmail.com",
+                    Password = _encryptions.EncryptPasswordToBase64($"sysadmin{i}"),
+                    Role = "sysadmin"
+                });
+            }
+            await _dbContext.SaveChangesAsync();
+
+            var _info = new UsrInfoDto
+            {
+                NrUsers = await _dbContext.Users.CountAsync(i => i.Role == "usr"),
+                NrSuperUsers = await _dbContext.Users.CountAsync(i => i.Role == "supusr"),
+                NrSystemAdmin = await _dbContext.Users.CountAsync(i => i.Role == "sysadmin")
+            };
+
+            return _info;
     }
 }

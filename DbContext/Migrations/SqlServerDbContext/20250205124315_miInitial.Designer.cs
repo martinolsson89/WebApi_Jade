@@ -12,11 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
+<<<<<<< HEAD:DbContext/Migrations/SqlServerDbContext/20250203103249_miInitial.Designer.cs
 <<<<<<<< HEAD:DbContext/Migrations/SqlServerDbContext/20250203103249_miInitial.Designer.cs
     [Migration("20250203103249_miInitial")]
 ========
     [Migration("20250203211105_miInitial")]
 >>>>>>>> 930320d (last commit roles):DbContext/Migrations/SqlServerDbContext/20250203211105_miInitial.Designer.cs
+=======
+    [Migration("20250205124315_miInitial")]
+>>>>>>> User-login-test-SR:DbContext/Migrations/SqlServerDbContext/20250205124315_miInitial.Designer.cs
     partial class miInitial
     {
         /// <inheritdoc />
@@ -145,7 +149,36 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.ToTable("MusicGroups", "supusr");
                 });
 
+<<<<<<< HEAD:DbContext/Migrations/SqlServerDbContext/20250203103249_miInitial.Designer.cs
 <<<<<<<< HEAD:DbContext/Migrations/SqlServerDbContext/20250203103249_miInitial.Designer.cs
+=======
+            modelBuilder.Entity("DbModels.UserDbM", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Users", "dbo");
+                });
+
+>>>>>>> User-login-test-SR:DbContext/Migrations/SqlServerDbContext/20250205124315_miInitial.Designer.cs
             modelBuilder.Entity("Models.DTO.GstUsrInfoCommentsDto", b =>
                 {
                     b.Property<string>("Content")

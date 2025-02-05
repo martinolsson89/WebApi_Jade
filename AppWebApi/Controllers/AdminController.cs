@@ -63,6 +63,28 @@ namespace AppWebApi.Controllers
             }
         }
 
+         [HttpGet()]
+        [ProducesResponseType(200, Type = typeof(UsrInfoDto))]
+        [ProducesResponseType(400, Type = typeof(string))]
+        public async Task<IActionResult> SeedUsers(string countUsr = "32", string countSupUsr = "2", string countSysAdmin = "1")
+        {
+            try
+            {
+                int _countUsr = int.Parse(countUsr);
+                int _countSupUsr = int.Parse(countSupUsr);
+                int _countSysAdmin = int.Parse(countSysAdmin);
+
+                _logger.LogInformation($"{nameof(SeedUsers)}: {nameof(_countUsr)}: {_countUsr}, {nameof(_countSupUsr)}: {_countSupUsr}, {nameof(_countSysAdmin)}: {_countSysAdmin}");
+
+                UsrInfoDto _info = await _adminService.SeedUsersAsync(_countUsr, _countSupUsr, _countSysAdmin);
+                return Ok(_info);           
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
+            }       
+        }
+
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<GstUsrInfoAllDto>))]
         [ProducesResponseType(400, Type = typeof(string))]
