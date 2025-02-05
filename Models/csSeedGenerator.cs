@@ -606,17 +606,21 @@ namespace SeedGenerator
                 },
                  _attractions = new List<csSeedAttraction>
                 {
-                    new csSeedAttraction { Title = "Yellowstone National Park" },
-                    new csSeedAttraction { Title = "Eiffel Tower" },
-                    new csSeedAttraction { Title = "The Louvre Museum" },
-                    new csSeedAttraction { Title = "Central Park Cafe" },
-                    new csSeedAttraction { Title = "Taj Mahal" },
-                    new csSeedAttraction { Title = "British Museum" },
-                    new csSeedAttraction { Title = "Sydney Opera House" },
-                    new csSeedAttraction { Title = "Statue of Liberty" },
-                    new csSeedAttraction { Title = "Grand Canyon" },
-                    new csSeedAttraction { Title = "Colosseum" },
-                    // ... add as many as you like
+                    new csSeedAttraction { Title = "Heritage Museum" },
+                    new csSeedAttraction { Title = "Urban Art Gallery" },
+                    new csSeedAttraction { Title = "Central City Park" },
+                    new csSeedAttraction { Title = "Riverside Cafe" },
+                    new csSeedAttraction { Title = "Old Town Monument" },
+                    new csSeedAttraction { Title = "Cityscape Tower" },
+                    new csSeedAttraction { Title = "Modern Bistro" },
+                    new csSeedAttraction { Title = "Vintage Restaurant" },
+                    new csSeedAttraction { Title = "Cultural Centre" },
+                    new csSeedAttraction { Title = "Historic Library" },
+                    new csSeedAttraction { Title = "Garden Pavilion" },
+                    new csSeedAttraction { Title = "Contemporary Museum" },
+                    new csSeedAttraction { Title = "The Grand Atrium" },
+                    new csSeedAttraction { Title = "Monumental Plaza" },
+                    new csSeedAttraction { Title = "Skyline Building" },
                 }
             };
         }

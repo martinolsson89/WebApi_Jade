@@ -43,9 +43,6 @@ public class AttractionDbRepos
                 DbConnectionKeyUsed = _dbContext.dbConnection,
                 Item = resp
             };
-
-        // var at = await _dbContext.Attractions.Where(at => at.AttractionId == id).FirstAsync();
-        // return at;
     }
 
     public async Task<ResponsePageDto<IAttraction>> ReadItemsAsync (bool seeded, bool flat, string filter, int pageNumber, int pageSize)
@@ -61,41 +58,27 @@ public class AttractionDbRepos
             .Include(a => a.CategoryDbM); 
          }
 
+        query = query.Where(i => i.Seeded == seeded &&
+           (
+              i.AttractionTitle.ToLower().Contains(filter) ||
+              i.Description.ToLower().Contains(filter) ||
+              i.CategoryDbM.Catkind.ToLower().Contains(filter) ||
+              i.AddressDbM.City.ToLower().Contains(filter) ||
+              i.AddressDbM.Country.ToLower().Contains(filter)
+           ));
+
         return new ResponsePageDto<IAttraction>
         {
             DbConnectionKeyUsed = _dbContext.dbConnection,
-            DbItemsCount = await query
-
-            
-
-             .Where(i => (i.Seeded == seeded) &&
-                    i.AttractionTitle.ToLower().Contains(filter) || 
-                    i.Description.ToLower().Contains(filter)).CountAsync(),
-
-             PageItems = await query
-
-            //Adding filter functionality
-            .Where(i => (i.Seeded == seeded) && 
-                    i.AttractionTitle.ToLower().Contains(filter) || 
-                    i.Description.ToLower().Contains(filter))
-                        
-
-            //Adding paging
-            .Skip(pageNumber * pageSize)
-            .Take(pageSize)
-
-            .ToListAsync<IAttraction>(),
-
+            DbItemsCount = await query.CountAsync(),
+            PageItems = await query
+                .Skip(pageNumber * pageSize)
+                .Take(pageSize)
+                .ToListAsync<IAttraction>(),
             PageNr = pageNumber,
             PageSize = pageSize
-
-
         };
 
-        
-
-        // var at = await _dbContext.Attractions.ToListAsync<IAttraction>();
-        // return at;
     } 
 
     public async Task<ResponseItemDto<IAttraction>> DeleteItemAsync(Guid id)

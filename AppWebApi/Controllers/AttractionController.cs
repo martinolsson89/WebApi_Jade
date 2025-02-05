@@ -24,7 +24,7 @@ namespace AppWebApi.Controllers
             _logger = logger;
         }
 
-         [HttpGet()]
+        [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponsePageDto<IAttraction>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> ReadItems(string seeded = "true", string flat = "true",
@@ -145,6 +145,33 @@ namespace AppWebApi.Controllers
             }
         }
 
+        [HttpGet()]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<AttractionCuDto>))]
+        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        public async Task<IActionResult> ReadItemDto(string id = null)
+        {
+            try
+            {
+                var idArg = Guid.Parse(id);
+
+                _logger.LogInformation($"{nameof(ReadItemDto)}: {nameof(idArg)}: {idArg}");
+
+                var item = await _attractionService.ReadAttractionAsync(idArg, false);
+                if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
+
+                return Ok(
+                    new ResponseItemDto<AttractionCuDto>() {
+                    DbConnectionKeyUsed = item.DbConnectionKeyUsed,
+                    Item = new AttractionCuDto(item.Item)
+                });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{nameof(ReadItemDto)}: {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
 
     }
 }
