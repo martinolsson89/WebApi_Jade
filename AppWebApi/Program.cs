@@ -39,7 +39,7 @@ builder.Services.AddScoped<IAttractionService, AttractionServiceDb>();
 builder.Services.AddScoped<ICategoryService, CategoryServiceDb>();
 builder.Services.AddScoped<IRoleService, RoleServiceDb>();
 builder.Services.AddScoped<ILoginService, LoginServiceDb>();
-
+builder.Services.AddScoped<DbRepos.CommentDbRepos>();
 
 
 
