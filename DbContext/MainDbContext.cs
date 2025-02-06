@@ -65,7 +65,11 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
         #region Seed the Roles
 
-        
+        modelBuilder.Entity<UserDbM>()
+        .HasOne(u => u.RoleDbM)                // Navigation property (User has one Role)
+        .WithMany(r => r.userDbM)                // A Role can have many Users
+        .HasForeignKey(u => u.RoleId)          // RoleId is the foreign key
+        .OnDelete(DeleteBehavior.Restrict);
 
         #endregion
 

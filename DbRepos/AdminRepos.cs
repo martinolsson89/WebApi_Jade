@@ -131,7 +131,7 @@ public class AdminDbRepos
                 UserName = $"user{i}",
                 Email = $"user{i}@gmail.com",
                 Password = _encryptions.EncryptPasswordToBase64($"user{i}"),
-                Role = userRole // Role object is attached and tracked by EF Core
+                RoleId = userRole.RoleId // Role object is attached and tracked by EF Core
             });
         }
 
@@ -144,7 +144,7 @@ public class AdminDbRepos
                 UserName = $"superuser{i}",
                 Email = $"superuser{i}@gmail.com",
                 Password = _encryptions.EncryptPasswordToBase64($"superuser{i}"),
-                Role = superUserRole // Role object is attached and tracked by EF Core
+                RoleId = superUserRole.RoleId // Role object is attached and tracked by EF Core
             });
         }
 
@@ -157,7 +157,7 @@ public class AdminDbRepos
                 UserName = $"sysadmin{i}",
                 Email = $"sysadmin{i}@gmail.com",
                 Password = _encryptions.EncryptPasswordToBase64($"sysadmin{i}"),
-                Role = sysAdminRole // Role object is attached and tracked by EF Core
+                RoleId = sysAdminRole.RoleId // Role object is attached and tracked by EF Core
             });
         }
 

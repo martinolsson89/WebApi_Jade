@@ -114,18 +114,18 @@ namespace DbContext.Migrations.SqlServerDbContext
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(200)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(200)", nullable: false),
-                    RoleDbMRoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(200)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_Users_Roles_RoleDbMRoleId",
-                        column: x => x.RoleDbMRoleId,
+                        name: "FK_Users_Roles_RoleId",
+                        column: x => x.RoleId,
                         principalTable: "Roles",
                         principalColumn: "RoleId",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -171,10 +171,10 @@ namespace DbContext.Migrations.SqlServerDbContext
                 column: "AttractionDbMAttractionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_RoleDbMRoleId",
+                name: "IX_Users_RoleId",
                 schema: "dbo",
                 table: "Users",
-                column: "RoleDbMRoleId");
+                column: "RoleId");
         }
 
         /// <inheritdoc />

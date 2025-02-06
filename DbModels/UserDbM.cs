@@ -24,17 +24,19 @@ public class UserDbM : User
     [Required]
     public override string Password { get; set; }
 
-    [NotMapped]
+    [Required] // Foreign Key to RoleDbM
+    public Guid RoleId { get; set; } 
+
+    [NotMapped] // This prevents EF Core from mapping the interface
     public override IRole Role { get => RoleDbM; set => throw new NotImplementedException(); }
 
     [JsonIgnore]
-    [Required]
-    public RoleDbM RoleDbM { get; set; }
+    public RoleDbM RoleDbM { get; set; } // Navigation Property
 
     public UserDbM()
     {
-        
     }
 }
+
 
 

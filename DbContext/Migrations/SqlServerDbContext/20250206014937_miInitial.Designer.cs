@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250206012309_miInitial")]
+    [Migration("20250206014937_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -174,7 +174,7 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .IsRequired()
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<Guid>("RoleDbMRoleId")
+                    b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserName")
@@ -183,7 +183,7 @@ namespace DbContext.Migrations.SqlServerDbContext
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("RoleDbMRoleId");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users", "dbo");
                 });
@@ -257,8 +257,8 @@ namespace DbContext.Migrations.SqlServerDbContext
                 {
                     b.HasOne("DbModels.RoleDbM", "RoleDbM")
                         .WithMany("userDbM")
-                        .HasForeignKey("RoleDbMRoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("RoleDbM");
