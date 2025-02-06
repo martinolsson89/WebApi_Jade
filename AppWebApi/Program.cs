@@ -35,7 +35,6 @@ builder.Services.AddScoped<LoginDbRepos>();
 builder.Services.AddScoped<RoleDbRepos>();
 builder.Services.AddScoped<CommentDbRepos>();
 builder.Services.AddScoped<AddressDbRepos>(); 
-
 builder.Services.AddScoped<IAdminService, AdminServiceDb>();
 builder.Services.AddScoped<IMusicGroupService, MusicGroupServiceDb>();
 builder.Services.AddScoped<IAttractionService, AttractionServiceDb>();
@@ -43,9 +42,7 @@ builder.Services.AddScoped<IAddressService, AddressServiceDb>();
 builder.Services.AddScoped<ICategoryService, CategoryServiceDb>();
 builder.Services.AddScoped<IRoleService, RoleServiceDb>();
 builder.Services.AddScoped<ILoginService, LoginServiceDb>();
-
-
-
+builder.Services.AddScoped<ICommentServiceDb, CommentServiceDb>();
 
 var app = builder.Build();
 
@@ -73,6 +70,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-
-

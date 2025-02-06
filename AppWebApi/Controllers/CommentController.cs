@@ -11,12 +11,12 @@ namespace AppWebApi.Controllers
     [Route("api/[controller]/[action]")]
     public class CommentsController : Controller
     {
-        readonly IAttractionService _service = null;
+        readonly ICommentServiceDb _commentService = null;
         readonly ILogger<CommentsController> _logger = null;
 
-        public CommentsController(IAttractionService service, ILogger<CommentsController> logger)
+        public CommentsController(ICommentServiceDb commentService, ILogger<CommentsController> logger)
         {
-            _service = service;
+            _commentService = commentService;
             _logger = logger;
         }
 
@@ -36,7 +36,7 @@ namespace AppWebApi.Controllers
                 _logger.LogInformation($"{nameof(ReadItems)}: {nameof(seededArg)}: {seededArg}, {nameof(flatArg)}: {flatArg}, " +
                     $"{nameof(pageNrArg)}: {pageNrArg}, {nameof(pageSizeArg)}: {pageSizeArg}");
                 
-                var resp = await _service.ReadCommentsAsync(seededArg, flatArg, filter?.Trim().ToLower(), pageNrArg, pageSizeArg);     
+                var resp = await _commentService.ReadCommentsAsync(seededArg, flatArg, filter?.Trim().ToLower(), pageNrArg, pageSizeArg);     
                 return Ok(resp);
             }
             catch (Exception ex)
@@ -59,7 +59,7 @@ namespace AppWebApi.Controllers
 
                 _logger.LogInformation($"{nameof(ReadItem)}: {nameof(idArg)}: {idArg}, {nameof(flatArg)}: {flatArg}");
                 
-                var item = await _service.ReadCommentAsync(idArg, flatArg);
+                var item = await _commentService.ReadCommentAsync(idArg, flatArg);
                 if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
                 return Ok(item);
@@ -82,7 +82,7 @@ namespace AppWebApi.Controllers
 
                 _logger.LogInformation($"{nameof(DeleteItem)}: {nameof(idArg)}: {idArg}");
                 
-                var item = await _service.DeleteCommentAsync(idArg);
+                var item = await _commentService.DeleteCommentAsync(idArg);
                 if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
         
                 _logger.LogInformation($"item {idArg} deleted");
@@ -107,7 +107,7 @@ namespace AppWebApi.Controllers
 
                 _logger.LogInformation($"{nameof(ReadItemDto)}: {nameof(idArg)}: {idArg}");
 
-                var item = await _service.ReadCommentAsync(idArg, false);
+                var item = await _commentService.ReadCommentAsync(idArg, false);
                 if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
                 return Ok(
@@ -136,7 +136,7 @@ namespace AppWebApi.Controllers
                 
                 if (item.CommentId != idArg) throw new ArgumentException("Id mismatch");
 
-                var model = await _service.UpdateCommentAsync(item);
+                var model = await _commentService.UpdateCommentAsync(item);
                 _logger.LogInformation($"item {idArg} updated");
                
                 return Ok(model);
@@ -157,7 +157,7 @@ namespace AppWebApi.Controllers
             {
                 _logger.LogInformation($"{nameof(CreateItem)}:");
                 
-                var model = await _service.CreateCommentAsync(item);
+                var model = await _commentService.CreateCommentAsync(item);
                 _logger.LogInformation($"item {model.Item.CommentId} created");
 
                 return Ok(model);
