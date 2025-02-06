@@ -5,11 +5,18 @@ using Newtonsoft.Json;
 using Models.DTO;
 using Services;
 using Configuration;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AppWebApi.Controllers
 {
+   
+
+#if !DEBUG    
+    [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+        Policy = null, Roles = "sysadmin")] // Den kollar ifall claimsen innehåller en Role med innehållet sysadmin
+#endif
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class AdminController : Controller
@@ -42,7 +49,8 @@ namespace AppWebApi.Controllers
                 return BadRequest(ex.Message);
             }
          }
-
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "sysadmin")]
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<GstUsrInfoAllDto>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -84,7 +92,8 @@ namespace AppWebApi.Controllers
                 return BadRequest($"{ex.Message}.{ex.InnerException?.Message}");
             }       
         }
-
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "sysadmin")]
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<GstUsrInfoAllDto>))]
         [ProducesResponseType(400, Type = typeof(string))]

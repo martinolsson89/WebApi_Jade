@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250205152204_miInitial")]
+    [Migration("20250206122910_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -121,27 +121,6 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.HasIndex("AttractionDbMAttractionId");
 
                     b.ToTable("Comments", "supusr");
-                });
-
-            modelBuilder.Entity("DbModels.MusicGroupDbM", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("EstablshedYear")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Genre")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MusicGroups", "supusr");
                 });
 
             modelBuilder.Entity("DbModels.RoleDbM", b =>

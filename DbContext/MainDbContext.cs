@@ -64,7 +64,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
         #region Seed the Roles
 
-        
+        //modelBuilder.Entity<UserDbM>
 
         #endregion
 

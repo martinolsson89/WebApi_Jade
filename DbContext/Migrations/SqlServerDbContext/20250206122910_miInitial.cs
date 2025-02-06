@@ -48,21 +48,6 @@ namespace DbContext.Migrations.SqlServerDbContext
                 });
 
             migrationBuilder.CreateTable(
-                name: "MusicGroups",
-                schema: "supusr",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(200)", nullable: false),
-                    EstablshedYear = table.Column<int>(type: "int", nullable: false),
-                    Genre = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_MusicGroups", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -170,10 +155,6 @@ namespace DbContext.Migrations.SqlServerDbContext
         {
             migrationBuilder.DropTable(
                 name: "Comments",
-                schema: "supusr");
-
-            migrationBuilder.DropTable(
-                name: "MusicGroups",
                 schema: "supusr");
 
             migrationBuilder.DropTable(

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Models;
 using Models.DTO;
 using Services;
@@ -71,6 +72,8 @@ namespace AppWebApi.Controllers
             }
         }
 
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "supusr, sysadmin")]
         [HttpDelete("{id}")]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IComment>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -123,6 +126,8 @@ namespace AppWebApi.Controllers
             }
         }
 
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "supusr, sysadmin")]
         [HttpPut("{id}")]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IComment>))]
         [ProducesResponseType(400, Type = typeof(string))]

@@ -120,27 +120,6 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.ToTable("Comments", "supusr");
                 });
 
-            modelBuilder.Entity("DbModels.MusicGroupDbM", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("EstablshedYear")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Genre")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MusicGroups", "supusr");
-                });
-
             modelBuilder.Entity("DbModels.RoleDbM", b =>
                 {
                     b.Property<Guid>("RoleId")

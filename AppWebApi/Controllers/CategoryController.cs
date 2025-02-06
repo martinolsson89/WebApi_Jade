@@ -6,6 +6,7 @@ using Models.DTO;
 using Services;
 using Models;
 using System.Drawing;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -97,6 +98,8 @@ namespace AppWebApi.Controllers
             }
         }
 
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "supusr, sysadmin")]
         [HttpPut()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<ICategory>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -119,6 +122,8 @@ namespace AppWebApi.Controllers
             }
         }
 
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "supusr, sysadmin")]
         [HttpDelete()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<ICategory>))]
         [ProducesResponseType(400, Type = typeof(string))]

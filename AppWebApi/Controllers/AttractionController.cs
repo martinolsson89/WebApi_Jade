@@ -6,11 +6,14 @@ using Models.DTO;
 using Services;
 using Models;
 using System.Drawing;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AppWebApi.Controllers
 {
+    [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+        Policy = null, Roles = "usr, supusr, sysadmin")]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class AttractionController : Controller
@@ -119,10 +122,13 @@ namespace AppWebApi.Controllers
             }
         }
 
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "supusr, sysadmin")]
         [HttpDelete()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAttraction>))]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
+        
         public async Task<IActionResult> DeleteItem(string id)
         {
             try
