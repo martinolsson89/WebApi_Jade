@@ -10,6 +10,6 @@ public class User : IUser
     public virtual string Email { get; set; }
     public virtual string Password { get; set; }
 
-    public virtual string Role { get; set; }
+    public virtual IRole Role { get; set; } = null;
 }
 

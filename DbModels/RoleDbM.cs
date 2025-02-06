@@ -17,7 +17,13 @@ public class RoleDbM : Role
 
     // Lägg till en lista av users sen
 
+    [NotMapped]
+    public override List<IUser> Users { get => userDbM?.ToList<IUser>(); set => throw new NotImplementedException(); }
+
+    [JsonIgnore]
     
+    public List<UserDbM> userDbM { get; set; }
+
 
     public RoleDbM()
     {

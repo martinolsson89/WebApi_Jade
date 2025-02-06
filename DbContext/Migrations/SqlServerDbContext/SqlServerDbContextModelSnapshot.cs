@@ -171,15 +171,16 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .IsRequired()
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<Guid>("RoleDbMRoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UserName")
                         .IsRequired()
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("UserId");
+
+                    b.HasIndex("RoleDbMRoleId");
 
                     b.ToTable("Users", "dbo");
                 });
@@ -249,6 +250,17 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Navigation("AttractionDbM");
                 });
 
+            modelBuilder.Entity("DbModels.UserDbM", b =>
+                {
+                    b.HasOne("DbModels.RoleDbM", "RoleDbM")
+                        .WithMany("userDbM")
+                        .HasForeignKey("RoleDbMRoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("RoleDbM");
+                });
+
             modelBuilder.Entity("DbModels.AddressDbM", b =>
                 {
                     b.Navigation("AttractionDbM");
@@ -262,6 +274,11 @@ namespace DbContext.Migrations.SqlServerDbContext
             modelBuilder.Entity("DbModels.CategoryDbM", b =>
                 {
                     b.Navigation("AttractionsDbM");
+                });
+
+            modelBuilder.Entity("DbModels.RoleDbM", b =>
+                {
+                    b.Navigation("userDbM");
                 });
 #pragma warning restore 612, 618
         }

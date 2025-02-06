@@ -24,8 +24,17 @@ public class UserDbM : User
     [Required]
     public override string Password { get; set; }
 
+    [NotMapped]
+    public override IRole Role { get => RoleDbM; set => throw new NotImplementedException(); }
+
+    [JsonIgnore]
     [Required]
-    public override string Role { get; set; }
+    public RoleDbM RoleDbM { get; set; }
+
+    public UserDbM()
+    {
+        
+    }
 }
 
 

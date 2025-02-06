@@ -76,22 +76,6 @@ namespace DbContext.Migrations.SqlServerDbContext
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                schema: "dbo",
-                columns: table => new
-                {
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(200)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(200)", nullable: false),
-                    Role = table.Column<string>(type: "nvarchar(200)", nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(200)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Attractions",
                 schema: "supusr",
                 columns: table => new
@@ -119,6 +103,28 @@ namespace DbContext.Migrations.SqlServerDbContext
                         principalSchema: "supusr",
                         principalTable: "Categories",
                         principalColumn: "CategoryId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                schema: "dbo",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserName = table.Column<string>(type: "nvarchar(200)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(200)", nullable: false),
+                    RoleDbMRoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(200)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
+                    table.ForeignKey(
+                        name: "FK_Users_Roles_RoleDbMRoleId",
+                        column: x => x.RoleDbMRoleId,
+                        principalTable: "Roles",
+                        principalColumn: "RoleId",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -163,6 +169,12 @@ namespace DbContext.Migrations.SqlServerDbContext
                 schema: "supusr",
                 table: "Comments",
                 column: "AttractionDbMAttractionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_RoleDbMRoleId",
+                schema: "dbo",
+                table: "Users",
+                column: "RoleDbMRoleId");
         }
 
         /// <inheritdoc />
@@ -177,15 +189,15 @@ namespace DbContext.Migrations.SqlServerDbContext
                 schema: "supusr");
 
             migrationBuilder.DropTable(
-                name: "Roles");
-
-            migrationBuilder.DropTable(
                 name: "Users",
                 schema: "dbo");
 
             migrationBuilder.DropTable(
                 name: "Attractions",
                 schema: "supusr");
+
+            migrationBuilder.DropTable(
+                name: "Roles");
 
             migrationBuilder.DropTable(
                 name: "Addresses",

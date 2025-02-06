@@ -101,59 +101,76 @@ public class AdminDbRepos
 
     public async Task<UsrInfoDto> SeedUsersAsync(int nrOfUsers, int nrOfSuperUsers, int nrOfSysAdmin)
     {
-            _logger.LogInformation($"Seeding {nrOfUsers} users and {nrOfSuperUsers} superusers");
-            
-            //First delete all existing users
-            foreach (var u in _dbContext.Users)
-                _dbContext.Users.Remove(u);
+        _logger.LogInformation($"Seeding {nrOfUsers} users and {nrOfSuperUsers} superusers");
 
-            //add users
-            for (int i = 1; i <= nrOfUsers; i++)
+        
+        var userRole = await _dbContext.Roles.FirstOrDefaultAsync(r => r.Rolekind == enumRoles.usr.ToString());
+        var superUserRole = await _dbContext.Roles.FirstOrDefaultAsync(r => r.Rolekind == enumRoles.supusr.ToString());
+        var sysAdminRole = await _dbContext.Roles.FirstOrDefaultAsync(r => r.Rolekind == enumRoles.sysadmin.ToString());
+
+        if (userRole == null || superUserRole == null || sysAdminRole == null)
+        {
+            throw new Exception("One or more roles are missing in the database!");
+        }
+
+        // Attach roles to ensure EF Core knows they exist
+        _dbContext.Attach(userRole);
+        _dbContext.Attach(superUserRole);
+        _dbContext.Attach(sysAdminRole);
+
+        // Clear all existing users
+        _dbContext.Users.RemoveRange(_dbContext.Users);
+        await _dbContext.SaveChangesAsync();
+
+        // Add users
+        for (int i = 1; i <= nrOfUsers; i++)
+        {
+            _dbContext.Users.Add(new UserDbM
             {
-                _dbContext.Users.Add(new UserDbM
-                {
-                    UserId = Guid.NewGuid(),
-                    UserName = $"user{i}",
-                    Email = $"user{i}@gmail.com",
-                    Password = _encryptions.EncryptPasswordToBase64($"user{i}"),
-                    Role = "usr"
-                });
-            }
+                UserId = Guid.NewGuid(),
+                UserName = $"user{i}",
+                Email = $"user{i}@gmail.com",
+                Password = _encryptions.EncryptPasswordToBase64($"user{i}"),
+                Role = userRole // Role object is attached and tracked by EF Core
+            });
+        }
 
-            //add super user
-            for (int i = 1; i <= nrOfSuperUsers; i++)
+        // Add superusers
+        for (int i = 1; i <= nrOfSuperUsers; i++)
+        {
+            _dbContext.Users.Add(new UserDbM
             {
-                _dbContext.Users.Add(new UserDbM
-                {
-                    UserId = Guid.NewGuid(),
-                    UserName = $"superuser{i}",
-                    Email = $"superuser{i}@gmail.com",
-                    Password = _encryptions.EncryptPasswordToBase64($"superuser{i}"),
-                    Role = "supusr"
-                });
-            }
+                UserId = Guid.NewGuid(),
+                UserName = $"superuser{i}",
+                Email = $"superuser{i}@gmail.com",
+                Password = _encryptions.EncryptPasswordToBase64($"superuser{i}"),
+                Role = superUserRole // Role object is attached and tracked by EF Core
+            });
+        }
 
-            //add system adminitrators
-            for (int i = 1; i <= nrOfSysAdmin; i++)
+        // Add system administrators
+        for (int i = 1; i <= nrOfSysAdmin; i++)
+        {
+            _dbContext.Users.Add(new UserDbM
             {
-                _dbContext.Users.Add(new UserDbM
-                {
-                    UserId = Guid.NewGuid(),
-                    UserName = $"sysadmin{i}",
-                    Email = $"sysadmin{i}@gmail.com",
-                    Password = _encryptions.EncryptPasswordToBase64($"sysadmin{i}"),
-                    Role = "sysadmin"
-                });
-            }
-            await _dbContext.SaveChangesAsync();
+                UserId = Guid.NewGuid(),
+                UserName = $"sysadmin{i}",
+                Email = $"sysadmin{i}@gmail.com",
+                Password = _encryptions.EncryptPasswordToBase64($"sysadmin{i}"),
+                Role = sysAdminRole // Role object is attached and tracked by EF Core
+            });
+        }
 
-            var _info = new UsrInfoDto
-            {
-                NrUsers = await _dbContext.Users.CountAsync(i => i.Role == "usr"),
-                NrSuperUsers = await _dbContext.Users.CountAsync(i => i.Role == "supusr"),
-                NrSystemAdmin = await _dbContext.Users.CountAsync(i => i.Role == "sysadmin")
-            };
+        await _dbContext.SaveChangesAsync();
 
-            return _info;
+        // Return seed info
+        var _info = new UsrInfoDto
+        {
+            NrUsers = await _dbContext.Users.CountAsync(i => i.Role.Roles == enumRoles.usr),
+            NrSuperUsers = await _dbContext.Users.CountAsync(i => i.Role.Roles == enumRoles.supusr),
+            NrSystemAdmin = await _dbContext.Users.CountAsync(i => i.Role.Roles == enumRoles.sysadmin)
+        };
+
+        return _info;
     }
 }
