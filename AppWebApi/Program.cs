@@ -28,7 +28,6 @@ builder.Services.AddSwaggerGen();
 
 //Inject Custom logger
 builder.Services.AddScoped<AdminDbRepos>();
-builder.Services.AddScoped<MusicGroupDbRepos>();
 builder.Services.AddScoped<AttractionDbRepos>();
 builder.Services.AddScoped<CategoryDbRepos>();
 builder.Services.AddScoped<LoginDbRepos>();
@@ -36,7 +35,6 @@ builder.Services.AddScoped<RoleDbRepos>();
 builder.Services.AddScoped<CommentDbRepos>();
 builder.Services.AddScoped<AddressDbRepos>(); 
 builder.Services.AddScoped<IAdminService, AdminServiceDb>();
-builder.Services.AddScoped<IMusicGroupService, MusicGroupServiceDb>();
 builder.Services.AddScoped<IAttractionService, AttractionServiceDb>();
 builder.Services.AddScoped<IAddressService, AddressServiceDb>();
 builder.Services.AddScoped<ICategoryService, CategoryServiceDb>();
