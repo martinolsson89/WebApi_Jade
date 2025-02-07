@@ -18,7 +18,7 @@ public class AdminServiceDb : IAdminService {
     }
 
     public Task<ResponseItemDto<GstUsrInfoAllDto>> InfoAsync() => _adminRepo.InfoAsync();
-    public Task<ResponseItemDto<GstUsrInfoAllDto>> SeedAsync(int nrOfItems) => _adminRepo.SeedAsync(nrOfItems);
+    public Task<ResponseItemDto<GstUsrInfoAllDto>> SeedAsync(int nrAttractions, int nrAdresses) => _adminRepo.SeedAsync(nrAttractions, nrAdresses);
     public Task<ResponseItemDto<GstUsrInfoAllDto>> RemoveSeedAsync(bool seeded) => _adminRepo.RemoveSeedAsync(seeded);
     public Task<UsrInfoDto> SeedUsersAsync(int nrOfUsers, int nrOfSuperUsers, int nrOfSysAdmin) => _adminRepo.SeedUsersAsync(nrOfUsers, nrOfSuperUsers, nrOfSysAdmin);
 }
