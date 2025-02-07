@@ -12,15 +12,54 @@ GO
  
 -- Create or alter view that gives an overview of the database content
 CREATE OR ALTER VIEW gstusr.vwInfoDb AS
-SELECT
+SELECT 'Guest user database overview' as Title,
     (SELECT COUNT(*) FROM supusr.Attractions WHERE Seeded = 1) as NrSeededAttractions,
     (SELECT COUNT(*) FROM supusr.Attractions WHERE Seeded = 0) as NrUnseededAttractions,
     (SELECT COUNT(*) FROM supusr.Categories WHERE Seeded = 1) as NrSeededCategories,
     (SELECT COUNT(*) FROM supusr.Categories WHERE Seeded = 0) as NrUnseededCategories,
-    (SELECT COUNT(*) FROM supusr.Addresses) AS NrAddresses,
+    (SELECT COUNT(*) FROM supusr.Addresses) AS NrSeededAddresses,
     (SELECT COUNT(*) FROM supusr.Comments WHERE Seeded = 1) as nrSeededComments,
     (SELECT COUNT(*) FROM supusr.Comments WHERE Seeded = 0) as nrUnseededComments
 GO
+
+CREATE OR ALTER VIEW gstusr.vwInfoAttractions AS
+SELECT 
+    adr.Country, 
+    adr.City, 
+    COUNT(att.AttractionId) AS NrAttractions
+FROM supusr.Attractions att
+JOIN supusr.Addresses adr ON att.AddressDbMAddressId = adr.AddressId
+GROUP BY adr.Country, adr.City WITH ROLLUP;
+
+GO
+
+CREATE OR ALTER VIEW gstusr.vwInfoCategories AS
+SELECT 
+    CASE cat.Name
+         WHEN 0 THEN 'Restaurant'
+         WHEN 1 THEN 'Museum'
+         WHEN 2 THEN 'Park'
+         WHEN 3 THEN 'AmusementPark'
+         WHEN 4 THEN 'Zoo'
+         WHEN 5 THEN 'Aquarium'
+         WHEN 6 THEN 'Theater'
+         WHEN 7 THEN 'Landmark'
+         WHEN 8 THEN 'HistoricalSite'
+         WHEN 9 THEN 'Beach'
+         WHEN 10 THEN 'ShoppingMall'
+         WHEN 11 THEN 'Stadium'
+         WHEN 12 THEN 'ArtGallery'
+         WHEN 13 THEN 'BotanicalGarden'
+         WHEN 14 THEN 'Casino'
+         WHEN 15 THEN 'ConcertHall'
+    END AS CategoryName, 
+    COUNT(*) AS NrAttractions
+FROM supusr.Attractions att
+JOIN supusr.Categories cat ON att.CategoryDbMCategoryId = cat.CategoryId
+GROUP BY cat.Name;
+GO
+
+
 
 --03-create-supusr-sp.sql
 CREATE or ALTER PROC supusr.spDeleteAllAttractions

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250207104005_miInitial")]
+    [Migration("20250207150151_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -166,11 +166,49 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.ToTable("Users", "dbo");
                 });
 
-            modelBuilder.Entity("Models.DTO.GstUsrInfoCommentsDto", b =>
+            modelBuilder.Entity("Models.DTO.GstUsrInfoAddressesDto", b =>
                 {
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("NrAddresses")
+                        .HasColumnType("int");
+
                     b.ToTable((string)null);
 
-                    b.ToView("vwInfoComments", "gstusr");
+                    b.ToView("vwInfoAddresses", "gstusr");
+                });
+
+            modelBuilder.Entity("Models.DTO.GstUsrInfoAttractionsDto", b =>
+                {
+                    b.Property<string>("City")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("NrAttractions")
+                        .HasColumnType("int");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("vwInfoAttractions", "gstusr");
+                });
+
+            modelBuilder.Entity("Models.DTO.GstUsrInfoCategoriesDto", b =>
+                {
+                    b.Property<string>("Catkind")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("NrAttractions")
+                        .HasColumnType("int");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("vwInfoCategories", "gstusr");
                 });
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>
@@ -187,9 +225,6 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Property<int>("NrSeededComments")
                         .HasColumnType("int");
 
-                    b.Property<int>("NrUnseededAddresses")
-                        .HasColumnType("int");
-
                     b.Property<int>("NrUnseededAttractions")
                         .HasColumnType("int");
 
@@ -198,6 +233,9 @@ namespace DbContext.Migrations.SqlServerDbContext
 
                     b.Property<int>("NrUnseededComments")
                         .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(200)");
 
                     b.ToTable((string)null);
 

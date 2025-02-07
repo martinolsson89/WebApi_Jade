@@ -30,6 +30,8 @@ public class AdminDbRepos
     {
         var info = new GstUsrInfoAllDto();
         info.Db = await _dbContext.InfoDbView.FirstAsync();
+        info.Attractions = await _dbContext.InfoAttractionsView.ToListAsync();
+        info.Categories = await _dbContext.InfoCategoriesView.ToListAsync();
 
         return new ResponseItemDto<GstUsrInfoAllDto>()
         {

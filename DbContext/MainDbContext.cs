@@ -39,7 +39,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     #region model the Views
     public DbSet<GstUsrInfoDbDto> InfoDbView { get; set; }
-    public DbSet<GstUsrInfoCommentsDto> InfoCommentsView { get; set; }
+    public DbSet<GstUsrInfoAttractionsDto> InfoAttractionsView { get; set; }
+    public DbSet<GstUsrInfoCategoriesDto> InfoCategoriesView { get; set; }
 
     #endregion
 
@@ -59,7 +60,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
         #region model the Views
         modelBuilder.Entity<GstUsrInfoDbDto>().ToView("vwInfoDb", "gstusr").HasNoKey();
-        modelBuilder.Entity<GstUsrInfoCommentsDto>().ToView("vwInfoComments", "gstusr").HasNoKey();        
+        modelBuilder.Entity<GstUsrInfoAttractionsDto>().ToView("vwInfoAttractions", "gstusr").HasNoKey();  
+        modelBuilder.Entity<GstUsrInfoCategoriesDto>().ToView("vwInfoCategories", "gstusr").HasNoKey();        
         #endregion
 
         #region Seed the Roles

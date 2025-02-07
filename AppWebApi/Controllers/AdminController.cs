@@ -75,7 +75,7 @@ namespace AppWebApi.Controllers
             }
         }
 
-         [HttpGet()]
+        [HttpGet()]
         [ProducesResponseType(200, Type = typeof(UsrInfoDto))]
         [ProducesResponseType(400, Type = typeof(string))]
        public async Task<IActionResult> SeedUsers(string countUsr = "47", string countSupUsr = "2", string countSysAdmin = "1")
