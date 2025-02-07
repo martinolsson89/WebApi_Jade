@@ -13,19 +13,16 @@ GO
 -- Create or alter view that gives an overview of the database content
 CREATE OR ALTER VIEW gstusr.vwInfoDb AS
 SELECT
-    (SELECT COUNT(*) FROM supusr.Attractions) AS NrAttractions,
-    (SELECT COUNT(*) FROM supusr.Categories) AS NrCategories,
-    (SELECT COUNT(*) FROM supusr.Addresses) AS NrAddresses,
+    (SELECT COUNT(*) FROM supusr.Attractions WHERE Seeded = 1) as NrSeededAttractions,
+    (SELECT COUNT(*) FROM supusr.Attractions WHERE Seeded = 0) as NrUnseededAttractions,
+    (SELECT COUNT(*) FROM supusr.Categories WHERE Seeded = 1) as NrSeededCategories,
+    (SELECT COUNT(*) FROM supusr.Categories WHERE Seeded = 0) as NrUnseededCategories,
+    (SELECT COUNT(*) FROM supusr.Addresses WHERE Seeded = 1) as NrSeededAddresses,
+    (SELECT COUNT(*) FROM supusr.Addresses WHERE Seeded = 0) as NrUnseededAddresses,
     (SELECT COUNT(*) FROM supusr.Comments WHERE Seeded = 1) as nrSeededComments,
     (SELECT COUNT(*) FROM supusr.Comments WHERE Seeded = 0) as nrUnseededComments
 GO
- 
-CREATE OR ALTER VIEW gstusr.vwInfoComments AS
-    SELECT c.Content, COUNT(c.CommentId) as NrComments
-    FROM supusr.Comments c
-    GROUP BY c.Content WITH ROLLUP;
-GO
- 
+
 --03-create-supusr-sp.sql
 CREATE or ALTER PROC supusr.spDeleteAllAttractions
  
@@ -36,8 +33,10 @@ CREATE or ALTER PROC supusr.spDeleteAllAttractions
     SET NOCOUNT ON;
  
     -- will delete here
-    DELETE FROM supusr.Comments WHERE Seeded = @Seeded
     DELETE FROM supusr.Attractions WHERE Seeded = @Seeded
+    DELETE FROM supusr.Comments WHERE Seeded = @Seeded
+    DELETE FROM supusr.Categories WHERE Seeded = @Seeded
+    DELETE FROM supusr.Addresses WHERE Seeded = @Seeded
     -- return new data status
     SELECT * FROM gstusr.vwInfoDb;
  

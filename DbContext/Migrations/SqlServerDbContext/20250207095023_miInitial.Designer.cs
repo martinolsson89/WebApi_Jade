@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250206122910_miInitial")]
+    [Migration("20250207095023_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -168,12 +168,6 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoCommentsDto", b =>
                 {
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("NrComments")
-                        .HasColumnType("int");
-
                     b.ToTable((string)null);
 
                     b.ToView("vwInfoComments", "gstusr");
@@ -181,16 +175,25 @@ namespace DbContext.Migrations.SqlServerDbContext
 
             modelBuilder.Entity("Models.DTO.GstUsrInfoDbDto", b =>
                 {
-                    b.Property<int>("NrAddresses")
+                    b.Property<int>("NrSeededAddresses")
                         .HasColumnType("int");
 
-                    b.Property<int>("NrAttractions")
+                    b.Property<int>("NrSeededAttractions")
                         .HasColumnType("int");
 
-                    b.Property<int>("NrCategories")
+                    b.Property<int>("NrSeededCategories")
                         .HasColumnType("int");
 
                     b.Property<int>("NrSeededComments")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NrUnseededAddresses")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NrUnseededAttractions")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NrUnseededCategories")
                         .HasColumnType("int");
 
                     b.Property<int>("NrUnseededComments")
