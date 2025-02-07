@@ -2,7 +2,25 @@
 
 using Models;
 
-public enum CategoryNames {Action, Horror, Drama, Thriller, Romance, Comedy, Splatter, Foreign}
+public enum CategoryNames
+{
+    Restaurant,
+    Museum,
+    Park,
+    AmusementPark,
+    Zoo,
+    Aquarium,
+    Theater,
+    Landmark,
+    HistoricalSite,
+    Beach,
+    ShoppingMall,
+    Stadium,
+    ArtGallery,
+    BotanicalGarden,
+    Casino,
+    ConcertHall
+}
 
 public interface ICategory {
 
