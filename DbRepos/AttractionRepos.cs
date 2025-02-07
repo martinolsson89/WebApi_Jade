@@ -55,7 +55,8 @@ public class AttractionDbRepos
          {
             query = _dbContext.Attractions.AsNoTracking()
             .Include(a => a.AddressDbM)
-            .Include(a => a.CategoryDbM); 
+            .Include(a => a.CategoryDbM)
+            .Include(x => x.CommentsDbM); 
          }
 
         query = query.Where(i => i.Seeded == seeded &&

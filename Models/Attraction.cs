@@ -1,19 +1,31 @@
 using Configuration;
+using Newtonsoft.Json;
 using Seido.Utilities.SeedGenerator;
 
 namespace Models;
 
 public class Attraction : IAttraction, ISeed<Attraction>
 {
-    public virtual Guid AttractionId { get; set; }
-    public string AttractionTitle { get; set; }
-    public string Description { get; set; }
-    public bool Seeded { get; set; } = false;
+        [JsonProperty(Order = 1)]
+        public virtual Guid AttractionId { get; set; }
 
-    public virtual ICategory Category { get; set; }
+        [JsonProperty(Order = 2)]
+        public string AttractionTitle { get; set; }
 
-    public virtual IAddress Address{ get; set; }
-    public virtual List<IComment> Comments { get; set; }
+        [JsonProperty(Order = 3)]
+        public string Description { get; set; }
+
+        [JsonProperty(Order = 4)]
+        public bool Seeded { get; set; } = false;
+
+        [JsonProperty(Order = 5)]
+        public virtual ICategory Category { get; set; }
+
+        [JsonProperty(Order = 6)]
+        public virtual IAddress Address { get; set; }
+
+        [JsonProperty(Order = 7)]
+        public virtual List<IComment> Comments { get; set; }
 
     public virtual Attraction Seed (csSeedGenerator seeder)
     {
