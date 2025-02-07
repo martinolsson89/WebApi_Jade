@@ -24,6 +24,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     private readonly SysAdminCred _sysCred;
 
+    readonly Encryptions _encryptions;
+
    
 
     public string dbConnection  => _databaseConnections.GetDbConnection(this.Database.GetConnectionString());
@@ -48,11 +50,12 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     #region constructors
     public MainDbContext() { }
-    public MainDbContext(DbContextOptions options, IConfiguration configuration, DatabaseConnections databaseConnections, IOptions<SysAdminCred> sysCred) : base(options)
+    public MainDbContext(DbContextOptions options, IConfiguration configuration, DatabaseConnections databaseConnections, IOptions<SysAdminCred> sysCred, Encryptions encryptions) : base(options)
     { 
         _databaseConnections = databaseConnections;
         _configuration = configuration;
         _sysCred = sysCred.Value;
+        _encryptions = encryptions;
     }
     #endregion
 
@@ -81,8 +84,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public class SqlServerDbContext : MainDbContext
     {
         public SqlServerDbContext() { }
-        public SqlServerDbContext(DbContextOptions options, IConfiguration configuration, DatabaseConnections databaseConnections, IOptions<SysAdminCred> sysCred) 
-            : base(options, configuration, databaseConnections, sysCred) { }
+        public SqlServerDbContext(DbContextOptions options, IConfiguration configuration, DatabaseConnections databaseConnections, IOptions<SysAdminCred> sysCred, Encryptions encryptions) 
+            : base(options, configuration, databaseConnections, sysCred, encryptions) { }
 
 
         //Used only for CodeFirst Database Migration and database update commands
@@ -109,7 +112,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public class MySqlDbContext : MainDbContext
     {
         public MySqlDbContext() { }
-        public MySqlDbContext(DbContextOptions options) : base(options, null, null, null) { }
+        public MySqlDbContext(DbContextOptions options) : base(options, null, null, null, null) { } // Reminder!!! Nullar encryptions och sysadminsecreten, lägg till de här ifall de behövs senare
 
 
         //Used only for CodeFirst Database Migration
@@ -136,7 +139,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public class PostgresDbContext : MainDbContext
     {
         public PostgresDbContext() { }
-        public PostgresDbContext(DbContextOptions options) : base(options, null, null, null){ }
+        public PostgresDbContext(DbContextOptions options) : base(options, null, null, null, null){ }
 
 
         //Used only for CodeFirst Database Migration
@@ -161,7 +164,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public class SqliteDbContext : MainDbContext
     {
         public SqliteDbContext() { }
-        public SqliteDbContext(DbContextOptions options) : base(options, null, null, null){ }
+        public SqliteDbContext(DbContextOptions options) : base(options, null, null, null, null){ }
 
 
         //Used only for CodeFirst Database Migration
@@ -259,7 +262,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
         if (!Users.Any())
         {
-            Users.Add(new UserDbM { UserId = Guid.NewGuid(), UserName = _sysCred.SysUserName, Password = _sysCred.SysPassword, Role = enumRoles.sysadmin.ToString() });
+            Users.Add(new UserDbM { UserId = Guid.NewGuid(), UserName = _sysCred.SysUserName, Password = _encryptions.EncryptPasswordToBase64(_sysCred.SysPassword), Role = enumRoles.sysadmin.ToString() });
 
             await SaveChangesAsync();
         }
