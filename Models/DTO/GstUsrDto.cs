@@ -12,7 +12,6 @@ public class GstUsrInfoDbDto
     public int NrSeededComments {get; set;}
     public int NrUnseededComments {get; set;}
     public int NrSeededAddresses {get; set;}
-    public int NrUnseededAddresses {get; set;}
 } 
 
 public class GstUsrInfoCommentsDto

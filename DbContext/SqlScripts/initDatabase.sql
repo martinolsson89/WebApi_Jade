@@ -17,8 +17,7 @@ SELECT
     (SELECT COUNT(*) FROM supusr.Attractions WHERE Seeded = 0) as NrUnseededAttractions,
     (SELECT COUNT(*) FROM supusr.Categories WHERE Seeded = 1) as NrSeededCategories,
     (SELECT COUNT(*) FROM supusr.Categories WHERE Seeded = 0) as NrUnseededCategories,
-    (SELECT COUNT(*) FROM supusr.Addresses WHERE Seeded = 1) as NrSeededAddresses,
-    (SELECT COUNT(*) FROM supusr.Addresses WHERE Seeded = 0) as NrUnseededAddresses,
+    (SELECT COUNT(*) FROM supusr.Addresses) AS NrAddresses,
     (SELECT COUNT(*) FROM supusr.Comments WHERE Seeded = 1) as nrSeededComments,
     (SELECT COUNT(*) FROM supusr.Comments WHERE Seeded = 0) as nrUnseededComments
 GO
