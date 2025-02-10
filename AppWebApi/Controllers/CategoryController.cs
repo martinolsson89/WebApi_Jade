@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace AppWebApi.Controllers
 {
+    [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+        Policy = null, Roles = "usr, supusr, sysadmin")]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class CategoryController : Controller
@@ -25,7 +27,9 @@ namespace AppWebApi.Controllers
             _logger = logger;
         }
 
-         [HttpGet()]
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "usr, supusr, sysadmin")]
+        [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponsePageDto<ICategory>))]
         [ProducesResponseType(400, Type = typeof(string))]
         public async Task<IActionResult> ReadItems(string seeded = "true", string flat = "true",
@@ -51,6 +55,8 @@ namespace AppWebApi.Controllers
             }
         }
 
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "usr, supusr, sysadmin")]
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<ICategory>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -76,6 +82,8 @@ namespace AppWebApi.Controllers
             }
         }
         
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "supusr, sysadmin")]
         [HttpPost()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<ICategory>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -149,7 +157,5 @@ namespace AppWebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-        
     }
 }
