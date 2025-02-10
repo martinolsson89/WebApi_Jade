@@ -7,11 +7,14 @@ using Services;
 using Models;
 using System.Drawing;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AppWebApi.Controllers
 {
+    [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+        Policy = null, Roles = "sysadmin")]
      [ApiController]
     [Route("api/[controller]/[action]")]
     public class RoleController : Controller
@@ -24,7 +27,8 @@ namespace AppWebApi.Controllers
             _logger = logger;
             _roleService = roleService;
         }
-
+        
+        [Authorize(Roles = "sysadmin,admin")]
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponsePageDto<IRole>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -49,7 +53,7 @@ namespace AppWebApi.Controllers
             
 
         }
-
+        [Authorize(Roles = "sysadmin,admin")]
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IRole>))]
         [ProducesResponseType(400, Type = typeof(string))]
