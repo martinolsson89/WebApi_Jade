@@ -6,11 +6,14 @@ using Models.DTO;
 using Services;
 using Models;
 using System.Drawing;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace AppWebApi.Controllers
 {
+    [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+        Policy = null, Roles = "usr, supusr, sysadmin")]
     [ApiController]
     [Route("api/[controller]/[action]")]
     public class AddressController : Controller
