@@ -10,7 +10,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Npgsql.Replication;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace DbContext;
 
@@ -21,10 +20,6 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 {
     IConfiguration _configuration;
     DatabaseConnections _databaseConnections;
-
-    private readonly SysAdminCred _sysCred;
-
-    readonly Encryptions _encryptions;
 
    
 
@@ -51,12 +46,11 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
     #region constructors
     public MainDbContext() { }
-    public MainDbContext(DbContextOptions options, IConfiguration configuration, DatabaseConnections databaseConnections, IOptions<SysAdminCred> sysCred, Encryptions encryptions) : base(options)
+    public MainDbContext(DbContextOptions options, IConfiguration configuration, DatabaseConnections databaseConnections) : base(options)
     { 
         _databaseConnections = databaseConnections;
         _configuration = configuration;
-        _sysCred = sysCred.Value;
-        _encryptions = encryptions;
+        
     }
     #endregion
 
@@ -86,8 +80,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public class SqlServerDbContext : MainDbContext
     {
         public SqlServerDbContext() { }
-        public SqlServerDbContext(DbContextOptions options, IConfiguration configuration, DatabaseConnections databaseConnections, IOptions<SysAdminCred> sysCred, Encryptions encryptions) 
-            : base(options, configuration, databaseConnections, sysCred, encryptions) { }
+        public SqlServerDbContext(DbContextOptions options, IConfiguration configuration, DatabaseConnections databaseConnections) 
+            : base(options, configuration, databaseConnections) { }
 
 
         //Used only for CodeFirst Database Migration and database update commands
@@ -114,7 +108,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public class MySqlDbContext : MainDbContext
     {
         public MySqlDbContext() { }
-        public MySqlDbContext(DbContextOptions options) : base(options, null, null, null, null) { } // Reminder!!! Nullar encryptions och sysadminsecreten, lägg till de här ifall de behövs senare
+        public MySqlDbContext(DbContextOptions options) : base(options, null, null) { }
 
 
         //Used only for CodeFirst Database Migration
@@ -141,7 +135,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public class PostgresDbContext : MainDbContext
     {
         public PostgresDbContext() { }
-        public PostgresDbContext(DbContextOptions options) : base(options, null, null, null, null){ }
+        public PostgresDbContext(DbContextOptions options) : base(options, null, null){ }
 
 
         //Used only for CodeFirst Database Migration
@@ -166,7 +160,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public class SqliteDbContext : MainDbContext
     {
         public SqliteDbContext() { }
-        public SqliteDbContext(DbContextOptions options) : base(options, null, null, null, null){ }
+        public SqliteDbContext(DbContextOptions options) : base(options, null, null){ }
 
 
         //Used only for CodeFirst Database Migration
@@ -261,15 +255,6 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
             await SaveChangesAsync();
         }
-
-        if (!Users.Any())
-        {
-            Users.Add(new UserDbM { UserId = Guid.NewGuid(), UserName = _sysCred.SysUserName, Password = _encryptions.EncryptPasswordToBase64(_sysCred.SysPassword), Role = enumRoles.sysadmin.ToString() });
-
-            await SaveChangesAsync();
-        }
-
-        
     }
 
     public string GetDbStringsForRole(enumRoles userRole, string db = "jadedb.docker")

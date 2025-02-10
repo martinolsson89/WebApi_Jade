@@ -60,19 +60,14 @@ public static class AppConfigurationExtensions
         return configuration;
     }
 
-   public static IServiceCollection AddDatabaseConnections(this IServiceCollection serviceCollection, IConfiguration configuration)
-{
-    serviceCollection.Configure<DbConnectionSetsOptions>(
-        options => configuration.GetSection(DbConnectionSetsOptions.Position).Bind(options));
+    public static IServiceCollection AddDatabaseConnections(this IServiceCollection serviceCollection, IConfiguration configuration)
+    {
+        serviceCollection.Configure<DbConnectionSetsOptions>(
+            options => configuration.GetSection(DbConnectionSetsOptions.Position).Bind(options));
+        serviceCollection.AddSingleton<DatabaseConnections>();
 
-    serviceCollection.Configure<SysAdminCred>(
-        options => configuration.GetSection(SysAdminCred.Position).Bind(options));
-
-    serviceCollection.AddSingleton<DatabaseConnections>();
-
-    return serviceCollection;
-}
-
+        return serviceCollection;
+    }
 
     public static IServiceCollection AddEncryptions(this IServiceCollection serviceCollection, IConfiguration configuration)
     {
