@@ -68,7 +68,7 @@ builder.Services.AddScoped<ICommentServiceDb, CommentServiceDb>();
 
 var app = builder.Build();
 
-// Seeda rollerna
+// Seeda rollerna och en Superuser
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<MainDbContext>(); // hämta skapade servicen!!
