@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
-
 using Models.DTO;
 using Services;
 using Models;
@@ -27,6 +26,8 @@ namespace AppWebApi.Controllers
             _logger = logger;
         }
 
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "usr, supusr, sysadmin")]
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponsePageDto<IAddress>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -53,6 +54,8 @@ namespace AppWebApi.Controllers
             }
         }
 
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "usr, supusr, sysadmin")]
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAddress>))]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -77,7 +80,5 @@ namespace AppWebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
     }
 }
-
