@@ -61,7 +61,7 @@ GROUP BY cat.Name;
 GO
 
 --03-create-supusr-sp.sql
-CREATE OR ALTER PROC supusr.spDeleteAll
+CREATE OR ALTER PROC supusr.spDeleteAllAttractions
     @Seeded BIT = 1
 
     AS

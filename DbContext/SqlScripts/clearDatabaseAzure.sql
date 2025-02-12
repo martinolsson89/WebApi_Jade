@@ -27,7 +27,7 @@ DROP USER IF EXISTS supusrUser;
 GO
 
 -- remove spDeleteAll
-DROP PROCEDURE IF EXISTS supusr.spDeleteAll
+DROP PROCEDURE IF EXISTS supusr.spDeleteAllAttractions
 GO
 
 DROP VIEW IF EXISTS [gstusr].[vwInfoDb]
