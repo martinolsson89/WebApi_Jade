@@ -22,6 +22,10 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
     [NotMapped]
     public override IAddress Address { get => AddressDbM; set => throw new NotImplementedException(); }
 
+    public override FinancialRisk? Risk { get; set; }
+
+    public override decimal? Revenue { get; set; }
+
     [JsonIgnore]
     [Required]
     public CategoryDbM CategoryDbM { get; set; }
@@ -47,6 +51,8 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
 
         AttractionTitle = org.AttractionTitle;
         Description = org.Description;
+        Risk = org.Risk;
+        Revenue = org.Revenue;
         
         return this;
     }

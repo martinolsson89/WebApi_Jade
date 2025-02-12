@@ -27,9 +27,11 @@ public class Attraction : IAttraction, ISeed<Attraction>
         [JsonProperty(Order = 7)]
         public virtual List<IComment> Comments { get; set; }
 
-        public FinancialRisk? Risk { get; set; }
+        [JsonProperty(Order = 8)]
+        public virtual FinancialRisk? Risk { get; set; }
 
-        public decimal? Revenue { get; set; }
+        [JsonProperty(Order = 9)]
+        public virtual decimal? Revenue { get; set; }
 
 
     public virtual Attraction Seed (csSeedGenerator seeder)

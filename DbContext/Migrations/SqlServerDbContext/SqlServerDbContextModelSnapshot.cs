@@ -60,6 +60,12 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<decimal?>("Revenue")
+                        .HasColumnType("money");
+
+                    b.Property<int?>("Risk")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Seeded")
                         .HasColumnType("bit");
 

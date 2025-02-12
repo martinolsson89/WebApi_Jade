@@ -82,6 +82,8 @@ namespace DbContext.Migrations.SqlServerDbContext
                 columns: table => new
                 {
                     AttractionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Risk = table.Column<int>(type: "int", nullable: true),
+                    Revenue = table.Column<decimal>(type: "money", nullable: true),
                     CategoryDbMCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AddressDbMAddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AttractionTitle = table.Column<string>(type: "nvarchar(200)", nullable: true),
