@@ -8,13 +8,11 @@ namespace Services;
 public class AttractionServiceDb : IAttractionService
 {
     private readonly AttractionDbRepos _attractionDbRepos;
-    private readonly CommentDbRepos _commentDbRepos;
     private readonly ILogger<AttractionServiceDb> _logger;    
     
-    public AttractionServiceDb(AttractionDbRepos attractionDbRepos, CommentDbRepos commentDbRepos, ILogger<AttractionServiceDb> logger)
+    public AttractionServiceDb(AttractionDbRepos attractionDbRepos, ILogger<AttractionServiceDb> logger)
     {
         _attractionDbRepos = attractionDbRepos;
-        _commentDbRepos = commentDbRepos;
         _logger = logger;
     }
 

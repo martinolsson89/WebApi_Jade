@@ -27,6 +27,11 @@ public class Attraction : IAttraction, ISeed<Attraction>
         [JsonProperty(Order = 7)]
         public virtual List<IComment> Comments { get; set; }
 
+        public FinancialRisk? Risk { get; set; }
+
+        public decimal? Revenue { get; set; }
+
+
     public virtual Attraction Seed (csSeedGenerator seeder)
     {
         AttractionId = Guid.NewGuid();
