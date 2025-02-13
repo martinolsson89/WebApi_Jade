@@ -37,6 +37,14 @@ public class AttractionDbRepos
             }
 
             var resp =  await query.FirstOrDefaultAsync<IAttraction>();
+
+            if (resp != null && flat)
+            {
+                // Hide financial data when flat is true
+                ((AttractionDbM)resp).Risk = null;
+                ((AttractionDbM)resp).Revenue = null;
+            }
+
             return new ResponseItemDto<IAttraction>()
             {
                 DbConnectionKeyUsed = _dbContext.dbConnection,
@@ -44,42 +52,52 @@ public class AttractionDbRepos
             };
     }
 
-    public async Task<ResponsePageDto<IAttraction>> ReadItemsAsync (bool seeded, bool flat, string filter, int pageNumber, int pageSize)
+    public async Task<ResponsePageDto<IAttraction>> ReadItemsAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize)
     {
         filter ??= "";
 
         IQueryable<AttractionDbM> query = _dbContext.Attractions.AsNoTracking();
 
-         if (!flat)
-         {
+        if (!flat)
+        {
             query = _dbContext.Attractions.AsNoTracking()
             .Include(a => a.AddressDbM)
             .Include(a => a.CategoryDbM)
-            .Include(x => x.CommentsDbM); 
-         }
+            .Include(x => x.CommentsDbM);
+        }
 
         query = query.Where(i => i.Seeded == seeded &&
-           (
-              i.AttractionTitle.ToLower().Contains(filter) ||
-              i.Description.ToLower().Contains(filter) ||
-              i.CategoryDbM.Catkind.ToLower().Contains(filter) ||
-              i.AddressDbM.City.ToLower().Contains(filter) ||
-              i.AddressDbM.Country.ToLower().Contains(filter)
-           ));
+        (
+            i.AttractionTitle.ToLower().Contains(filter) ||
+            i.Description.ToLower().Contains(filter) ||
+            i.CategoryDbM.Catkind.ToLower().Contains(filter) ||
+            i.AddressDbM.City.ToLower().Contains(filter) ||
+            i.AddressDbM.Country.ToLower().Contains(filter)
+        ));
+
+        var items = await query
+            .Skip(pageNumber * pageSize)
+            .Take(pageSize)
+            .ToListAsync<IAttraction>();
+
+        if (flat)
+        {
+            foreach (var item in items)
+            {
+                ((AttractionDbM)item).Risk = null;
+                ((AttractionDbM)item).Revenue = null;
+            }
+        }
 
         return new ResponsePageDto<IAttraction>
         {
             DbConnectionKeyUsed = _dbContext.dbConnection,
             DbItemsCount = await query.CountAsync(),
-            PageItems = await query
-                .Skip(pageNumber * pageSize)
-                .Take(pageSize)
-                .ToListAsync<IAttraction>(),
+            PageItems = items,
             PageNr = pageNumber,
             PageSize = pageSize
         };
-
-    } 
+    }
 
     public async Task<ResponseItemDto<IAttraction>> DeleteItemAsync(Guid id)
     {
