@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics.Metrics;
 using System.Reflection.Emit;
+using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using Microsoft.Extensions.Azure;
 
@@ -18,6 +19,7 @@ public class AddressCuDto
     public string Street { get; set; }
     public string Country { get; set; }
 
+    [JsonIgnore]
     public virtual List<Guid> AttractionsId{ get; set; } = null;
 
     public AddressCuDto() { }
