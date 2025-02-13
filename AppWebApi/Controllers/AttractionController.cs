@@ -47,6 +47,7 @@ namespace AppWebApi.Controllers
 
                 var resp = await _attractionService.ReadAttractionsAsync(seededArg, flatArg, filter?.Trim().ToLower(), pageNrArg, pageSizeArg);     
                 return Ok(resp);     
+                
             }
             catch (Exception ex)
             {
@@ -72,7 +73,7 @@ namespace AppWebApi.Controllers
                 
                 var item = await _attractionService.ReadAttractionAsync(idArg, flatArg);
                 if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
-
+    
                 return Ok(item);         
             }
             catch (Exception ex)

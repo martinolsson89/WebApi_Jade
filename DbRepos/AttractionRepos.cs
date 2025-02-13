@@ -8,6 +8,7 @@ using DbModels;
 using DbContext;
 using Microsoft.Identity.Client;
 using System.IO.Compression;
+using Configuration;
 
 namespace DbRepos;
 
@@ -16,10 +17,13 @@ public class AttractionDbRepos
     private readonly ILogger<AttractionDbRepos> _logger;
     private readonly MainDbContext _dbContext;
 
-    public AttractionDbRepos(ILogger<AttractionDbRepos> logger, MainDbContext context)
+    private readonly Encryptions _encryptions;
+
+    public AttractionDbRepos(ILogger<AttractionDbRepos> logger, MainDbContext context, Encryptions encryptions)
     {
         _logger = logger;
         _dbContext = context;
+        _encryptions = encryptions;
     }
 
     public async Task<ResponseItemDto<IAttraction>> ReadItemAsync (Guid id, bool flat)
@@ -121,23 +125,27 @@ public class AttractionDbRepos
     public async Task<ResponseItemDto<IAttraction>> CreateItemAsync(AttractionCuDto itemDto)
     {
         if (itemDto.AttractionId != null) 
-          throw new ArgumentException($"{nameof(itemDto.AttractionId)} must be null when creating a new object");
+            throw new ArgumentException($"{nameof(itemDto.AttractionId)} must be null when creating a new object");
 
-          var item = new AttractionDbM(itemDto);
+        var item = new AttractionDbM(itemDto);
 
-          await UpdateNavigationProp(itemDto, item);
+        // 🔹 Encrypt financial data before saving
+        item.EncryptFinancial(_encryptions.AesEncryptToBase64);
 
-          _dbContext.Add(item);
+        await UpdateNavigationProp(itemDto, item);
 
-          await _dbContext.SaveChangesAsync();
+        _dbContext.Add(item);
+        await _dbContext.SaveChangesAsync();
 
-          return await ReadItemAsync(item.AttractionId, true);
+        return await ReadItemAsync(item.AttractionId, true);
     }
 
-    public async Task<ResponseItemDto<IAttraction>> UpdateItemAsync(AttractionCuDto itemDto)
-    {
+
+   public async Task<ResponseItemDto<IAttraction>> UpdateItemAsync(AttractionCuDto itemDto)
+    {   
         var query1 = _dbContext.Attractions
             .Where(i => i.AttractionId == itemDto.AttractionId);
+        
         var item = await query1
             .Include(i => i.CommentsDbM)
             .Include(i => i.AddressDbM)
@@ -148,14 +156,17 @@ public class AttractionDbRepos
 
         item.UpdateFromDTO(itemDto);
 
+        // 🔹 Encrypt financial data before updating
+        item.EncryptFinancial(_encryptions.AesEncryptToBase64);
+
         await UpdateNavigationProp(itemDto, item);
 
         _dbContext.Update(item);
-
         await _dbContext.SaveChangesAsync();
 
         return await ReadItemAsync(item.AttractionId, true);
     }
+
 
     public async Task UpdateNavigationProp(AttractionCuDto itemDto, AttractionDbM item)
     {

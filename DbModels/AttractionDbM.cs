@@ -13,7 +13,7 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
     [Key]
     public override Guid AttractionId { get; set; }
 
-    [NotMapped] // Not mapped betyder strunta i relationen
+    [NotMapped]
     public override ICategory Category { get => CategoryDbM; set => throw new NotImplementedException(); }
 
     [NotMapped]
@@ -22,9 +22,17 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
     [NotMapped]
     public override IAddress Address { get => AddressDbM; set => throw new NotImplementedException(); }
 
-    public override FinancialRisk? Risk { get; set; }
+    public string RiskString { get => Risk.ToString(); set {} }
 
-    public override decimal? Revenue { get; set; }
+    public string EncryptedRevenue { get; set; }
+
+    // 🔹 Stores the formatted (dotted) version of encrypted revenue
+    public string FormattedEncryptedRevenue { get; private set; } 
+
+    [JsonIgnore]
+    [NotMapped]
+    public string OriginalRevenue { get; private set; } 
+
 
     [JsonIgnore]
     [Required]
@@ -32,7 +40,7 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
 
     [JsonIgnore]
     [Required]
-    public AddressDbM AddressDbM { get; set;}
+    public AddressDbM AddressDbM { get; set; }
 
     [JsonIgnore]
     public List<CommentDbM> CommentsDbM { get; set; }
@@ -41,7 +49,7 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
 
     public override AttractionDbM Seed(csSeedGenerator rnd)
     {
-        base.Seed (rnd);
+        base.Seed(rnd);
         return this;
     }
 
@@ -52,8 +60,10 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
         AttractionTitle = org.AttractionTitle;
         Description = org.Description;
         Risk = org.Risk;
-        Revenue = org.Revenue;
         
+        // 🔹 Store the original revenue as a string before encryption
+        OriginalRevenue = org.Revenue?.ToString();
+
         return this;
     }
 
@@ -62,4 +72,41 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
         AttractionId = Guid.NewGuid();
         UpdateFromDTO(org);
     }
+
+    public AttractionDbM EncryptFinancial(Func<string, string> encryptor, bool showEncrypt = false)
+    {
+        if (Revenue.HasValue)
+        {
+            EncryptedRevenue = encryptor(Revenue.Value.ToString());
+            FormattedEncryptedRevenue = FormatAsDotted(EncryptedRevenue); 
+             if (showEncrypt)
+             {
+                OriginalRevenue = EncryptedRevenue;
+                
+             }
+            
+            
+        }
+
+        return this;
+    }
+
+   
+  public string GetDecryptedRevenue(Func<string, string> decryptor)
+{
+    if (!string.IsNullOrEmpty(EncryptedRevenue))
+    {
+        OriginalRevenue = decryptor(EncryptedRevenue);
+        System.Console.WriteLine(OriginalRevenue);
+    }
+
+    return OriginalRevenue;
 }
+
+
+    
+    private string FormatAsDotted(string encryptedValue) => $"1••• •••• •••4";
+    
+}
+
+

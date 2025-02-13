@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations.Schema;
 using Configuration;
 using Newtonsoft.Json;
 using Seido.Utilities.SeedGenerator;
@@ -29,7 +30,7 @@ public class Attraction : IAttraction, ISeed<Attraction>
 
         [JsonProperty(Order = 8)]
         public virtual FinancialRisk? Risk { get; set; }
-
+        [NotMapped]
         [JsonProperty(Order = 9)]
         public virtual decimal? Revenue { get; set; }
 
@@ -38,6 +39,7 @@ public class Attraction : IAttraction, ISeed<Attraction>
     {
         AttractionId = Guid.NewGuid();
         AttractionTitle = seeder.AttractionTitle;
+        Revenue = seeder.Next(100000, 10000000);
         Description = seeder.LatinSentence;
         Seeded = true;
 

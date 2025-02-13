@@ -8,6 +8,7 @@ using DbContext;
 using Seido.Utilities.SeedGenerator;
 using Microsoft.Identity.Client;
 using Configuration;
+using Models;
 
 namespace DbRepos;
 
@@ -56,6 +57,10 @@ public class AdminDbRepos
         var allCategories = await SeedEachCategoryAsync();
 
         foreach (var item in at){
+            item.EncryptFinancial(_encryptions.AesEncryptToBase64);
+            item.GetDecryptedRevenue(_encryptions.AesDecryptFromBase64<string>);
+
+
             item.CategoryDbM = rnd.FromList(allCategories);
             item.AddressDbM = rnd.FromList(ad);
             item.CommentsDbM = rnd.UniqueIndexPickedFromList<CommentDbM>(rnd.Next(0,21), comments);
