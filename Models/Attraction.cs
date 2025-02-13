@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Configuration;
 using Newtonsoft.Json;
@@ -26,11 +27,15 @@ public class Attraction : IAttraction, ISeed<Attraction>
         public virtual IAddress Address { get; set; }
 
         [JsonProperty(Order = 7)]
-        public virtual List<IComment> Comments { get; set; }
+        public virtual List<IComment>? Comments { get; set; } = null;
 
+
+        [EnumDataType(typeof(FinancialRisk), ErrorMessage = "Outside Enum value")]
+        [JsonIgnore]
         [JsonProperty(Order = 8)]
         public virtual FinancialRisk? Risk { get; set; }
         [NotMapped]
+        [JsonIgnore]
         [JsonProperty(Order = 9)]
         public virtual decimal? Revenue { get; set; }
 
@@ -40,6 +45,7 @@ public class Attraction : IAttraction, ISeed<Attraction>
         AttractionId = Guid.NewGuid();
         AttractionTitle = seeder.AttractionTitle;
         Revenue = seeder.Next(100000, 10000000);
+        Risk = seeder.FromEnum<FinancialRisk>();
         Description = seeder.LatinSentence;
         Seeded = true;
 

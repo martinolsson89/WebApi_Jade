@@ -17,7 +17,7 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
     public override ICategory Category { get => CategoryDbM; set => throw new NotImplementedException(); }
 
     [NotMapped]
-    public override List<IComment> Comments { get => CommentsDbM?.ToList<IComment>(); set => throw new NotImplementedException(); }
+    public override List<IComment>? Comments { get => CommentsDbM?.ToList<IComment>() ?? null; set => throw new NotImplementedException(); }
 
     [NotMapped]
     public override IAddress Address { get => AddressDbM; set => throw new NotImplementedException(); }
@@ -26,7 +26,6 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
 
     public string EncryptedRevenue { get; set; }
 
-    // 🔹 Stores the formatted (dotted) version of encrypted revenue
     public string FormattedEncryptedRevenue { get; private set; } 
 
     [JsonIgnore]
@@ -60,8 +59,6 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
         AttractionTitle = org.AttractionTitle;
         Description = org.Description;
         Risk = org.Risk;
-        
-        // 🔹 Store the original revenue as a string before encryption
         OriginalRevenue = org.Revenue?.ToString();
 
         return this;
