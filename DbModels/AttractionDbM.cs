@@ -14,18 +14,24 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
     public override Guid AttractionId { get; set; }
 
     [NotMapped]
+    [JsonProperty(Order = 8)]
     public override ICategory Category { get => CategoryDbM; set => throw new NotImplementedException(); }
 
     [NotMapped]
+    [JsonProperty(Order = 10)]
     public override List<IComment>? Comments { get => CommentsDbM?.ToList<IComment>() ?? null; set => throw new NotImplementedException(); }
 
     [NotMapped]
+    [JsonProperty(Order = 9)]
     public override IAddress Address { get => AddressDbM; set => throw new NotImplementedException(); }
-
+    
+    [JsonProperty(Order = 5)]
     public string RiskString { get => Risk.ToString(); set {} }
 
+    [JsonProperty(Order = 6)]
     public string EncryptedRevenue { get; set; }
 
+    [JsonProperty(Order = 7)]
     public string FormattedEncryptedRevenue { get; private set; } 
 
     [JsonIgnore]

@@ -20,25 +20,22 @@ public class Attraction : IAttraction, ISeed<Attraction>
         [JsonProperty(Order = 4)]
         public bool Seeded { get; set; } = false;
 
-        [JsonProperty(Order = 5)]
+        [JsonProperty(Order = 8)]
         public virtual ICategory Category { get; set; }
 
-        [JsonProperty(Order = 6)]
+        [JsonProperty(Order = 9)]
         public virtual IAddress Address { get; set; }
 
-        [JsonProperty(Order = 7)]
+        [JsonProperty(Order = 10)]
         public virtual List<IComment>? Comments { get; set; } = null;
 
 
         [EnumDataType(typeof(FinancialRisk), ErrorMessage = "Outside Enum value")]
         [JsonIgnore]
-        [JsonProperty(Order = 8)]
         public virtual FinancialRisk? Risk { get; set; }
         [NotMapped]
         [JsonIgnore]
-        [JsonProperty(Order = 9)]
         public virtual decimal? Revenue { get; set; }
-
 
     public virtual Attraction Seed (csSeedGenerator seeder)
     {
