@@ -196,7 +196,7 @@ namespace AppWebApi.Controllers
         }
 
         [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
-            Policy = null, Roles = "usr, supusr, sysadmin")]
+            Policy = null, Roles = "sysadmin")]
         [HttpGet()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<AttractionCuDto>))]
         [ProducesResponseType(400, Type = typeof(string))]
