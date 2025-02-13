@@ -60,11 +60,17 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<decimal?>("Revenue")
-                        .HasColumnType("money");
+                    b.Property<string>("EncryptedRevenue")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("FormattedEncryptedRevenue")
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int?>("Risk")
                         .HasColumnType("int");
+
+                    b.Property<string>("RiskString")
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("Seeded")
                         .HasColumnType("bit");

@@ -82,13 +82,15 @@ namespace DbContext.Migrations.SqlServerDbContext
                 columns: table => new
                 {
                     AttractionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Risk = table.Column<int>(type: "int", nullable: true),
-                    Revenue = table.Column<decimal>(type: "money", nullable: true),
+                    RiskString = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    EncryptedRevenue = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    FormattedEncryptedRevenue = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     CategoryDbMCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AddressDbMAddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AttractionTitle = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(200)", nullable: true),
-                    Seeded = table.Column<bool>(type: "bit", nullable: false)
+                    Seeded = table.Column<bool>(type: "bit", nullable: false),
+                    Risk = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
