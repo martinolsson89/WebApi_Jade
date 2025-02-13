@@ -13,7 +13,7 @@ namespace Models.DTO;
 //These DTO are simplistic and used to Update and Create objects
 public class AddressCuDto
 {
-    public virtual Guid AddressId { get; set;}
+    public virtual Guid? AddressId { get; set;}
     public string City { get; set;}
     public string Street { get; set; }
     public string Country { get; set; }

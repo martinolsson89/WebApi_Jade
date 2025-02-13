@@ -24,6 +24,6 @@ public class AddressDbM : Address, ISeed<AddressDbM>
     public override List<IAttraction> Attractions{ get => AttractionDbM?.ToList<IAttraction>(); set => throw new NotImplementedException(); }
 
     [JsonIgnore]
-    public List<AttractionDbM> AttractionDbM { get; set; }
+    public List<AttractionDbM> AttractionDbM { get; set; } = null; 
     
 }

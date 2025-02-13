@@ -11,7 +11,7 @@ public class Address : IAddress, ISeed<Address>
     public string Country { get; set; }
     public bool Seeded { get; set; } = false;
 
-    public virtual List<IAttraction> Attractions{ get; set; }
+    public virtual List<IAttraction> Attractions{ get; set; } = null;
 
     public virtual Address Seed(csSeedGenerator rnd)
     {
