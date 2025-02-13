@@ -15,6 +15,7 @@ public class AddressCuDto
 {
     public virtual Guid AddressId { get; set;}
     public string City { get; set;}
+    public string Street { get; set; }
     public string Country { get; set; }
 
     public virtual List<Guid> AttractionsId{ get; set; } = null;
@@ -23,6 +24,7 @@ public class AddressCuDto
     public AddressCuDto(IAddress org)
     {
         AddressId = org.AddressId;
+        Street = org.Street;
         City = org.City;
         Country = org.Country;
 

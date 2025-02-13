@@ -23,6 +23,7 @@ namespace DbContext.Migrations.SqlServerDbContext
                 columns: table => new
                 {
                     AddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Street = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     City = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     Seeded = table.Column<bool>(type: "bit", nullable: false)

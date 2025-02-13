@@ -37,6 +37,9 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Property<bool>("Seeded")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Street")
+                        .HasColumnType("nvarchar(200)");
+
                     b.HasKey("AddressId");
 
                     b.ToTable("Addresses", "supusr");

@@ -21,4 +21,6 @@ public class AddressServiceDb : IAddressService
 
     public Task<ResponsePageDto<IAddress>> ReadAddressesAsync(bool seeded, bool flat, string filter, int pageNumber, int pageSize) => _addressDbRepos.ReadItemsAsync(seeded, flat, filter, pageNumber, pageSize);
     
+    public Task<ResponseItemDto<IAddress>> CreateAddressAsync(AddressCuDto newAddress) => _addressDbRepos.AddAddressAsync(newAddress);
+    
 }

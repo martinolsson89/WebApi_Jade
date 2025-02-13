@@ -10,4 +10,5 @@ public interface IAttractionService {
     public Task<ResponseItemDto<IAttraction>> UpdateAttractionAsync(AttractionCuDto item);
     public Task <ResponseItemDto<IAttraction>> DeleteAttractionAsync(Guid id);
     public Task<ResponseItemDto<IAttraction>> PostAttractionAsync(AttractionCuDto itemDto);
+    Task<ResponseItemDto<IAttraction>> CreateAttractionWithAddressAsync(AttractionCuDto newAttraction);
 }

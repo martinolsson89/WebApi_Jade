@@ -85,4 +85,32 @@ public class AddressDbRepos
 
     } 
      
+    public async Task<ResponseItemDto<IAddress>> AddAddressAsync(AddressCuDto newAddress)
+{
+    try
+    {
+        var addressEntity = new AddressDbM
+        {
+            AddressId = Guid.NewGuid(),
+            Street = newAddress.Street,
+            City = newAddress.City,
+            Country = newAddress.Country
+        };
+
+        _dbContext.Addresses.Add(addressEntity);
+        await _dbContext.SaveChangesAsync();
+
+        return new ResponseItemDto<IAddress>
+        {
+            Item = addressEntity,
+            DbConnectionKeyUsed = _dbContext.dbConnection 
+        };
+    }
+    catch (Exception ex)
+    {
+        _logger.LogError($"Error creating address: {ex.Message}");
+        throw; 
+    }
+}
+
 }

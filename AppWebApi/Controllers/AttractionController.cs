@@ -224,5 +224,27 @@ namespace AppWebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "usr, supusr, sysadmin")]
+        [HttpPost("CreateWithAddress")]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAttraction>))]
+        [ProducesResponseType(400, Type = typeof(string))]
+        public async Task<IActionResult> CreateAttractionWithAddress([FromBody] AttractionCuDto item)
+        {
+            try
+            {
+                _logger.LogInformation($"{nameof(CreateAttractionWithAddress)}: {nameof(item)}: {item}");
+                var result = await _attractionService.CreateAttractionWithAddressAsync(item);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{nameof(CreateAttractionWithAddress)}: {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

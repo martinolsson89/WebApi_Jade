@@ -80,5 +80,26 @@ namespace AppWebApi.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+
+        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
+            Policy = null, Roles = "usr, supusr, sysadmin")]
+        [HttpPost("Create")]
+        [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAddress>))]
+        [ProducesResponseType(400, Type = typeof(string))]
+        public async Task<IActionResult> CreateAddress([FromBody] AddressCuDto addressDto)
+        {
+            try
+            {
+                _logger.LogInformation($"{nameof(CreateAddress)}: {nameof(addressDto)}: {addressDto}");
+                var result = await _addressService.CreateAddressAsync(addressDto);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"{nameof(CreateAddress)}: {ex.Message}");
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
