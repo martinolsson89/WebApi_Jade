@@ -81,12 +81,13 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
         if (Revenue.HasValue)
         {
             EncryptedRevenue = encryptor(Revenue.Value.ToString());
-            FormattedEncryptedRevenue = FormatAsDotted(EncryptedRevenue); 
-             if (showEncrypt)
-             {
-                OriginalRevenue = EncryptedRevenue;
-                
-             }
+            FormattedEncryptedRevenue = FormatAsDotted(Revenue.ToString()); 
+             
+                if (showEncrypt)
+                {
+                    OriginalRevenue = EncryptedRevenue;
+                    
+                }
             
             
         }
@@ -96,19 +97,21 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
 
    
   public string GetDecryptedRevenue(Func<string, string> decryptor)
-{
+    {
     if (!string.IsNullOrEmpty(EncryptedRevenue))
     {
         OriginalRevenue = decryptor(EncryptedRevenue);
         System.Console.WriteLine(OriginalRevenue);
     }
 
-    return OriginalRevenue;
-}
+        return OriginalRevenue;
+    }
 
 
     
-    private string FormatAsDotted(string encryptedValue) => $"1••• •••• •••4";
+    private string FormatAsDotted(string encryptedValue) =>  $"{encryptedValue[0]}••••••••••{encryptedValue[encryptedValue.Length - 1]}";
+
+
     
 }
 
