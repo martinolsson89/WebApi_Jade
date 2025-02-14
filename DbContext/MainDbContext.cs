@@ -246,11 +246,13 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
         return optionsBuilder;
     }
     #endregion
-
-   public async Task SeedRolesAsync()
+    
+    public async Task SeedRolesAsync()
     {
 
         IQueryable sys = Users.Where(x => x.UserName == _sysCred.SysUserName);
+
+
 
         if (!Roles.Any())
         {
@@ -274,6 +276,7 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
 
         
     }
+  
 
     public string GetDbStringsForRole(enumRoles userRole, string db = "jadedb.docker")
     {
