@@ -68,10 +68,10 @@ namespace AppWebApi.Controllers
             {
                 var idArg = Guid.Parse(id);
                 bool flatArg = bool.Parse(flat);
-
+                bool isSysAdmin = User.IsInRole("sysadmin");
                 _logger.LogInformation($"{nameof(ReadItem)}: {nameof(idArg)}: {idArg}, {nameof(flatArg)}: {flatArg}");
                 
-                var item = await _attractionService.ReadAttractionAsync(idArg, flatArg);
+                var item = await _attractionService.ReadAttractionAsync(idArg, flatArg, isSysAdmin);
                 if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
     
                 return Ok(item);         
@@ -144,7 +144,7 @@ namespace AppWebApi.Controllers
                 _logger.LogInformation($"{nameof(AddFinancial)}: {nameof(financialUpdate)}: {financialUpdate}");
                 
                 // Get existing attraction
-                var existingAttraction = await _attractionService.ReadAttractionAsync(financialUpdate.AttractionId, false);
+                var existingAttraction = await _attractionService.ReadAttractionAsync(financialUpdate.AttractionId, false, false);
                 if (existingAttraction?.Item == null)
                     throw new ArgumentException($"Item with id {financialUpdate.AttractionId} does not exist");
 
@@ -179,7 +179,7 @@ namespace AppWebApi.Controllers
             {
                 var idArg = Guid.Parse(id);
 
-                var itemDelete = await _attractionService.ReadAttractionAsync(idArg, false);
+                var itemDelete = await _attractionService.ReadAttractionAsync(idArg, false, false);
                 if (itemDelete?.Item == null) throw new ArgumentException ($"Item with id {itemDelete.Item.AttractionId} does not exist"); 
                 
                 var item = await _attractionService.DeleteAttractionAsync(idArg);
@@ -209,7 +209,7 @@ namespace AppWebApi.Controllers
 
                 _logger.LogInformation($"{nameof(ReadItemDto)}: {nameof(idArg)}: {idArg}");
 
-                var item = await _attractionService.ReadAttractionAsync(idArg, false);
+                var item = await _attractionService.ReadAttractionAsync(idArg, false, false);
                 if (item?.Item == null) throw new ArgumentException ($"Item with id {id} does not exist");
 
                 return Ok(

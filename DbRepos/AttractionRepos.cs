@@ -26,7 +26,7 @@ public class AttractionDbRepos
         _encryptions = encryptions;
     }
 
-    public async Task<ResponseItemDto<IAttraction>> ReadItemAsync (Guid id, bool flat)
+    public async Task<ResponseItemDto<IAttraction>> ReadItemAsync (Guid id, bool flat, bool isSys)
     {
         IQueryable<AttractionDbM> query = _dbContext.Attractions.AsNoTracking()
             .Where(i => i.AttractionId == id);
@@ -40,8 +40,12 @@ public class AttractionDbRepos
                     .Where(a => a.AttractionId == id); 
             }
 
-            var resp =  await query.FirstOrDefaultAsync<IAttraction>();
+            
 
+
+            var resp =  await query.FirstOrDefaultAsync<IAttraction>();
+            if (isSys)
+            ((AttractionDbM)resp).EncryptedRevenue = $"{_encryptions.AesDecryptFromBase64<string>(((AttractionDbM)resp).EncryptedRevenue)} kr";
             if (resp != null && flat)
             {
                 // Hide financial data when flat is true
@@ -137,7 +141,7 @@ public class AttractionDbRepos
         _dbContext.Add(item);
         await _dbContext.SaveChangesAsync();
 
-        return await ReadItemAsync(item.AttractionId, true);
+        return await ReadItemAsync(item.AttractionId, true, false);
     }
 
 
@@ -164,7 +168,7 @@ public class AttractionDbRepos
         _dbContext.Update(item);
         await _dbContext.SaveChangesAsync();
 
-        return await ReadItemAsync(item.AttractionId, true);
+        return await ReadItemAsync(item.AttractionId, true, false);
     }
 
 
