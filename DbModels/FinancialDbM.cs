@@ -14,6 +14,7 @@ public class FinancialDbM : Financial, ISeed<FinancialDbM>
     public override Guid FinancialId { get; set; }
 
     [NotMapped]
+    [JsonIgnore]
     public override IAttraction Attraction { get => AttractionDbM; set => throw new NotImplementedException(); }
 
     

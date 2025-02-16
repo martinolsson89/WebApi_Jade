@@ -43,22 +43,21 @@ public class Financial : IFinancial, ISeed<Financial>
 
     }
 
-    public Financial EnryptAndObfuscate(Func<string, string> encryptor)
+    public Financial EnryptAndObfuscate(Func<Financial, string> encryptor)
     {
-        this.EnryptedToken = encryptor(this.ToString());
+        this.EnryptedToken = encryptor(this);
 
         this.Comments = Regex.Replace(Comments, "(?<=.{1}).", "*");
 
-        string pattern = @"\b(\d{4}[-\s]?)(\d{4}[-\s]?)(\d{4}[-\s]?)(\d{4})\b";
-        string replacement = "$1**** **** **** $4";
-        this.Revenue = Regex.Replace(Revenue, pattern, replacement);
-
         
+        this.Revenue = Regex.Replace(Revenue, ".", "*");
+
+        /*
         if (Risk.HasValue)
         {
             this.EncryptedRisk = encryptor(Risk.ToString()); 
         }
-
+*/
         return this;
     }
 

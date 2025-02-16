@@ -46,11 +46,12 @@ public class AttractionDbRepos
 
            var resp = await query.OfType<AttractionDbM>().FirstOrDefaultAsync(); 
 
-            if (isSys)
+            if (isSys && resp?.FinancialDbM != null)
             {
-                resp?.FinancialDbM?.Decrypt(_encryptions.AesDecryptFromBase64<Financial>);
-
+                resp.FinancialDbM = (FinancialDbM)resp.FinancialDbM.Decrypt(_encryptions.AesDecryptFromBase64<FinancialDbM>);
             }
+
+
 
             if (resp != null && flat)
             {
