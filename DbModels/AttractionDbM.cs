@@ -24,20 +24,10 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
     [NotMapped]
     [JsonProperty(Order = 9)]
     public override IAddress Address { get => AddressDbM; set => throw new NotImplementedException(); }
-    
-    [JsonProperty(Order = 5)]
-    public string RiskString { get => Risk.ToString(); set {} }
 
-    [JsonProperty(Order = 6)]
-    public string EncryptedRevenue { get; set; }
-
-    [JsonProperty(Order = 7)]
-    public string FormattedEncryptedRevenue { get; private set; } 
-
-    [JsonIgnore]
     [NotMapped]
-    public string OriginalRevenue { get; private set; } 
-
+    [JsonProperty(Order = 10)]
+    public override IFinancial Financial { get => FinancialDbM; set => throw new NotImplementedException(); }
 
     [JsonIgnore]
     [Required]
@@ -49,6 +39,9 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
 
     [JsonIgnore]
     public List<CommentDbM> CommentsDbM { get; set; }
+
+     [JsonIgnore]
+    public FinancialDbM FinancialDbM { get; set; }
 
     public AttractionDbM(){ }
 
@@ -64,8 +57,7 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
 
         AttractionTitle = org.AttractionTitle;
         Description = org.Description;
-        Risk = org.Risk;
-        OriginalRevenue = org.Revenue?.ToString();
+       
 
         return this;
     }
@@ -76,40 +68,7 @@ public class AttractionDbM : Attraction, ISeed<AttractionDbM>
         UpdateFromDTO(org);
     }
 
-    public AttractionDbM EncryptFinancial(Func<string, string> encryptor, bool showEncrypt = false)
-    {
-        if (Revenue.HasValue)
-        {
-            EncryptedRevenue = encryptor(Revenue.Value.ToString());
-            FormattedEncryptedRevenue = FormatAsDotted(Revenue.ToString()); 
-             
-                if (showEncrypt)
-                {
-                    OriginalRevenue = EncryptedRevenue;
-                    
-                }
-            
-            
-        }
-
-        return this;
-    }
-
-   
-  public string GetDecryptedRevenue(Func<string, string> decryptor)
-    {
-    if (!string.IsNullOrEmpty(EncryptedRevenue))
-    {
-        OriginalRevenue = decryptor(EncryptedRevenue);
-        System.Console.WriteLine(OriginalRevenue);
-    }
-
-        return OriginalRevenue;
-    }
-
-
-    
-    private string FormatAsDotted(string encryptedValue) =>  $"{encryptedValue[0]}••••••••••{encryptedValue[encryptedValue.Length - 1]}";
+  
 
 
     

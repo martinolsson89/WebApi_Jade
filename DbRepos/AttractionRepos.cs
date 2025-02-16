@@ -37,21 +37,28 @@ public class AttractionDbRepos
                     .Include(a => a.AddressDbM)
                     .Include(a => a.CategoryDbM)
                     .Include(x => x.CommentsDbM)
+                    .Include(f => f.FinancialDbM)
                     .Where(a => a.AttractionId == id); 
             }
 
             
 
 
-            var resp =  await query.FirstOrDefaultAsync<IAttraction>();
+           var resp = await query.OfType<AttractionDbM>().FirstOrDefaultAsync(); 
+
             if (isSys)
-            ((AttractionDbM)resp).EncryptedRevenue = $"{_encryptions.AesDecryptFromBase64<string>(((AttractionDbM)resp).EncryptedRevenue)} kr";
+            {
+                resp?.FinancialDbM?.Decrypt(_encryptions.AesDecryptFromBase64<Financial>);
+
+            }
+
             if (resp != null && flat)
             {
-                // Hide financial data when flat is true
-                ((AttractionDbM)resp).Risk = null;
-                ((AttractionDbM)resp).Revenue = null;
+                
+                resp.FinancialDbM = null;
             }
+
+            
 
             return new ResponseItemDto<IAttraction>()
             {
@@ -71,7 +78,8 @@ public class AttractionDbRepos
             query = _dbContext.Attractions.AsNoTracking()
             .Include(a => a.AddressDbM)
             .Include(a => a.CategoryDbM)
-            .Include(x => x.CommentsDbM);
+            .Include(x => x.CommentsDbM)
+            .Include(f => f.FinancialDbM);
         }
 
         query = query.Where(i => i.Seeded == seeded &&
@@ -88,7 +96,7 @@ public class AttractionDbRepos
             .Take(pageSize)
             .ToListAsync<IAttraction>();
 
-        if (flat)
+        /*if (flat)
         {
             foreach (var item in items)
             {
@@ -96,6 +104,7 @@ public class AttractionDbRepos
                 ((AttractionDbM)item).Revenue = null;
             }
         }
+        */
 
         return new ResponsePageDto<IAttraction>
         {
@@ -133,8 +142,7 @@ public class AttractionDbRepos
 
         var item = new AttractionDbM(itemDto);
 
-        // 🔹 Encrypt financial data before saving
-        item.EncryptFinancial(_encryptions.AesEncryptToBase64);
+        
 
         await UpdateNavigationProp(itemDto, item);
 
@@ -160,8 +168,8 @@ public class AttractionDbRepos
 
         item.UpdateFromDTO(itemDto);
 
-        // 🔹 Encrypt financial data before updating
-        item.EncryptFinancial(_encryptions.AesEncryptToBase64);
+        
+        
 
         await UpdateNavigationProp(itemDto, item);
 
@@ -187,6 +195,8 @@ public class AttractionDbRepos
         if (updatedAddress == null)
             throw new ArgumentException($"Address with id {itemDto.AddressId} does not exist");
         item.AddressDbM = updatedAddress;
+
+      
     }
 
 }

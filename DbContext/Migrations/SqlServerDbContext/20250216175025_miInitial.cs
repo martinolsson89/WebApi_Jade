@@ -83,15 +83,11 @@ namespace DbContext.Migrations.SqlServerDbContext
                 columns: table => new
                 {
                     AttractionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RiskString = table.Column<string>(type: "nvarchar(200)", nullable: true),
-                    EncryptedRevenue = table.Column<string>(type: "nvarchar(200)", nullable: true),
-                    FormattedEncryptedRevenue = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     CategoryDbMCategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AddressDbMAddressId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AttractionTitle = table.Column<string>(type: "nvarchar(200)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(200)", nullable: true),
-                    Seeded = table.Column<bool>(type: "bit", nullable: false),
-                    Risk = table.Column<int>(type: "int", nullable: true)
+                    Seeded = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -136,6 +132,32 @@ namespace DbContext.Migrations.SqlServerDbContext
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Financials",
+                schema: "supusr",
+                columns: table => new
+                {
+                    FinancialId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AttractionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Risk = table.Column<int>(type: "int", nullable: true),
+                    Revenue = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    EncryptedRisk = table.Column<string>(type: "nvarchar(200)", nullable: true),
+                    Seeded = table.Column<bool>(type: "bit", nullable: false),
+                    Comments = table.Column<string>(type: "nvarchar(MAX)", maxLength: 2000, nullable: true),
+                    EnryptedToken = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Financials", x => x.FinancialId);
+                    table.ForeignKey(
+                        name: "FK_Financials_Attractions_AttractionId",
+                        column: x => x.AttractionId,
+                        principalSchema: "supusr",
+                        principalTable: "Attractions",
+                        principalColumn: "AttractionId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Attractions_AddressDbMAddressId",
                 schema: "supusr",
@@ -153,6 +175,13 @@ namespace DbContext.Migrations.SqlServerDbContext
                 schema: "supusr",
                 table: "Comments",
                 column: "AttractionDbMAttractionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Financials_AttractionId",
+                schema: "supusr",
+                table: "Financials",
+                column: "AttractionId",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -160,6 +189,10 @@ namespace DbContext.Migrations.SqlServerDbContext
         {
             migrationBuilder.DropTable(
                 name: "Comments",
+                schema: "supusr");
+
+            migrationBuilder.DropTable(
+                name: "Financials",
                 schema: "supusr");
 
             migrationBuilder.DropTable(

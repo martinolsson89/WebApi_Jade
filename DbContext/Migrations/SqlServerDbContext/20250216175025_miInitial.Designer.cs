@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbContext.Migrations.SqlServerDbContext
 {
     [DbContext(typeof(MainDbContext.SqlServerDbContext))]
-    [Migration("20250214111240_miInitial")]
+    [Migration("20250216175025_miInitial")]
     partial class miInitial
     {
         /// <inheritdoc />
@@ -64,18 +64,6 @@ namespace DbContext.Migrations.SqlServerDbContext
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("EncryptedRevenue")
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("FormattedEncryptedRevenue")
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int?>("Risk")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RiskString")
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<bool>("Seeded")
@@ -136,6 +124,42 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.HasIndex("AttractionDbMAttractionId");
 
                     b.ToTable("Comments", "supusr");
+                });
+
+            modelBuilder.Entity("DbModels.FinancialDbM", b =>
+                {
+                    b.Property<Guid>("FinancialId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("AttractionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(MAX)");
+
+                    b.Property<string>("EncryptedRisk")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("EnryptedToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Revenue")
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int?>("Risk")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Seeded")
+                        .HasColumnType("bit");
+
+                    b.HasKey("FinancialId");
+
+                    b.HasIndex("AttractionId")
+                        .IsUnique();
+
+                    b.ToTable("Financials", "supusr");
                 });
 
             modelBuilder.Entity("DbModels.RoleDbM", b =>
@@ -271,6 +295,17 @@ namespace DbContext.Migrations.SqlServerDbContext
                     b.Navigation("AttractionDbM");
                 });
 
+            modelBuilder.Entity("DbModels.FinancialDbM", b =>
+                {
+                    b.HasOne("DbModels.AttractionDbM", "AttractionDbM")
+                        .WithOne("FinancialDbM")
+                        .HasForeignKey("DbModels.FinancialDbM", "AttractionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AttractionDbM");
+                });
+
             modelBuilder.Entity("DbModels.AddressDbM", b =>
                 {
                     b.Navigation("AttractionDbM");
@@ -279,6 +314,8 @@ namespace DbContext.Migrations.SqlServerDbContext
             modelBuilder.Entity("DbModels.AttractionDbM", b =>
                 {
                     b.Navigation("CommentsDbM");
+
+                    b.Navigation("FinancialDbM");
                 });
 
             modelBuilder.Entity("DbModels.CategoryDbM", b =>

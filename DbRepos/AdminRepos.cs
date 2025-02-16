@@ -9,6 +9,7 @@ using Seido.Utilities.SeedGenerator;
 using Microsoft.Identity.Client;
 using Configuration;
 using Models;
+using Microsoft.AspNetCore.JsonPatch.Helpers;
 
 namespace DbRepos;
 
@@ -42,44 +43,70 @@ public class AdminDbRepos
     }
 
     public async Task<ResponseItemDto<GstUsrInfoAllDto>> SeedAsync(int nrOfAttractions, int nrAddress)
+{
+    try 
     {
-        try 
-        {
-            await RemoveSeedAsync(true);
+        await RemoveSeedAsync(true);
 
         var rnd = new csSeedGenerator();
         var at = rnd.ItemsToList<AttractionDbM>(nrOfAttractions);
         var ad = rnd.ItemsToList<AddressDbM>(nrAddress);
-        var comments = rnd.ItemsToList<CommentDbM>(rnd.Next(nrOfAttractions, 20*nrOfAttractions));
-
-        var i = 0;
+        var comments = rnd.ItemsToList<CommentDbM>(rnd.Next(nrOfAttractions, 20 * nrOfAttractions));
 
         var allCategories = await SeedEachCategoryAsync();
 
-        foreach (var item in at){
-            item.EncryptFinancial(_encryptions.AesEncryptToBase64);
-            item.GetDecryptedRevenue(_encryptions.AesDecryptFromBase64<string>);
-
-
+        foreach (var item in at)
+        {
             item.CategoryDbM = rnd.FromList(allCategories);
             item.AddressDbM = rnd.FromList(ad);
-            item.CommentsDbM = rnd.UniqueIndexPickedFromList<CommentDbM>(rnd.Next(0,21), comments);
-            i++;
+            item.CommentsDbM = rnd.UniqueIndexPickedFromList<CommentDbM>(rnd.Next(0, 21), comments);
         }
 
+        // ✅ Step 1: Save Attractions first
         _dbContext.Attractions.AddRange(at);
-    
+        await _dbContext.SaveChangesAsync(); // 🚀 Ensures Attraction IDs exist
+
+        var financials = new List<FinancialDbM>();
+
+        /*
+        foreach (var item in at)
+        {
+            _logger.LogInformation($"Processing Attraction ID: {item.AttractionId}");
+
+            var financial = new FinancialDbM()
+            {
+                AttractionDbM = item, 
+                Seeded = true
+            }.Seed(rnd);
+
+            financial?.EnryptAndObfuscate(_encryptions.AesEncryptToBase64);
+
+            _dbContext.Entry(financial.Attraction).State = EntityState.Detached;
+
+            _logger.LogInformation($"Created FinancialDbM for Attraction {financial.Attraction}");
+            financials.Add((FinancialDbM)financial);
+        }
+         ger upp */ 
+
+        
+        _dbContext.Financials.AddRange(financials); 
         await _dbContext.SaveChangesAsync();
 
-            return await InfoAsync();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError($"Error in SeedAsync: {ex.Message}");
-            _logger.LogError($"Stack trace: {ex.StackTrace}");
-            throw;
-        }
+        return await InfoAsync();
     }
+    catch (Exception ex)
+    {
+        _logger.LogError($"Error in SeedAsync: {ex.Message}");
+        _logger.LogError($"Stack trace: {ex.StackTrace}");
+        if (ex.InnerException != null)
+        {
+            _logger.LogError($"Inner Exception: {ex.InnerException.Message}");
+        }
+        throw;
+    }
+}
+
+
     
     public async Task<ResponseItemDto<GstUsrInfoAllDto>> RemoveSeedAsync(bool seeded)
     {
