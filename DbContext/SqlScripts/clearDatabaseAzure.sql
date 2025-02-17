@@ -46,10 +46,10 @@ GO
 -- DROP TABLE IF EXISTS dbo.__EFMigrationsHistory;
 
 DROP TABLE IF EXISTS supusr.Comments;
-DROP TABLE IF EXISTS supusr.Attractions
 DROP TABLE IF EXISTS supusr.Addresses;
+DROP TABLE IF EXISTS supusr.Attractions
 DROP TABLE IF EXISTS supusr.Categories;
-DROP TABLE IF EXISTS supusr.MusicGroups;
+DROP TABLE IF EXISTS supusr.Financials;
 DROP TABLE IF EXISTS dbo.Users;
 DROP TABLE IF EXISTS dbo.Roles;
 DROP TABLE IF EXISTS dbo.__EFMigrationsHistory;
