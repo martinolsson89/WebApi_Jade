@@ -51,7 +51,7 @@ DROP TABLE IF EXISTS supusr.Addresses;
 DROP TABLE IF EXISTS supusr.Categories;
 DROP TABLE IF EXISTS supusr.MusicGroups;
 DROP TABLE IF EXISTS dbo.Users;
-DROP TABLE IF EXISTS dbo.RoleDbM;
+DROP TABLE IF EXISTS dbo.Roles;
 DROP TABLE IF EXISTS dbo.__EFMigrationsHistory;
 
 GO
