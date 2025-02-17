@@ -29,20 +29,14 @@ public class Attraction : IAttraction, ISeed<Attraction>
         [JsonProperty(Order = 10)]
         public virtual List<IComment>? Comments { get; set; } = null;
 
-
-        [EnumDataType(typeof(FinancialRisk), ErrorMessage = "Outside Enum value")]
-        [JsonIgnore]
-        public virtual FinancialRisk? Risk { get; set; }
-        [NotMapped]
-        [JsonIgnore]
-        public virtual decimal? Revenue { get; set; }
+        
+    public virtual IFinancial Financial { get; set; }
 
     public virtual Attraction Seed (csSeedGenerator seeder)
     {
         AttractionId = Guid.NewGuid();
         AttractionTitle = seeder.AttractionTitle;
-        Revenue = seeder.Next(100000, 10000000);
-        Risk = seeder.FromEnum<FinancialRisk>();
+        
         Description = seeder.LatinSentence;
         Seeded = true;
 

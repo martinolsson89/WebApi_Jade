@@ -32,7 +32,7 @@ public class Encryptions
         return Convert.ToBase64String(encryptedBytes);
     }
 
-    public string AesDecryptFromBase64<T> (string encryptedBase64) 
+     public T AesDecryptFromBase64<T> (string encryptedBase64) 
     {
         byte[] encryptedBytes = Convert.FromBase64String(encryptedBase64);
 
@@ -46,7 +46,7 @@ public class Encryptions
         string decryptedString = System.Text.Encoding.Unicode.GetString(decryptedBytes);
         T decryptedObject = JsonConvert.DeserializeObject<T>(decryptedString);
                 
-        return decryptedObject.ToString();
+        return decryptedObject;
     }
 
     public byte[] Pbkdf2HashToBytes (int nrBytes, string password)

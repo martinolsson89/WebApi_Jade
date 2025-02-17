@@ -50,6 +50,12 @@ builder.Services.AddSwaggerGen(options => {
     });
 });
 
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+});
+
+
 //Inject Custom logger
 builder.Services.AddScoped<AdminDbRepos>();
 builder.Services.AddScoped<AttractionDbRepos>();
@@ -58,6 +64,7 @@ builder.Services.AddScoped<LoginDbRepos>();
 builder.Services.AddScoped<RoleDbRepos>();
 builder.Services.AddScoped<CommentDbRepos>();
 builder.Services.AddScoped<AddressDbRepos>(); 
+builder.Services.AddScoped<FinancialRepos>(); 
 builder.Services.AddScoped<IAdminService, AdminServiceDb>();
 builder.Services.AddScoped<IAttractionService, AttractionServiceDb>();
 builder.Services.AddScoped<IAddressService, AddressServiceDb>();
@@ -65,10 +72,10 @@ builder.Services.AddScoped<ICategoryService, CategoryServiceDb>();
 builder.Services.AddScoped<IRoleService, RoleServiceDb>();
 builder.Services.AddScoped<ILoginService, LoginServiceDb>();
 builder.Services.AddScoped<ICommentServiceDb, CommentServiceDb>();
+builder.Services.AddScoped<IFinancialService, FinancialServiceDb>();
 
 var app = builder.Build();
 
-#if !DEBUG
 
 // Seeda rollerna och en Superuser
 using (var scope = app.Services.CreateScope())
@@ -76,7 +83,7 @@ using (var scope = app.Services.CreateScope())
     var dbContext = scope.ServiceProvider.GetRequiredService<MainDbContext>(); // hämta skapade servicen!!
     await dbContext.SeedRolesAsync();
 }
-#endif
+
 
 
 //Configure the HTTP request pipeline

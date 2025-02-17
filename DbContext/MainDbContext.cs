@@ -33,6 +33,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     #region C# model of database tables
     public DbSet<AttractionDbM> Attractions  { get; set; }
     public DbSet<CommentDbM> Comments  { get; set; }
+
+    public DbSet<FinancialDbM> Financials  { get; set; }
     public DbSet<CategoryDbM> Catgeories { get; set; }
     public DbSet<AddressDbM> Addresses { get; set; }
     public DbSet<UserDbM> Users { get; set; }    
@@ -46,6 +48,8 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
     public DbSet<GstUsrInfoDbDto> InfoDbView { get; set; }
     public DbSet<GstUsrInfoAttractionsDto> InfoAttractionsView { get; set; }
     public DbSet<GstUsrInfoCategoriesDto> InfoCategoriesView { get; set; }
+
+    
 
     #endregion
 
@@ -67,7 +71,16 @@ public class MainDbContext : Microsoft.EntityFrameworkCore.DbContext
         #region model the Views
         modelBuilder.Entity<GstUsrInfoDbDto>().ToView("vwInfoDb", "gstusr").HasNoKey();
         modelBuilder.Entity<GstUsrInfoAttractionsDto>().ToView("vwInfoAttractions", "gstusr").HasNoKey();  
-        modelBuilder.Entity<GstUsrInfoCategoriesDto>().ToView("vwInfoCategories", "gstusr").HasNoKey();        
+        modelBuilder.Entity<GstUsrInfoCategoriesDto>().ToView("vwInfoCategories", "gstusr").HasNoKey();    
+
+         modelBuilder.Entity<FinancialDbM>()
+            .Property(a => a.EnryptedToken).HasColumnType("nvarchar(max)");    
+
+              modelBuilder.Entity<FinancialDbM>()
+        .Property(f => f.Comments)
+        .HasColumnType("nvarchar(MAX)"); 
+
+   
         #endregion
 
         #region Seed the Roles

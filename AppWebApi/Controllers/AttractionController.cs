@@ -132,41 +132,6 @@ namespace AppWebApi.Controllers
         }
 
         [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
-            Policy = null, Roles = "sysadmin")]
-        [HttpPut()]
-        [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAttraction>))]
-        [ProducesResponseType(400, Type = typeof(string))]
-        [ProducesResponseType(404, Type = typeof(string))]
-        public async Task<IActionResult> AddFinancial([FromBody] AttractionFinancialDto financialUpdate)
-        {
-            try
-            {
-                _logger.LogInformation($"{nameof(AddFinancial)}: {nameof(financialUpdate)}: {financialUpdate}");
-                
-                // Get existing attraction
-                var existingAttraction = await _attractionService.ReadAttractionAsync(financialUpdate.AttractionId, false, false);
-                if (existingAttraction?.Item == null)
-                    throw new ArgumentException($"Item with id {financialUpdate.AttractionId} does not exist");
-
-                // Create AttractionCuDto with updated financial information
-                var updateDto = new AttractionCuDto(existingAttraction.Item)
-                {
-                    Risk = financialUpdate.Risk,
-                    Revenue = financialUpdate.Revenue
-                };
-
-                // Update using existing service method
-                var updatedAttraction = await _attractionService.UpdateAttractionAsync(updateDto);
-                return Ok(updatedAttraction);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"{nameof(AddFinancial)}: {ex.Message}");
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [Authorize(AuthenticationSchemes = Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerDefaults.AuthenticationScheme,
             Policy = null, Roles = "supusr, sysadmin")]
         [HttpDelete()]
         [ProducesResponseType(200, Type = typeof(ResponseItemDto<IAttraction>))]

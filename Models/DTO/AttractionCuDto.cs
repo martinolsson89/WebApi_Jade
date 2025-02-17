@@ -9,10 +9,10 @@ public class AttractionCuDto
     public string Description { get; set; }
     public virtual Guid CategoryId { get; set; }
     public virtual Guid AddressId { get; set; }
+    [JsonIgnore]
     public virtual List<Guid>? CommentsId { get; set; } = null;
-    [EnumDataType(typeof(FinancialRisk), ErrorMessage = "Outside Enum value")]
-    public FinancialRisk? Risk { get; set; }
-    public decimal? Revenue { get; set; }
+    
+    
 
     public AttractionCuDto() { }
     public AttractionCuDto(IAttraction org)
@@ -23,7 +23,6 @@ public class AttractionCuDto
         CategoryId = org.Category.CategoryId;
         AddressId = org.Address.AddressId;
         CommentsId = org.Comments?.Select(i => i.CommentId).ToList() ?? null;
-        Risk = org.Risk;
-        Revenue = org.Revenue;
+     
     }
 }
