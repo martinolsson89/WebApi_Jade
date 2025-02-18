@@ -78,11 +78,15 @@ var app = builder.Build();
 
 
 // Seeda rollerna och en Superuser
-using (var scope = app.Services.CreateScope())
+if (builder.Configuration["DatabaseConnections:DefaultDataUser"] == "sysadmin")
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<MainDbContext>(); // hämta skapade servicen!!
-    await dbContext.SeedRolesAsync();
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<MainDbContext>();
+        await dbContext.SeedRolesAsync();
+    }
 }
+
 
 
 
